@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>seam-parent</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+   </parent>
+
+   <groupId>org.jboss.seam</groupId>
+   <artifactId>seam-xml</artifactId>
+   <name>xml</name>
+   <version>1.0-SNAPSHOT</version>
+
+   <properties>
+      <seam.version>3.0.0-SNAPSHOT</seam.version>
+   </properties>
+
+   <!-- Snapshots repo to get parent -->
+   <repositories>
+      <repository>
+         <id>oss.sonatype.org/jboss-snapshots</id>
+         <name>JBoss (Nexus) Snapshots Repository</name>
+         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </snapshots>
+      </repository>
+   </repositories>
+
+   <dependencies>
+      <!-- CDI (JSR-299) -->
+      <dependency>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+   </dependencies>
+
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk</developerConnection>
+      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk</url>
+   </scm>
+
+</project>
