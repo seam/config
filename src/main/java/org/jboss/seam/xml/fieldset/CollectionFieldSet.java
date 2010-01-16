@@ -4,7 +4,6 @@
  */
 package org.jboss.seam.xml.fieldset;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -31,12 +30,12 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class CollectionFieldSet implements FieldValueObject
 {
-   Field field;
+   FieldValueSetter field;
    List<CFS> values;
    Class elementType;
    Class<? extends Collection> collectionType;
 
-   public CollectionFieldSet(Field field, List<XmlItem> items)
+   public CollectionFieldSet(FieldValueSetter field, List<XmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<CFS>();

@@ -4,7 +4,6 @@
  */
 package org.jboss.seam.xml.fieldset;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -27,13 +26,13 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class MapFieldSet implements FieldValueObject
 {
-   Field field;
+   FieldValueSetter field;
    List<MFS> values;
    Class keyType;
    Class valueType;
    Class<? extends Map> collectionType;
 
-   public MapFieldSet(Field field, List<EntryXmlItem> items)
+   public MapFieldSet(FieldValueSetter field, List<EntryXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<MFS>();

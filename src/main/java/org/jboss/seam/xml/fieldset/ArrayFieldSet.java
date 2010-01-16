@@ -5,7 +5,6 @@
 package org.jboss.seam.xml.fieldset;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +19,11 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class ArrayFieldSet implements FieldValueObject
 {
-   Field field;
+   FieldValueSetter field;
    List<AFS> values;
    Class arrayType;
 
-   public ArrayFieldSet(Field field, List<XmlItem> items)
+   public ArrayFieldSet(FieldValueSetter field, List<XmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<AFS>();

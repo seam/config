@@ -5,6 +5,7 @@
 package org.jboss.seam.xml.model;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,24 +15,29 @@ import java.util.Set;
 
 import org.jboss.seam.xml.fieldset.ArrayFieldSet;
 import org.jboss.seam.xml.fieldset.CollectionFieldSet;
+import org.jboss.seam.xml.fieldset.DirectFieldSetter;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
+import org.jboss.seam.xml.fieldset.FieldValueSetter;
 import org.jboss.seam.xml.fieldset.MapFieldSet;
+import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 
 public class FieldXmlItem extends AbstractXmlItem
 {
 
-   Field field;
+   FieldValueSetter fieldSetter;
    FieldValueObject fieldValue;
+   Field field;
    HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
 
    public FieldXmlItem(XmlItem parent, Field c, String innerText)
    {
       super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null);
       this.field = c;
+      this.fieldSetter = getFieldValueSetter(c);
       if (innerText != null && innerText.length() > 0)
       {
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), c, innerText);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, innerText);
       }
       allowed.add(XmlItemType.ANNOTATION);
       allowed.add(XmlItemType.VALUE);
@@ -78,7 +84,7 @@ public class FieldXmlItem extends AbstractXmlItem
             }
             if (!mapEntries.isEmpty())
             {
-               fieldValue = new MapFieldSet(field, mapEntries);
+               fieldValue = new MapFieldSet(fieldSetter, mapEntries);
             }
          }
          else if (Collection.class.isAssignableFrom(field.getType()) || field.getType().isArray())
@@ -91,11 +97,11 @@ public class FieldXmlItem extends AbstractXmlItem
             {
                if (field.getType().isArray())
                {
-                  fieldValue = new ArrayFieldSet(field, valueEntries);
+                  fieldValue = new ArrayFieldSet(fieldSetter, valueEntries);
                }
                else
                {
-                  fieldValue = new CollectionFieldSet(field, valueEntries);
+                  fieldValue = new CollectionFieldSet(fieldSetter, valueEntries);
                }
             }
          }
@@ -109,7 +115,7 @@ public class FieldXmlItem extends AbstractXmlItem
             {
                throw new RuntimeException("Non collection fields can only have a single <value> element Field:" + field.getDeclaringClass().getName() + '.' + field.getName());
             }
-            fieldValue = new SimpleFieldValue(parent.getJavaClass(), field, valueEntries.get(0).getInnerText());
+            fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, valueEntries.get(0).getInnerText());
          }
       }
       return true;
@@ -120,4 +126,27 @@ public class FieldXmlItem extends AbstractXmlItem
       return allowed;
    }
 
+   FieldValueSetter getFieldValueSetter(Field field)
+   {
+      String fieldName = field.getName();
+      String methodName = "set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+      Method setter = null;
+      try
+      {
+         setter = field.getDeclaringClass().getMethod(methodName, field.getType());
+      }
+      catch (SecurityException e)
+      {
+
+      }
+      catch (NoSuchMethodException e)
+      {
+
+      }
+      if (setter != null)
+      {
+         return new MethodFieldSetter(setter);
+      }
+      return new DirectFieldSetter(field);
+   }
 }

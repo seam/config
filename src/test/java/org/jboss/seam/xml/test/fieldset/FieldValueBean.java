@@ -11,7 +11,7 @@ import org.jboss.seam.xml.test.method.QualifierEnum;
 public class FieldValueBean
 {
 
-   public int ivalue = 20;
+   private int ivalue = 20;
 
    public String stringValue;
 
@@ -28,5 +28,15 @@ public class FieldValueBean
    public short svalue;
 
    public long lvalue;
+
+   public void setIvalue(int value)
+   {
+      this.ivalue = value + 1;
+   }
+
+   public int getIvalue()
+   {
+      return ivalue;
+   }
 
 }

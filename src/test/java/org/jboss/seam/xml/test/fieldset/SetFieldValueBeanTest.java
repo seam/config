@@ -28,7 +28,7 @@ public class SetFieldValueBeanTest extends AbstractXMLTest
       assert x.dvalue == 0;
       assert x.enumValue == QualifierEnum.A;
       assert x.fvalue == 0;
-      assert x.ivalue == 10;
+      assert x.getIvalue() == 11;
       assert x.lvalue == 23;
       assert x.svalue == 4;
 
