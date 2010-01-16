@@ -1,24 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-
-   <parent>
-      <groupId>org.jboss.seam</groupId>
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
       <artifactId>seam-parent</artifactId>
+      <groupId>org.jboss.seam</groupId>
       <version>3.0.0-SNAPSHOT</version>
    </parent>
-
-   <groupId>org.jboss.seam</groupId>
+    
    <artifactId>seam-xml</artifactId>
-   <name>xml</name>
-   <version>1.0-SNAPSHOT</version>
-
-   <properties>
-      <seam.version>3.0.0-SNAPSHOT</seam.version>
-   </properties>
-
-   <!-- Snapshots repo to get parent -->
+   <packaging>jar</packaging>
+   <version>3.0.0-SNAPSHOT</version>
+   <name>Seam XML Configuration</name>
+ 
    <repositories>
       <repository>
          <id>oss.sonatype.org/jboss-snapshots</id>
@@ -32,21 +27,71 @@
             <updatePolicy>never</updatePolicy>
          </snapshots>
       </repository>
-   </repositories>
+    </repositories>
 
-   <dependencies>
-      <!-- CDI (JSR-299) -->
-      <dependency>
-         <groupId>javax.enterprise</groupId>
-         <artifactId>cdi-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-   </dependencies>
-
+   <properties>
+      <seam.version>3.0.0-SNAPSHOT</seam.version>
+   </properties> 
+ 
+  <dependencies>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+     <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-core</artifactId>
+      <version>1.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-extensions</artifactId>
+      <version>1.0.0-SNAPSHOT</version> 
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-se</artifactId>
+      <version>1.0.0-CR2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.testng</groupId>
+    	<artifactId>testng</artifactId>
+    	<version>5.10</version>
+    	<type>jar</type>
+    	<classifier>jdk15</classifier>
+    	<scope>test</scope>
+    </dependency>
+  </dependencies>
+  
    <scm>
       <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk</connection>
       <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk</developerConnection>
       <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk</url>
    </scm>
-
+  
+  <build>
+     
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.5</source>
+                <target>1.5</target>
+            </configuration>
+        </plugin>
+		   <plugin>
+		     <groupId>org.apache.maven.plugins</groupId>
+		     <artifactId>maven-eclipse-plugin</artifactId>
+		     <configuration>
+		       <workspace>${basedir}</workspace>
+		       
+		       <downloadJavadocs>true</downloadJavadocs>
+		       <downloadSources>true</downloadSources>
+		     </configuration>
+		   </plugin>
+    </plugins>
+  </build> 
 </project>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Beans xmlns="urn:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
+       
+    <test:ProducerQualifier>
+    	<Qualifier/>
+    </test:ProducerQualifier>
+    
+    <test:ProducerBean>
+        <test:value>
+            <Produces/>
+            <test:ProducerQualifier/>
+            <value>hello world</value>
+        </test:value>
+    </test:ProducerBean>
+
+   <test:RecieverBean>
+   		<test:value>
+   			<test:ProducerQualifier/>
+   			<Inject/>
+   		</test:value>
+   </test:RecieverBean>
+   
+</Beans>

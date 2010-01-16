@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Beans xmlns="urn:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
+   <veto>
+   	<test:MapFieldValue />
+   </veto>
+    <test:MapFieldValue>
+        <test:map1>
+        	<entry><key>1</key><value>hello</value></entry>
+        	<entry><key>2</key><value>world</value></entry>
+        </test:map1>
+        <test:map2>
+            <e><k>1</k><v>java.lang.Integer</v></e>
+            <e><k>2</k><v>java.lang.Long</v></e>
+        </test:map2>
+      
+    </test:MapFieldValue>
+   
+</Beans>

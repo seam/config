@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Beans xmlns="urn:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
+   
+    <veto>
+   		<test:FieldValueBean />
+   		<test:FieldValueProducer/>
+    </veto>
+   
+    <test:FieldValueBean>
+        <test:ivalue>10</test:ivalue>
+        <test:stringValue>hello world</test:stringValue>
+        <test:enumValue>A</test:enumValue>
+        <test:fvalue>0</test:fvalue>
+        <test:dvalue>0</test:dvalue>
+        <test:bvalue>true</test:bvalue>
+        <test:lvalue>23</test:lvalue>
+        <test:svalue>4</test:svalue>
+        <test:bigDecimalValue>10</test:bigDecimalValue>
+    </test:FieldValueBean>
+    
+   
+</Beans>
