@@ -12,17 +12,17 @@ import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 
 public class BeanResult<X>
 {
-   NewAnnotatedTypeBuilder builder;
+   NewAnnotatedTypeBuilder<X> builder;
    List<String> dependencies = new ArrayList<String>();
-   Class type;
+   Class<X> type;
 
-   public BeanResult(Class type)
+   public BeanResult(Class<X> type)
    {
       this.type = type;
       builder = new NewAnnotatedTypeBuilder<X>(type);
    }
 
-   public NewAnnotatedTypeBuilder getBuilder()
+   public NewAnnotatedTypeBuilder<X> getBuilder()
    {
       return builder;
    }
@@ -37,7 +37,7 @@ public class BeanResult<X>
       return Collections.unmodifiableList(dependencies);
    }
 
-   public Class getType()
+   public Class<X> getType()
    {
       return type;
    }

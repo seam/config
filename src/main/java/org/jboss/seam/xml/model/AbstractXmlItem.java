@@ -18,7 +18,7 @@ public abstract class AbstractXmlItem implements XmlItem
 {
    final XmlItemType type;
    final XmlItem parent;
-   final Class javaClass;
+   final Class<?> javaClass;
 
    final String innerText;
    final Map<String, String> attributes;
@@ -28,7 +28,7 @@ public abstract class AbstractXmlItem implements XmlItem
       return innerText;
    }
 
-   public AbstractXmlItem(XmlItemType type, XmlItem parent, Class javaClass, String innerText, Map<String, String> attributes)
+   public AbstractXmlItem(XmlItemType type, XmlItem parent, Class<?> javaClass, String innerText, Map<String, String> attributes)
    {
       this.type = type;
       this.parent = parent;
@@ -76,7 +76,7 @@ public abstract class AbstractXmlItem implements XmlItem
       return null;
    }
 
-   public Class getJavaClass()
+   public Class<?> getJavaClass()
    {
       return javaClass;
    }

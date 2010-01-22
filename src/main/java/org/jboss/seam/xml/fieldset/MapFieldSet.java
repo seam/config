@@ -28,8 +28,8 @@ public class MapFieldSet implements FieldValueObject
 {
    FieldValueSetter field;
    List<MFS> values;
-   Class keyType;
-   Class valueType;
+   Class<?> keyType;
+   Class<?> valueType;
    Class<? extends Map> collectionType;
 
    public MapFieldSet(FieldValueSetter field, List<EntryXmlItem> items)
@@ -45,6 +45,7 @@ public class MapFieldSet implements FieldValueObject
          final Object value = XmlObjectConverter.convert(valueType, i.getValue().getInnerText());
          setter = new MFS()
          {
+            @SuppressWarnings("unchecked")
             public void add(Map m) throws IllegalAccessException
             {
                m.put(key, value);
@@ -65,32 +66,32 @@ public class MapFieldSet implements FieldValueObject
 
          if (parameterizedType.getRawType() == Map.class)
          {
-            keyType = (Class) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class) parameterizedType.getActualTypeArguments()[1];
+            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = LinkedHashMap.class;
          }
          else if (parameterizedType.getRawType() == LinkedHashMap.class)
          {
-            keyType = (Class) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class) parameterizedType.getActualTypeArguments()[1];
+            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = LinkedHashMap.class;
          }
          else if (parameterizedType.getRawType() == HashMap.class)
          {
-            keyType = (Class) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class) parameterizedType.getActualTypeArguments()[1];
+            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = HashMap.class;
          }
          else if (parameterizedType.getRawType() == SortedMap.class)
          {
-            keyType = (Class) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class) parameterizedType.getActualTypeArguments()[1];
+            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = TreeMap.class;
          }
          else if (parameterizedType.getRawType() == TreeMap.class)
          {
-            keyType = (Class) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class) parameterizedType.getActualTypeArguments()[1];
+            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = TreeMap.class;
          }
          else
@@ -125,7 +126,7 @@ public class MapFieldSet implements FieldValueObject
 
    interface MFS
    {
-      void add(Map o) throws IllegalAccessException;
+      void add(Map<?, ?> o) throws IllegalAccessException;
    }
 
 }

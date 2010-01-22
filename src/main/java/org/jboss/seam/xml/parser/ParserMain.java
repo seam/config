@@ -6,18 +6,21 @@ package org.jboss.seam.xml.parser;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.jboss.seam.xml.util.XmlParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * Parser for xml configration
+ * Parser for xml configration, this class should only be used once
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
@@ -35,8 +38,11 @@ public class ParserMain extends DefaultHandler
 
    String document;
 
-   public SaxNode parse(InputSource inputSource, String fileUrl)
+   List<XmlParseException> errors;
+
+   public SaxNode parse(InputSource inputSource, String fileUrl, List<XmlParseException> errors)
    {
+      this.errors = errors;
       document = fileUrl;
       try
       {
@@ -108,4 +114,15 @@ public class ParserMain extends DefaultHandler
       this.locator = locator;
    }
 
+   @Override
+   public void error(SAXParseException e) throws SAXException
+   {
+      errors.add(new XmlParseException(e, document, e.getLineNumber()));
+   }
+
+   @Override
+   public void fatalError(SAXParseException e) throws SAXException
+   {
+      errors.add(new XmlParseException(e, document, e.getLineNumber()));
+   }
 }

@@ -15,7 +15,7 @@ class NamespaceUtils
 {
    static XmlItem resolveMethodOrField(String name, XmlItem parent, String innerText) throws InvalidElementException
    {
-      Class p = parent.getJavaClass();
+      Class<?> p = parent.getJavaClass();
       Field f = null;
       boolean methodFound = false;
       f = getField(p, name);
@@ -45,9 +45,9 @@ class NamespaceUtils
    /**
     * we need access to private fields so we cannot just use getField
     */
-   public static Field getField(Class parent, String name)
+   public static Field getField(Class<?> parent, String name)
    {
-      Class p = parent;
+      Class<?> p = parent;
       while (p != Object.class)
       {
          try

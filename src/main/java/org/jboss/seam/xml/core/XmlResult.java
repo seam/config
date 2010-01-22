@@ -27,13 +27,13 @@ public class XmlResult
 
    List<Class<? extends Annotation>> interceptorBindings = new ArrayList<Class<? extends Annotation>>();
 
-   List<Class> veto = new ArrayList<Class>();
+   List<Class<?>> veto = new ArrayList<Class<?>>();
 
    List<String> problems = new ArrayList<String>();
 
-   List<BeanResult> beans = new ArrayList<BeanResult>();
+   List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
 
-   Map<BeanResult, List<FieldValueObject>> fieldValues = new HashMap<BeanResult, List<FieldValueObject>>();
+   Map<BeanResult<?>, List<FieldValueObject>> fieldValues = new HashMap<BeanResult<?>, List<FieldValueObject>>();
 
    public Map<Class<? extends Annotation>, Annotation[]> getStereotypes()
    {
@@ -50,7 +50,7 @@ public class XmlResult
       return interceptorBindings;
    }
 
-   public List<BeanResult> getBeans()
+   public List<BeanResult<?>> getBeans()
    {
       return beans;
    }
@@ -65,17 +65,17 @@ public class XmlResult
       problems.add(p);
    }
 
-   public Map<BeanResult, List<FieldValueObject>> getFieldValues()
+   public Map<BeanResult<?>, List<FieldValueObject>> getFieldValues()
    {
       return fieldValues;
    }
 
-   public void addVeto(Class clazz)
+   public void addVeto(Class<?> clazz)
    {
       veto.add(clazz);
    }
 
-   public List<Class> getVeto()
+   public List<Class<?>> getVeto()
    {
       return veto;
    }

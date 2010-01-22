@@ -85,6 +85,7 @@ public class ModelBuilder
       return ret;
    }
 
+   @SuppressWarnings("unchecked")
    private void addNodeToResult(XmlResult ret, XmlItem rb) throws InvalidElementException
    {
 
@@ -93,7 +94,7 @@ public class ModelBuilder
          ResultType type = getItemType(rb);
          if (type == ResultType.BEAN)
          {
-            BeanResult tp = buildAnnotatedType(rb);
+            BeanResult<?> tp = buildAnnotatedType(rb);
             ret.getBeans().add(tp);
             List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
             for (XmlItem xi : rb.getChildren())
@@ -242,10 +243,11 @@ public class ModelBuilder
       return ret;
    }
 
-   BeanResult buildAnnotatedType(XmlItem rb) throws InvalidElementException
+   @SuppressWarnings("unchecked")
+   <T> BeanResult<T> buildAnnotatedType(XmlItem rb) throws InvalidElementException
    {
-      BeanResult result = new BeanResult(rb.getJavaClass());
-      NewAnnotatedTypeBuilder type = result.getBuilder();
+      BeanResult<T> result = new BeanResult<T>(rb.getJavaClass());
+      NewAnnotatedTypeBuilder<T> type = result.getBuilder();
       // list of constructor arguments
       List<XmlItem> constList = new ArrayList<XmlItem>();
       for (XmlItem item : rb.getChildren())
@@ -314,6 +316,7 @@ public class ModelBuilder
       return result;
    }
 
+   @SuppressWarnings("unchecked")
    void addSteriotypeToResult(XmlResult ret, XmlItem rb) throws InvalidElementException
    {
 
@@ -336,10 +339,11 @@ public class ModelBuilder
 
    }
 
+   @SuppressWarnings("unchecked")
    Annotation createAnnotation(XmlItem item) throws InvalidElementException
    {
       Map<String, Object> typedVars = new HashMap<String, Object>();
-      Class anClass = item.getJavaClass();
+      Class<?> anClass = item.getJavaClass();
       for (Entry<String, String> e : item.getAttributes().entrySet())
       {
          String mname = e.getKey();
@@ -352,7 +356,7 @@ public class ModelBuilder
          {
             throw new InvalidElementException("Annotation " + item.getJavaClass().getName() + " does not have a member named " + mname + " ,error in XML");
          }
-         Class returnType = m.getReturnType();
+         Class<?> returnType = m.getReturnType();
          typedVars.put(mname, XmlObjectConverter.convert(returnType, e.getValue()));
       }
 

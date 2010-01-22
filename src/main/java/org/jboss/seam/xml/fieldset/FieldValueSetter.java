@@ -8,11 +8,11 @@ public interface FieldValueSetter
 
    public void set(Object instance, Object value) throws IllegalAccessException, InvocationTargetException;
 
-   public Class getType();
+   public Class<?> getType();
 
    public Type getGenericType();
 
-   public Class getDeclaringClass();
+   public Class<?> getDeclaringClass();
 
    public String getName();
 

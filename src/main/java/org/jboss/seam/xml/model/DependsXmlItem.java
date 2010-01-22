@@ -17,7 +17,7 @@ public class DependsXmlItem extends AbstractXmlItem
 
    public Set<XmlItemType> getAllowedItem()
    {
-      return Collections.EMPTY_SET;
+      return Collections.emptySet();
    }
 
 }

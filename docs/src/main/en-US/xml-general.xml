@@ -4,7 +4,7 @@ c<?xml version="1.0" encoding="UTF-8"?>
 <chapter id="remoting">
   <title>Seam XML Configuration</title>
   
-  <para>Seam provides a method for configuring JSR-299 beans using XML. </para>
+  <para>Seam provides a method for configuring JSR-299 beans using XML. By default the XML configuration old defines new beans, it does not </para>
 
 
 </chapter>

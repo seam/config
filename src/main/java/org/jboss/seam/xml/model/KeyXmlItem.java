@@ -17,6 +17,6 @@ public class KeyXmlItem extends AbstractXmlItem
 
    public Set<XmlItemType> getAllowedItem()
    {
-      return Collections.EMPTY_SET;
+      return Collections.emptySet();
    }
 }

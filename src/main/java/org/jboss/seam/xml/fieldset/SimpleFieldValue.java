@@ -15,7 +15,7 @@ public class SimpleFieldValue implements FieldValueObject
 
    FS setter;
 
-   public SimpleFieldValue(Class javaObject, final FieldValueSetter f, final String value)
+   public SimpleFieldValue(Class<?> javaObject, final FieldValueSetter f, final String value)
    {
       this.field = f;
 

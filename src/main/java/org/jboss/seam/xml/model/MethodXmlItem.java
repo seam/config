@@ -61,16 +61,16 @@ public class MethodXmlItem extends AbstractXmlItem
          return true;
       }
 
-      List<Class> rtList = new ArrayList<Class>();
+      List<Class<?>> rtList = new ArrayList<Class<?>>();
       for (XmlItem c : children)
       {
          if (c.getType() == XmlItemType.CLASS)
          {
-            Class cl = c.getJavaClass();
+            Class<?> cl = c.getJavaClass();
             rtList.add(cl);
          }
       }
-      Class[] alAr = new Class[rtList.size()];
+      Class<?>[] alAr = new Class[rtList.size()];
       for (int i = 0; i < rtList.size(); ++i)
       {
          alAr[i] = rtList.get(i);

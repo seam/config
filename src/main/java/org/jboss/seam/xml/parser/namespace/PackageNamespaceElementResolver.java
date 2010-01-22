@@ -17,7 +17,7 @@ import org.jboss.seam.xml.model.XmlItemType;
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
    String pack;
-   Map<String, Class> cache = new HashMap<String, Class>();
+   Map<String, Class<?>> cache = new HashMap<String, Class<?>>();
    Set<String> notFound = new HashSet<String>();
 
    public PackageNamespaceElementResolver(String pack)
@@ -34,7 +34,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
 
       try
       {
-         Class c;
+         Class<?> c;
          if (cache.containsKey(name))
          {
             c = cache.get(name);

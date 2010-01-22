@@ -22,7 +22,7 @@ public class ClassXmlItem extends AbstractXmlItem
     * @param innerText
     * @param attributes
     */
-   public ClassXmlItem(XmlItem parent, Class c)
+   public ClassXmlItem(XmlItem parent, Class<?> c)
    {
       super(XmlItemType.CLASS, parent, c, null, null);
       if (innerText != null)

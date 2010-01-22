@@ -28,12 +28,12 @@ public class MethodFieldSetter implements FieldValueSetter
       return method.getName();
    }
 
-   public Class getDeclaringClass()
+   public Class<?> getDeclaringClass()
    {
       return method.getDeclaringClass();
    }
 
-   public Class getType()
+   public Class<?> getType()
    {
       return method.getParameterTypes()[0];
    }

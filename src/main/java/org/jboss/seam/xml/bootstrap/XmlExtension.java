@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
@@ -31,6 +32,7 @@ import org.jboss.seam.xml.model.ModelBuilder;
 import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
+import org.jboss.seam.xml.util.XmlParseException;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 
 public class XmlExtension implements Extension
@@ -42,9 +44,9 @@ public class XmlExtension implements Extension
 
    List<XmlResult> results = new ArrayList<XmlResult>();
 
-   Set<Class> veto = new HashSet<Class>();
+   Set<Class<?>> veto = new HashSet<Class<?>>();
 
-   Map<Class, AnnotatedType> types = new HashMap<Class, AnnotatedType>();
+   Map<Class<?>, AnnotatedType<?>> types = new HashMap<Class<?>, AnnotatedType<?>>();
 
    int count = 0;
 
@@ -52,6 +54,8 @@ public class XmlExtension implements Extension
     * map of syntetic bean id to a list of field value objects
     */
    Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
+
+   List<XmlParseException> parseErrors = new ArrayList<XmlParseException>();
 
    /**
     * This is the entry point for the extension
@@ -73,7 +77,7 @@ public class XmlExtension implements Extension
             {
                ParserMain parser = new ParserMain();
                ModelBuilder builder = new ModelBuilder();
-               SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl());
+               SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), parseErrors);
                ;
                results.add(builder.build(parentNode));
             }
@@ -95,7 +99,7 @@ public class XmlExtension implements Extension
                problemString.append("\n");
             }
          }
-         for (BeanResult b : r.getFieldValues().keySet())
+         for (BeanResult<?> b : r.getFieldValues().keySet())
          {
             int val = count++;
             fieldValues.put(val, r.getFieldValues().get(b));
@@ -105,11 +109,11 @@ public class XmlExtension implements Extension
             b.getBuilder().addToClass(a);
          }
 
-         for (Class b : r.getQualifiers())
+         for (Class<? extends Annotation> b : r.getQualifiers())
          {
             event.addQualifier(b);
          }
-         for (Class b : r.getInterceptorBindings())
+         for (Class<? extends Annotation> b : r.getInterceptorBindings())
          {
             event.addInterceptorBinding(b);
          }
@@ -117,7 +121,7 @@ public class XmlExtension implements Extension
          {
             event.addStereotype(b.getKey(), b.getValue());
          }
-         for (BeanResult bb : r.getBeans())
+         for (BeanResult<?> bb : r.getBeans())
          {
             boolean install = true;
             for (Object className : bb.getDependencies())
@@ -134,7 +138,7 @@ public class XmlExtension implements Extension
             }
             if (install)
             {
-               AnnotatedType tp = bb.getBuilder().create();
+               AnnotatedType<?> tp = bb.getBuilder().create();
                event.addAnnotatedType(tp);
                types.put(tp.getJavaClass(), tp);
             }
@@ -148,7 +152,7 @@ public class XmlExtension implements Extension
       }
    }
 
-   public void processAnotated(@Observes ProcessAnnotatedType event)
+   public <T> void processAnotated(@Observes ProcessAnnotatedType<T> event)
    {
       // veto implementation
       if (veto.contains(event.getAnnotatedType().getJavaClass()))
@@ -157,17 +161,25 @@ public class XmlExtension implements Extension
       }
    }
 
-   public void processInjectionTarget(@Observes ProcessInjectionTarget event)
+   public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event)
    {
 
-      AnnotatedType at = event.getAnnotatedType();
+      AnnotatedType<T> at = event.getAnnotatedType();
       XmlId xid = at.getAnnotation(XmlId.class);
       if (xid != null)
       {
          List<FieldValueObject> fvs = fieldValues.get(xid.value());
-         event.setInjectionTarget(new InjectionTargetWrapper(event.getInjectionTarget(), fvs));
+         event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs));
       }
 
+   }
+
+   public void processAfterBeanDeployment(@Observes AfterBeanDiscovery event)
+   {
+      for (XmlParseException t : parseErrors)
+      {
+         event.addDefinitionError(t);
+      }
    }
 
    public List<Class<? extends XmlDocumentProvider>> getDocumentProviders()
@@ -207,5 +219,4 @@ public class XmlExtension implements Extension
       }
       return ret;
    }
-
 }

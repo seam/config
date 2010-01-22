@@ -32,7 +32,7 @@ public class CollectionFieldSet implements FieldValueObject
 {
    FieldValueSetter field;
    List<CFS> values;
-   Class elementType;
+   Class<?> elementType;
    Class<? extends Collection> collectionType;
 
    public CollectionFieldSet(FieldValueSetter field, List<XmlItem> items)
@@ -48,7 +48,7 @@ public class CollectionFieldSet implements FieldValueObject
 
          setter = new CFS()
          {
-            public void add(Collection o) throws IllegalAccessException
+            public void add(Collection<Object> o) throws IllegalAccessException
             {
                o.add(fv);
             }
@@ -68,47 +68,47 @@ public class CollectionFieldSet implements FieldValueObject
 
          if (parameterizedType.getRawType() == Collection.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedHashSet.class;
          }
          else if (parameterizedType.getRawType() == List.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = ArrayList.class;
          }
          else if (parameterizedType.getRawType() == Set.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedHashSet.class;
          }
          else if (parameterizedType.getRawType() == SortedSet.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = TreeSet.class;
          }
          else if (parameterizedType.getRawType() == HashSet.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = HashSet.class;
          }
          else if (parameterizedType.getRawType() == ArrayList.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = ArrayList.class;
          }
          else if (parameterizedType.getRawType() == LinkedList.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedList.class;
          }
          else if (parameterizedType.getRawType() == LinkedHashSet.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedHashSet.class;
          }
          else if (parameterizedType.getRawType() == TreeSet.class)
          {
-            elementType = (Class) parameterizedType.getActualTypeArguments()[0];
+            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = TreeSet.class;
          }
          else
@@ -128,7 +128,7 @@ public class CollectionFieldSet implements FieldValueObject
    {
       try
       {
-         Collection res = collectionType.newInstance();
+         Collection<Object> res = collectionType.newInstance();
          field.set(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
@@ -143,7 +143,7 @@ public class CollectionFieldSet implements FieldValueObject
 
    interface CFS
    {
-      void add(Collection o) throws IllegalAccessException;
+      void add(Collection<Object> o) throws IllegalAccessException;
    }
 
 }

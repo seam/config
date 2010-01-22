@@ -19,7 +19,7 @@ public class ArrayXmlItem implements XmlItem
 
    XmlItem child = null, parent;
 
-   Class javaClass;
+   Class<?> javaClass;
 
    public ArrayXmlItem(XmlItem parent)
    {
@@ -43,6 +43,7 @@ public class ArrayXmlItem implements XmlItem
       child = xmlItem;
    }
 
+   @SuppressWarnings("unchecked")
    public Map<String, String> getAttributes()
    {
       return Collections.EMPTY_MAP;
@@ -94,7 +95,7 @@ public class ArrayXmlItem implements XmlItem
       {
          throw new RuntimeException("<array>  element must have a child specifying the array type");
       }
-      Class l = child.getJavaClass();
+      Class<?> l = child.getJavaClass();
       try
       {
          javaClass = getClass().getClassLoader().loadClass("[L" + l.getName() + ";");

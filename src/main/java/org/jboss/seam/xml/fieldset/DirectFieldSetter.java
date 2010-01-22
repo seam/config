@@ -25,7 +25,7 @@ public class DirectFieldSetter implements FieldValueSetter
       return field.getGenericType();
    }
 
-   public Class getType()
+   public Class<?> getType()
    {
       return field.getType();
    }
@@ -35,7 +35,7 @@ public class DirectFieldSetter implements FieldValueSetter
       return field.getName();
    }
 
-   public Class getDeclaringClass()
+   public Class<?> getDeclaringClass()
    {
       return field.getDeclaringClass();
    }
