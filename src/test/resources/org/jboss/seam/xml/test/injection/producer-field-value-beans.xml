@@ -2,6 +2,11 @@
 <Beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
        
+    <veto>
+        <test:ProducerBean/>
+        <test:RecieverBean/>
+    </veto>   
+       
     <test:ProducerQualifier>
     	<Qualifier/>
     </test:ProducerQualifier>

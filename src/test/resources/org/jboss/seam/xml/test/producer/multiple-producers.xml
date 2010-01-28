@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Beans xmlns="urn:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.producer">
+    <veto>
+        <test:Producer/>
+        <test:Reciever/>
+    </veto>   
+       
+    <test:Producer>
+        <test:value>
+            <Produces/>
+            <test:ProducerQualifier value="1" />
+            <value>1</value>
+        </test:value>
+        <test:meth>
+            <Produces/>
+            <test:ProducerQualifier value="3" />
+        </test:meth>
+    </test:Producer>
+   
+     <test:Producer>
+        <test:value>
+            <Produces/>
+            <test:ProducerQualifier value="2" />
+            <value>2</value>
+        </test:value>
+        <test:meth>
+            <Produces/>
+            <test:ProducerQualifier value="4" />
+        </test:meth>
+    </test:Producer>
+    
+    
+    <test:Reciever>
+        <test:val1>
+            <Inject/>
+            <test:ProducerQualifier value="1" />
+        </test:val1>
+        <test:val2>
+            <Inject/>
+            <test:ProducerQualifier value="2" />
+        </test:val2>
+        <test:meth1>
+            <Inject/>
+            <test:ProducerQualifier value="3" />
+        </test:meth1>
+        <test:meth2>
+            <Inject/>
+            <test:ProducerQualifier value="4" />
+        </test:meth2>
+       
+    </test:Reciever>
+    
+
+   
+</Beans>
