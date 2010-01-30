@@ -22,7 +22,6 @@
         <test:method>
             <Produces/>
             <test:Qualifier1/>
-            
             <test:MethodValueBean>
                 <test:Qualifier2/>
             </test:MethodValueBean>

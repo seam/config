@@ -21,9 +21,9 @@ public class AnnotationXmlItem extends AbstractXmlItem
     * @param innerText
     * @param attributes
     */
-   public AnnotationXmlItem(XmlItem parent, Class<?> c, String innerText, Map<String, String> attributes)
+   public AnnotationXmlItem(XmlItem parent, Class<?> c, String innerText, Map<String, String> attributes, String document, int lineno)
    {
-      super(XmlItemType.ANNOTATION, parent, c, innerText, attributes);
+      super(XmlItemType.ANNOTATION, parent, c, innerText, attributes, document, lineno);
       if (innerText != null)
       {
          if (!innerText.trim().equals(""))

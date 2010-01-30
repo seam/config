@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jboss.seam.xml.fieldset.FieldValueObject;
+import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class ArrayXmlItem implements XmlItem
 {
@@ -21,10 +22,26 @@ public class ArrayXmlItem implements XmlItem
 
    Class<?> javaClass;
 
-   public ArrayXmlItem(XmlItem parent)
+   final String document;
+
+   final int lineno;
+
+   public ArrayXmlItem(XmlItem parent, String document, int lineno)
    {
       allowed.add(XmlItemType.CLASS);
       this.parent = parent;
+      this.document = document;
+      this.lineno = lineno;
+   }
+
+   public String getDocument()
+   {
+      return document;
+   }
+
+   public int getLineno()
+   {
+      return lineno;
    }
 
    Set<XmlItemType> allowed = new HashSet<XmlItemType>();
@@ -38,7 +55,7 @@ public class ArrayXmlItem implements XmlItem
    {
       if (child != null)
       {
-         throw new RuntimeException("Array elements can only have one child");
+         throw new XmlConfigurationException("Array elements can only have one child", getDocument(), getLineno());
       }
       child = xmlItem;
    }
@@ -93,7 +110,7 @@ public class ArrayXmlItem implements XmlItem
    {
       if (child == null)
       {
-         throw new RuntimeException("<array>  element must have a child specifying the array type");
+         throw new XmlConfigurationException("<array>  element must have a child specifying the array type", getDocument(), getLineno());
       }
       Class<?> l = child.getJavaClass();
       try
@@ -108,7 +125,7 @@ public class ArrayXmlItem implements XmlItem
          }
          catch (ClassNotFoundException e2)
          {
-            throw new RuntimeException("Cannot create array class from " + l.getName());
+            throw new XmlConfigurationException("Cannot create array class from " + l.getName(), getDocument(), getLineno());
          }
       }
       return true;

@@ -21,6 +21,7 @@ import org.jboss.seam.xml.fieldset.FieldValueSetter;
 import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
+import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class FieldXmlItem extends AbstractXmlItem
 {
@@ -30,9 +31,9 @@ public class FieldXmlItem extends AbstractXmlItem
    Field field;
    HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
 
-   public FieldXmlItem(XmlItem parent, Field c, String innerText)
+   public FieldXmlItem(XmlItem parent, Field c, String innerText, String document, int lineno)
    {
-      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null);
+      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, document, lineno);
       this.field = c;
       this.fieldSetter = getFieldValueSetter(c);
       if (innerText != null && innerText.length() > 0)
@@ -80,7 +81,7 @@ public class FieldXmlItem extends AbstractXmlItem
          {
             if (!valueEntries.isEmpty())
             {
-               throw new RuntimeException("Map fields cannot have <value> elements as children,only <entry> elements Field:" + field.getDeclaringClass().getName() + '.' + field.getName());
+               throw new XmlConfigurationException("Map fields cannot have <value> elements as children,only <entry> elements Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
             }
             if (!mapEntries.isEmpty())
             {
@@ -91,7 +92,7 @@ public class FieldXmlItem extends AbstractXmlItem
          {
             if (!mapEntries.isEmpty())
             {
-               throw new RuntimeException("Collection fields must be set using <value> not <entry> Field:" + field.getDeclaringClass().getName() + '.' + field.getName());
+               throw new XmlConfigurationException("Collection fields must be set using <value> not <entry> Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
             }
             if (!valueEntries.isEmpty())
             {
@@ -109,11 +110,11 @@ public class FieldXmlItem extends AbstractXmlItem
          {
             if (!mapEntries.isEmpty())
             {
-               throw new RuntimeException("Only Map fields can be set using <entry> Field:" + field.getDeclaringClass().getName() + '.' + field.getName());
+               throw new XmlConfigurationException("Only Map fields can be set using <entry> Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
             }
             if (valueEntries.size() != 1)
             {
-               throw new RuntimeException("Non collection fields can only have a single <value> element Field:" + field.getDeclaringClass().getName() + '.' + field.getName());
+               throw new XmlConfigurationException("Non collection fields can only have a single <value> element Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
             }
             fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, valueEntries.get(0).getInnerText());
          }

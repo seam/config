@@ -7,6 +7,8 @@ package org.jboss.seam.xml.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.XmlConfigurationException;
+
 public class EntryXmlItem extends AbstractXmlItem
 {
 
@@ -15,9 +17,9 @@ public class EntryXmlItem extends AbstractXmlItem
    XmlItem key;
    XmlItem value;
 
-   public EntryXmlItem(XmlItem parent)
+   public EntryXmlItem(XmlItem parent, String document, int lineno)
    {
-      super(XmlItemType.ENTRY, parent, null, null, null);
+      super(XmlItemType.ENTRY, parent, null, null, null, document, lineno);
       allowed.add(XmlItemType.VALUE);
       allowed.add(XmlItemType.KEY);
    }
@@ -32,7 +34,7 @@ public class EntryXmlItem extends AbstractXmlItem
    {
       if (children.size() != 2)
       {
-         throw new RuntimeException("<entry> tags must have two children, a <key> and a <value>");
+         throw new XmlConfigurationException("<entry> tags must have two children, a <key> and a <value>", getDocument(), getLineno());
       }
       for (XmlItem i : children)
       {
@@ -40,7 +42,7 @@ public class EntryXmlItem extends AbstractXmlItem
          {
             if (value != null)
             {
-               throw new RuntimeException("<entry> tags must have two children, a <key> and a <value>");
+               throw new XmlConfigurationException("<entry> tags must have two children, a <key> and a <value>", getDocument(), getLineno());
             }
             value = i;
          }
@@ -48,7 +50,7 @@ public class EntryXmlItem extends AbstractXmlItem
          {
             if (key != null)
             {
-               throw new RuntimeException("<entry> tags must have two children, a <key> and a <value>");
+               throw new XmlConfigurationException("<entry> tags must have two children, a <key> and a <value>", getDocument(), getLineno());
             }
             key = i;
          }

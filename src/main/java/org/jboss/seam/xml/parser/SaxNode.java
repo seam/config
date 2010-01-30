@@ -12,7 +12,7 @@ import java.util.Map;
 public class SaxNode
 {
 
-   SaxNode(String name, String uri, Map<String, String> attributes, SaxNode parent, String document, int lineNo)
+   public SaxNode(String name, String uri, Map<String, String> attributes, SaxNode parent, String document, int lineNo)
    {
       this.name = name;
       this.namespaceUri = uri;
@@ -33,12 +33,16 @@ public class SaxNode
 
    public String getInnerText()
    {
+      if (innerText != null && innerText.isEmpty())
+      {
+         return null;
+      }
       return innerText;
    }
 
    public void setInnerText(String innerText)
    {
-      this.innerText = innerText;
+      this.innerText = innerText.trim();
    }
 
    public String getNamespaceUri()

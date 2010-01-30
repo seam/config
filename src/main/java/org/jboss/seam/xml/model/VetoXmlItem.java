@@ -10,9 +10,9 @@ import java.util.Set;
 public class VetoXmlItem extends AbstractXmlItem
 {
 
-   public VetoXmlItem(XmlItem parent)
+   public VetoXmlItem(XmlItem parent, String document, int lineno)
    {
-      super(XmlItemType.VETO, parent, null, null, null);
+      super(XmlItemType.VETO, parent, null, null, null, document, lineno);
 
    }
 

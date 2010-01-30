@@ -45,4 +45,8 @@ public interface XmlItem
 
    public Set<XmlItemType> getAllowedItem();
 
+   int getLineno();
+
+   String getDocument();
+
 }

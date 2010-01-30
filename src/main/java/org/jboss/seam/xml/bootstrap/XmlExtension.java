@@ -32,7 +32,6 @@ import org.jboss.seam.xml.model.ModelBuilder;
 import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
-import org.jboss.seam.xml.util.XmlParseException;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 
 public class XmlExtension implements Extension
@@ -55,16 +54,13 @@ public class XmlExtension implements Extension
     */
    Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
 
-   List<XmlParseException> parseErrors = new ArrayList<XmlParseException>();
+   List<Exception> errors = new ArrayList<Exception>();
 
    /**
     * This is the entry point for the extension
     */
    public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event)
    {
-      boolean problems = false;
-      StringBuilder problemString = new StringBuilder();
-
       List<Class<? extends XmlDocumentProvider>> providers = getDocumentProviders();
       for (Class<? extends XmlDocumentProvider> cl : providers)
       {
@@ -77,14 +73,14 @@ public class XmlExtension implements Extension
             {
                ParserMain parser = new ParserMain();
                ModelBuilder builder = new ModelBuilder();
-               SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), parseErrors);
+               SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), errors);
                ;
                results.add(builder.build(parentNode));
             }
          }
          catch (Exception e)
          {
-            throw new RuntimeException(e);
+            errors.add(e);
          }
       }
 
@@ -92,11 +88,10 @@ public class XmlExtension implements Extension
       {
          if (!r.getProblems().isEmpty())
          {
-            problems = true;
+
             for (String i : r.getProblems())
             {
-               problemString.append(i);
-               problemString.append("\n");
+               errors.add(new RuntimeException(i));
             }
          }
          for (BeanResult<?> b : r.getFieldValues().keySet())
@@ -146,10 +141,6 @@ public class XmlExtension implements Extension
          veto.addAll(r.getVeto());
 
       }
-      if (problems)
-      {
-         throw new RuntimeException(problemString.toString());
-      }
    }
 
    public <T> void processAnotated(@Observes ProcessAnnotatedType<T> event)
@@ -176,7 +167,7 @@ public class XmlExtension implements Extension
 
    public void processAfterBeanDeployment(@Observes AfterBeanDiscovery event)
    {
-      for (XmlParseException t : parseErrors)
+      for (Exception t : errors)
       {
          event.addDefinitionError(t);
       }

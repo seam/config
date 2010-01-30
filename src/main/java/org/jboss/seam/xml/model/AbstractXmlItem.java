@@ -23,12 +23,16 @@ public abstract class AbstractXmlItem implements XmlItem
    final String innerText;
    final Map<String, String> attributes;
 
+   final int lineno;
+
+   final String document;
+
    public String getInnerText()
    {
       return innerText;
    }
 
-   public AbstractXmlItem(XmlItemType type, XmlItem parent, Class<?> javaClass, String innerText, Map<String, String> attributes)
+   public AbstractXmlItem(XmlItemType type, XmlItem parent, Class<?> javaClass, String innerText, Map<String, String> attributes, String document, int lineno)
    {
       this.type = type;
       this.parent = parent;
@@ -42,6 +46,18 @@ public abstract class AbstractXmlItem implements XmlItem
       {
          this.attributes = attributes;
       }
+      this.lineno = lineno;
+      this.document = document;
+   }
+
+   public int getLineno()
+   {
+      return lineno;
+   }
+
+   public String getDocument()
+   {
+      return document;
    }
 
    final List<XmlItem> children = new ArrayList<XmlItem>();

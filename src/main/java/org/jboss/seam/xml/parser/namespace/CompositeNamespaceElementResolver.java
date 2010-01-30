@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jboss.seam.xml.model.XmlItem;
+import org.jboss.seam.xml.parser.SaxNode;
 
 /**
  * Namespace resolver that searches through a list of packages
@@ -41,22 +41,22 @@ public class CompositeNamespaceElementResolver implements NamespaceElementResolv
       }
    }
 
-   public XmlItem getItemForNamespace(String item, XmlItem parent, String innerText, Map<String, String> attributes) throws InvalidElementException
+   public XmlItem getItemForNamespace(SaxNode node, XmlItem parent)
    {
-      if (notFound.contains(item))
+      if (notFound.contains(node.getName()))
       {
          return null;
       }
 
       for (PackageNamespaceElementResolver p : resolvers)
       {
-         XmlItem xi = p.getItemForNamespace(item, parent, innerText, attributes);
+         XmlItem xi = p.getItemForNamespace(node, parent);
          if (xi != null)
          {
             return xi;
          }
       }
-      notFound.add(item);
+      notFound.add(node.getName());
       return null;
    }
 

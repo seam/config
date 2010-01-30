@@ -1,6 +1,6 @@
 package org.jboss.seam.xml.util;
 
-public class XmlConfigurationException extends Exception
+public class XmlConfigurationException extends RuntimeException
 {
    int lineno;
    String document;

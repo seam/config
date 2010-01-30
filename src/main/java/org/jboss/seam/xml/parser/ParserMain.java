@@ -38,9 +38,9 @@ public class ParserMain extends DefaultHandler
 
    String document;
 
-   List<XmlParseException> errors;
+   List<Exception> errors;
 
-   public SaxNode parse(InputSource inputSource, String fileUrl, List<XmlParseException> errors)
+   public SaxNode parse(InputSource inputSource, String fileUrl, List<Exception> errors)
    {
       this.errors = errors;
       document = fileUrl;

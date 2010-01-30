@@ -21,14 +21,13 @@ import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.XmlResult;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.parser.SaxNode;
-import org.jboss.seam.xml.parser.namespace.InvalidElementException;
+import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
-import org.jboss.seam.xml.parser.namespace.PackageNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.RootNamespaceElementResolver;
+import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
-import org.w3c.dom.DOMException;
 
 /**
  * Parser for xml configration
@@ -54,11 +53,11 @@ public class ModelBuilder
 
       if (!root.getName().equals("Beans"))
       {
-         throw new RuntimeException("Wrong root element for XML config file, expected:<Beans> found:" + root.getName());
+         throw new XmlConfigurationException("Wrong root element for XML config file, expected:<Beans> found:" + root.getName(), root.getDocument(), root.getLineNo());
       }
       if (!ROOT_NAMESPACE.equals(root.getNamespaceUri()))
       {
-         throw new RuntimeException("Wrong root namespace for XML config file, expected:" + ROOT_NAMESPACE + " found:" + root.getNamespaceUri());
+         throw new XmlConfigurationException("Wrong root namespace for XML config file, expected:" + ROOT_NAMESPACE + " found:" + root.getNamespaceUri(), root.getDocument(), root.getLineNo());
       }
 
       resolvers.put(ROOT_NAMESPACE, new RootNamespaceElementResolver());
@@ -86,7 +85,7 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   private void addNodeToResult(XmlResult ret, XmlItem rb) throws InvalidElementException
+   private void addNodeToResult(XmlResult ret, XmlItem rb)
    {
 
       if (rb.getType() == XmlItemType.CLASS || rb.getType() == XmlItemType.ANNOTATION)
@@ -136,21 +135,15 @@ public class ModelBuilder
       }
    }
 
-   protected XmlItem resolveNode(SaxNode node, XmlItem parent) throws DOMException, InvalidElementException
+   protected XmlItem resolveNode(SaxNode node, XmlItem parent)
    {
       NamespaceElementResolver resolver = resolveNamepsace(node.getNamespaceUri());
 
-      Map<String, String> attributes = node.getAttributes();
-      String innerText = node.getInnerText().trim();
-      if (innerText.equals(""))
-      {
-         innerText = null;
-      }
-      XmlItem ret = resolver.getItemForNamespace(node.getName(), parent, innerText, attributes);
+      XmlItem ret = resolver.getItemForNamespace(node, parent);
 
       if (ret == null)
       {
-         throw new InvalidElementException("Could not resolve node " + node.getName() + " in namespace " + node.getNamespaceUri());
+         throw new XmlConfigurationException("Could not resolve node " + node.getName() + " in namespace " + node.getNamespaceUri(), node.getDocument(), node.getLineNo());
       }
       List<SaxNode> children = node.getChildren();
       for (SaxNode n : children)
@@ -173,7 +166,7 @@ public class ModelBuilder
          return resolvers.get(namespaceURI);
       }
       String ns = namespaceURI.replaceFirst("urn:java:", "");
-      PackageNamespaceElementResolver res = new PackageNamespaceElementResolver(ns);
+      CompositeNamespaceElementResolver res = new CompositeNamespaceElementResolver(ns.split(":"));
       resolvers.put(namespaceURI, res);
       return res;
    }
@@ -181,7 +174,7 @@ public class ModelBuilder
    /**
     * Determines the type of an element by examining its child nodes
     */
-   protected ResultType getItemType(XmlItem item) throws InvalidElementException
+   protected ResultType getItemType(XmlItem item)
    {
 
       ResultType ret = null;
@@ -193,7 +186,7 @@ public class ModelBuilder
             {
                if (ret != null)
                {
-                  throw new InvalidElementException("Element cannot be both an INTERCEPTOR_BINDING and a " + ret.toString());
+                  throw new XmlConfigurationException("Element cannot be both an INTERCEPTOR_BINDING and a " + ret.toString(), item.getDocument(), item.getLineno());
                }
                else
                {
@@ -204,7 +197,7 @@ public class ModelBuilder
             {
                if (ret != null)
                {
-                  throw new InvalidElementException("Element cannot be both an QUALIFIER and a " + ret.toString());
+                  throw new XmlConfigurationException("Element cannot be both an QUALIFIER and a " + ret.toString(), item.getDocument(), item.getLineno());
                }
                else
                {
@@ -215,7 +208,7 @@ public class ModelBuilder
             {
                if (ret != null)
                {
-                  throw new InvalidElementException("Element cannot be both an STEREOTYPE and a " + ret.toString());
+                  throw new XmlConfigurationException("Element cannot be both an STEREOTYPE and a " + ret.toString(), item.getDocument(), item.getLineno());
                }
                else
                {
@@ -227,7 +220,7 @@ public class ModelBuilder
          {
             if (ret != null)
             {
-               throw new InvalidElementException("Element cannot be both an VETO and a " + ret.toString());
+               throw new XmlConfigurationException("Element cannot be both an VETO and a " + ret.toString(), item.getDocument(), item.getLineno());
             }
             else
             {
@@ -244,7 +237,7 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   <T> BeanResult<T> buildAnnotatedType(XmlItem rb) throws InvalidElementException
+   <T> BeanResult<T> buildAnnotatedType(XmlItem rb)
    {
       BeanResult<T> result = new BeanResult<T>(rb.getJavaClass());
       NewAnnotatedTypeBuilder<T> type = result.getBuilder();
@@ -298,7 +291,7 @@ public class ModelBuilder
                      }
                      else
                      {
-                        throw new RuntimeException("Method parameters may only have annotations as children in " + item.getJavaClass().getName());
+                        throw new XmlConfigurationException("Method parameters may only have annotations as children in " + item.getJavaClass().getName(), rb.getDocument(), rb.getLineno());
                      }
                   }
                }
@@ -317,7 +310,7 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   void addSteriotypeToResult(XmlResult ret, XmlItem rb) throws InvalidElementException
+   void addSteriotypeToResult(XmlResult ret, XmlItem rb)
    {
 
       Annotation[] values = new Annotation[rb.getChildren().size()];
@@ -331,7 +324,7 @@ public class ModelBuilder
          }
          else
          {
-            throw new InvalidElementException("Setereotype " + rb.getJavaClass() + " has an item that does not represent an annotation in its XML configurations");
+            throw new XmlConfigurationException("Setereotype " + rb.getJavaClass() + " has an item that does not represent an annotation in its XML configurations", rb.getDocument(), rb.getLineno());
          }
          count++;
       }
@@ -340,7 +333,7 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   Annotation createAnnotation(XmlItem item) throws InvalidElementException
+   Annotation createAnnotation(XmlItem item)
    {
       Map<String, Object> typedVars = new HashMap<String, Object>();
       Class<?> anClass = item.getJavaClass();
@@ -354,7 +347,7 @@ public class ModelBuilder
          }
          catch (Exception e1)
          {
-            throw new InvalidElementException("Annotation " + item.getJavaClass().getName() + " does not have a member named " + mname + " ,error in XML");
+            throw new XmlConfigurationException("Annotation " + item.getJavaClass().getName() + " does not have a member named " + mname + " ,error in XML", item.getDocument(), item.getLineno());
          }
          Class<?> returnType = m.getReturnType();
          typedVars.put(mname, XmlObjectConverter.convert(returnType, e.getValue()));
@@ -370,7 +363,7 @@ public class ModelBuilder
       {
          if (!allowed.contains(item.getType()))
          {
-            throw new RuntimeException("Item " + item.getType() + " is not allowed to contain " + i.getType());
+            throw new XmlConfigurationException("Item " + item.getType() + " is not allowed to contain " + i.getType(), item.getDocument(), item.getLineno());
          }
          validateXmlItem(i);
       }

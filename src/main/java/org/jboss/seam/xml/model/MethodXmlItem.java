@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.XmlConfigurationException;
+
 public class MethodXmlItem extends AbstractXmlItem
 {
 
@@ -18,9 +20,9 @@ public class MethodXmlItem extends AbstractXmlItem
    Method method;
    HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
 
-   public MethodXmlItem(XmlItem parent, String methodName)
+   public MethodXmlItem(XmlItem parent, String methodName, String document, int lineno)
    {
-      super(XmlItemType.METHOD, parent, parent.getJavaClass(), null, null);
+      super(XmlItemType.METHOD, parent, parent.getJavaClass(), null, null, document, lineno);
       // methods are lazily resolved once we know the parameter types
       this.methodName = methodName;
       Method found = null;
@@ -83,11 +85,11 @@ public class MethodXmlItem extends AbstractXmlItem
       }
       catch (SecurityException e)
       {
-         throw new RuntimeException("Security Exception resolving method " + methodName + " on class " + javaClass.getName());
+         throw new XmlConfigurationException("Security Exception resolving method " + methodName + " on class " + javaClass.getName(), getDocument(), getLineno());
       }
       catch (NoSuchMethodException e)
       {
-         throw new RuntimeException("NoSuchMethodException resolving method " + methodName + " on class " + javaClass.getName());
+         throw new XmlConfigurationException("NoSuchMethodException resolving method " + methodName + " on class " + javaClass.getName(), getDocument(), getLineno());
       }
    }
 

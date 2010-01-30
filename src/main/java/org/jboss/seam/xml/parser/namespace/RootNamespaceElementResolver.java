@@ -4,8 +4,6 @@
  */
 package org.jboss.seam.xml.parser.namespace;
 
-import java.util.Map;
-
 import org.jboss.seam.xml.model.ArrayXmlItem;
 import org.jboss.seam.xml.model.DependsXmlItem;
 import org.jboss.seam.xml.model.EntryXmlItem;
@@ -13,6 +11,7 @@ import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.VetoXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
+import org.jboss.seam.xml.parser.SaxNode;
 
 public class RootNamespaceElementResolver implements NamespaceElementResolver
 {
@@ -25,40 +24,41 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       delegate = new CompositeNamespaceElementResolver(namspaces);
    }
 
-   public XmlItem getItemForNamespace(String item, XmlItem parent, String innerText, Map<String, String> attributes) throws InvalidElementException
+   public XmlItem getItemForNamespace(SaxNode node, XmlItem parent)
    {
-      XmlItem ret = getRootItem(item, parent, innerText);
+      XmlItem ret = getRootItem(node, parent);
       if (ret != null)
          return ret;
-      return delegate.getItemForNamespace(item, parent, innerText, attributes);
+      return delegate.getItemForNamespace(node, parent);
 
    }
 
-   XmlItem getRootItem(String item, XmlItem parent, String innerText)
+   XmlItem getRootItem(SaxNode node, XmlItem parent)
    {
+      String item = node.getName();
       if (item.equals("value") || item.equals("v"))
       {
-         return new ValueXmlItem(parent, innerText);
+         return new ValueXmlItem(parent, node.getInnerText(), node.getDocument(), node.getLineNo());
       }
       else if (item.equals("key") || item.equals("k"))
       {
-         return new KeyXmlItem(parent, innerText);
+         return new KeyXmlItem(parent, node.getInnerText(), node.getDocument(), node.getLineNo());
       }
       else if (item.equals("entry") || item.equals("e"))
       {
-         return new EntryXmlItem(parent);
+         return new EntryXmlItem(parent, node.getDocument(), node.getLineNo());
       }
       else if (item.equals("array"))
       {
-         return new ArrayXmlItem(parent);
+         return new ArrayXmlItem(parent, node.getDocument(), node.getLineNo());
       }
       else if (item.equals("veto"))
       {
-         return new VetoXmlItem(parent);
+         return new VetoXmlItem(parent, node.getDocument(), node.getLineNo());
       }
       else if (item.equals("depends"))
       {
-         return new DependsXmlItem(parent, innerText);
+         return new DependsXmlItem(parent, node.getInnerText(), node.getDocument(), node.getLineNo());
       }
       return null;
    }

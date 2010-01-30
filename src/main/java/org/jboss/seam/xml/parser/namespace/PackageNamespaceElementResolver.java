@@ -13,6 +13,7 @@ import org.jboss.seam.xml.model.AnnotationXmlItem;
 import org.jboss.seam.xml.model.ClassXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
+import org.jboss.seam.xml.parser.SaxNode;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
@@ -25,8 +26,9 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       this.pack = pack + ".";
    }
 
-   public XmlItem getItemForNamespace(String name, XmlItem parent, String innerText, Map<String, String> attributes) throws InvalidElementException
+   public XmlItem getItemForNamespace(SaxNode node, XmlItem parent)
    {
+      String name = node.getName();
       if (notFound.contains(name))
       {
          return null;
@@ -46,11 +48,11 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
          }
          if (c.isAnnotation())
          {
-            return new AnnotationXmlItem(parent, c, innerText, attributes);
+            return new AnnotationXmlItem(parent, c, node.getInnerText(), node.getAttributes(), node.getDocument(), node.getLineNo());
          }
          else
          {
-            return new ClassXmlItem(parent, c);
+            return new ClassXmlItem(parent, c, node.getDocument(), node.getLineNo());
          }
 
       }
@@ -68,7 +70,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
          // if the item can be a method of a FIELD
          if (parent.getAllowedItem().contains(XmlItemType.METHOD) || parent.getAllowedItem().contains(XmlItemType.FIELD))
          {
-            return NamespaceUtils.resolveMethodOrField(name, parent, innerText);
+            return NamespaceUtils.resolveMethodOrField(name, parent, node.getInnerText(), node.getDocument(), node.getLineNo());
          }
          else
          {

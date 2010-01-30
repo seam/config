@@ -22,9 +22,9 @@ public class ClassXmlItem extends AbstractXmlItem
     * @param innerText
     * @param attributes
     */
-   public ClassXmlItem(XmlItem parent, Class<?> c)
+   public ClassXmlItem(XmlItem parent, Class<?> c, String document, int lineno)
    {
-      super(XmlItemType.CLASS, parent, c, null, null);
+      super(XmlItemType.CLASS, parent, c, null, null, document, lineno);
       if (innerText != null)
       {
          if (!innerText.trim().equals(""))

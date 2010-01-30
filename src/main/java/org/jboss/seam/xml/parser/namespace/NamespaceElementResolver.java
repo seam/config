@@ -4,13 +4,12 @@
  */
 package org.jboss.seam.xml.parser.namespace;
 
-import java.util.Map;
-
 import org.jboss.seam.xml.model.XmlItem;
+import org.jboss.seam.xml.parser.SaxNode;
 
 public interface NamespaceElementResolver
 {
 
-   XmlItem getItemForNamespace(String item, XmlItem parent, String innerText, Map<String, String> attributes) throws InvalidElementException;
+   XmlItem getItemForNamespace(SaxNode node, XmlItem parent);
 
 }

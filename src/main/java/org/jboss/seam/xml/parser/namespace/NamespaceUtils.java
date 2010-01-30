@@ -10,10 +10,11 @@ import java.lang.reflect.Method;
 import org.jboss.seam.xml.model.FieldXmlItem;
 import org.jboss.seam.xml.model.MethodXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
+import org.jboss.seam.xml.util.XmlConfigurationException;
 
 class NamespaceUtils
 {
-   static XmlItem resolveMethodOrField(String name, XmlItem parent, String innerText) throws InvalidElementException
+   static XmlItem resolveMethodOrField(String name, XmlItem parent, String innerText, String document, int lineno)
    {
       Class<?> p = parent.getJavaClass();
       Field f = null;
@@ -29,15 +30,15 @@ class NamespaceUtils
       }
       if (methodFound && f != null)
       {
-         throw new InvalidElementException(parent.getJavaClass().getName() + " has both a method and a field named " + name + " and so cannot be configured via XML");
+         throw new XmlConfigurationException(parent.getJavaClass().getName() + " has both a method and a field named " + name + " and so cannot be configured via XML", document, lineno);
       }
       if (methodFound)
       {
-         return new MethodXmlItem(parent, name);
+         return new MethodXmlItem(parent, name, document, lineno);
       }
       else if (f != null)
       {
-         return new FieldXmlItem(parent, f, innerText);
+         return new FieldXmlItem(parent, f, innerText, document, lineno);
       }
       return null;
    }
