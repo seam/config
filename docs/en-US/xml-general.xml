@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<chapter id="remoting">
+  <title>Seam XML General</title>
+  
+  <para>Seam provides a method for configuring JSR-299 beans using XML. By default the XML configuration defines new beans, 
+        it does not change existing beans. 
+  </para>
+  
+ <section>
+    <title>Configuration</title>
+    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file in your delpoyment. </para>
+ </section>
+ 
+ <section>
+    <title>Getting Started</title>
+    <para>By default XML files are discovered from the classpath. The extension looks for an XML file named <literal>seam-bean.xml</literal> in the following locations: </para>
+    <itemizedlist>
+    <listitem><para>The root of an archive</para></listitem>
+    <listitem><para><literal>WEB-INF</literal></para></listitem>
+    <listitem><para><literal>META-INF</literal></para></listitem>
+    </itemizedlist>
+    
+    <para>Lets start with a simple example</para>
+    <programlisting>
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<Beans xmlns="urn:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
+       
+    <test:ProducerQualifier>
+        <Qualifier/>
+    </test:ProducerQualifier>
+    
+    <test:ProducerBean>
+        <test:value>
+            <Produces/>
+            <test:ProducerQualifier/>
+            <value>hello world</value>
+        </test:value>
+    </test:ProducerBean>
+
+   <test:RecieverBean>
+        <test:value>
+            <test:ProducerQualifier/>
+            <Inject/>
+        </test:value>
+   </test:RecieverBean>
+   
+</Beans>
+    ]]>
+    </programlisting>
+    <para>From the top:</para>
+    
+    
+    <para>The root element of the file has to be <literal>&lt;Beans/&gt;</literal>, and the root namespace should be <literal>urn:seam:core</literal>. 
+    You will also notice that there is a second namespace defined, <literal>urn:java:org.jboss.seam.xml.test.injection</literal>, this namespace is used
+     to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>.</para>
+    <programlisting>
+        <![CDATA[
+<test:ProducerQualifier>
+    <Qualifier/>
+</test:ProducerQualifier>
+        ]]>
+    </programlisting>
+    
+    <para>The first entry in the file defines a new qualifier. <literal>ProducerQualifier</literal> is an annotation in the package <literal>org.jboss.seam.xml.test.injection</literal>.</para>
+    
+    <programlisting>
+        <![CDATA[
+<test:ProducerBean>
+    <test:value>
+        <Produces/>
+        <test:ProducerQualifier/>
+        <value>hello world</value>
+    </test:value>
+</test:ProducerBean>
+    ]]>
+    </programlisting>
+    
+    <para>The next entry in the file is a bean declaration. The bean class is <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>. 
+    It is important to note that this declaration does not change the existing declaration of ProducerBean, instead it installs a new bean. In 
+    this instance there will be two ProducerBean CDI beans.</para>
+
+    <para>This bean has a field called 'value', this field is configured to be a producer field using XML (it is also possible to configure producer
+     methods, more on this later). The <literal>&lt;test:value/&gt;</literal> declaration has several child elements. The <literal>&lt;Produces/&gt;</literal>
+     element tells the container that this is a producer field. <literal>&lt;test:ProducerQualifier/&gt;</literal> element defines a qualifier for the producer 
+     field. The <literal>&lt;value&gt;</literal> element defines an initial value for the field.</para>
+
+    <para>Child elements of fields, methods and classes that resolve to Annotation types are considered to be annotations on the corresponding element, 
+    so the corresponding java declaration for the XML above would be:</para>
+    
+    <programlisting>
+        <![CDATA[
+public class ProducerBean
+{
+   @Produces
+   @ProducerQualifier
+   public String value = "hello world";
+}
+        ]]>
+    </programlisting>
+    <programlisting>
+        <![CDATA[
+<test:RecieverBean>
+    <test:value>
+         <test:ProducerQualifier/>
+         <Inject/>
+    </test:value>
+</test:RecieverBean>
+       ]]>
+     </programlisting>
+     
+    <para>The XML above declares a new Bean that injects the value that was produced above. In this case the <literal>@Inject</literal> annotation is applied instead of
+     <literal>@Produces</literal> and no initial value is set.</para>
+    </section>
+    
+    <section>
+        <title>The root namespace</title>
+        <para>The root namesapce can contain the following elements:</para>
+        
+        <itemizedlist>
+            <listitem><para><literal>Beans</literal></para></listitem>
+            <listitem><para><literal>veto</literal></para></listitem>
+            <listitem><para><literal>value</literal></para></listitem>
+            <listitem><para><literal>key</literal></para></listitem>
+            <listitem><para><literal>entry</literal></para></listitem>
+            <listitem><para><literal>array</literal></para></listitem>
+            <listitem><para><literal>e</literal> (alias for entry)</para></listitem>
+            <listitem><para><literal>v</literal> (alias for value)</para></listitem>
+            <listitem><para><literal>k</literal> (alias for key)</para></listitem>
+         </itemizedlist>
+         
+         <para>as well as classes from the following packages:</para>    
+         
+        <itemizedlist>
+            <listitem><para><literal>java.lang</literal></para></listitem>
+            <listitem><para><literal>java.util</literal></para></listitem>
+            <listitem><para><literal>javax.annotation</literal></para></listitem>
+            <listitem><para><literal>javax.inject</literal></para></listitem>
+            <listitem><para><literal>javax.enterprise.inject</literal></para></listitem>
+            <listitem><para><literal>javax.enterprise.context</literal></para></listitem>
+            <listitem><para><literal>javax.enterprise.event</literal></para></listitem>
+            <listitem><para><literal>javax.decorator</literal></para></listitem>
+            <listitem><para><literal>javax.interceptor</literal></para></listitem>
+            <listitem><para><literal>javax.persistence</literal></para></listitem>
+            <listitem><para><literal>javax.xml.ws</literal></para></listitem>
+            <listitem><para><literal>javax.jms</literal></para></listitem>
+            <listitem><para><literal>javax.sql</literal></para></listitem>
+        </itemizedlist>
+        
+        <para>So the <literal>&lt;Produces&gt;</literal> element above actually resolved to <literal>java.enterprise.inject.Produces</literal> 
+        and the <literal>&lt;Inject&gt;</literal> element resolved to <literal>javax.inject.Inject</literal>.</para>
+        
+    </section>
+    
+    <section>
+        <title>Replacing existing bean declarations</title>
+        <para>It is possible to prevent an existing bean being installed using the <literal>&lt;veto/&gt;</literal> tag:</para>
+        <programlisting>
+            <![CDATA[
+<veto>
+    <test:ProducerBean/>
+    <test:RecieverBean/>
+</veto>
+              ]]>
+        </programlisting>
+        <para>The code above would prevent the <literal>ProducerBean</literal> and <literal>RecieverBean</literal> that was discovered in the bean discovery phase from being installed.
+         Using the veto tag it is possible to replace beans instead of just installing new ones. </para>
+    </section>
+    
+    <section>
+        <title>Initial Field Values</title>
+        <para>Inital field values can be set in two different ways, in addition to the <literal>&lt;value&gt;</literal> element shown above it can be set as follows:</para>
+        <programlisting>
+            <![CDATA[
+<test:someField>hello world</test:someField>
+             ]]>
+        </programlisting>
+
+        <para>Using this method prevents you from adding any annotations to the field.</para>
+
+        <para>It is possible to set <literal>Map</literal>,<literal>Array</literal> and <literal>Collection</literal> field values. Some examples:</para>
+        <programlisting>
+            <![CDATA[
+<test:ArrayFieldValue>
+    <test:iarray>
+        <value>1</value>
+        <value>2</value>
+    </test:iarray>
+    <test:carray>
+        <value>java.lang.Integer</value>
+        <value>java.lang.Long</value>
+    </test:carray>
+    <test:sarray>
+        <value>hello</value>
+        <value>world</value>
+    </test:sarray>
+</test:ArrayFieldValue>
+
+<test:MapFieldValue>
+    <test:map1>
+        <entry><key>1</key><value>hello</value></entry>
+        <entry><key>2</key><value>world</value></entry>
+    </test:map1>
+    <test:map2>
+        <e><k>1</k><v>java.lang.Integer</v></e>
+        <e><k>2</k><v>java.lang.Long</v></e>
+    </test:map2>
+</test:MapFieldValue>
+          ]]>
+          </programlisting>
+        <para>Type conversion is done automatically for all primitives and primitive wrappers, <literal>Date</literal>, 
+        <literal>Calendar</literal>,<literal>Enum</literal> and <literal>Class</literal> fields. 
+        In this instance <literal>ArrayFieldValue.carray</literal> is actually an array of classes, not an array of Strings.</para>
+
+    </section>
+    <section>
+        <title>Configuring methods</title>
+    
+        <para>It is also possible to configure methods in a similar way to configuring fields:</para>
+        <programlisting>
+            <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<Beans xmlns="urn:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.method">
+    <test:MethodBean>
+        <test:method>
+            <Produces/>
+        </test:method>
+        <test:method>
+            <Produces/>
+            <test:Qualifier1/>
+            <test:MethodValueBean>
+                <test:Qualifier2/>
+            </test:MethodValueBean>
+        </test:method>
+    </test:MethodBean>
+</Beans>
+
+public class MethodBean
+{
+
+   public int method()
+   {
+      return 1;
+   }
+
+   public int method(MethodValueBean bean)
+   {
+      return bean.value + 1;
+   }
+
+}
+
+            ]]>
+        </programlisting>
+
+        <para>In this instance <literal>MethodBean</literal> has two methods, both of them rather imaginatively named <literal>method</literal>. 
+        The first <literal>&lt;test:method&gt;</literal> entry in the XML file configures the method that takes no arguments. 
+        The <literal>&lt;Produces&gt;</literal> element makes it into a producer method. The next entry in the file configures 
+        the method that takes a <literal>MethodValueBean</literal> as a parameter.When configuring methods non-annotation classes are 
+        considered to represent method paramters. If these parameters have annotation children they are taken to be annotations 
+        on the parameter.</para> 
+        
+        <para>In this instance the corresponding java declaration would be:</para>
+        <programlisting>
+            <![CDATA[
+@Produces
+@Qualifier1
+public int method(@Qualifier2 MethodValueBean param) {//method body}
+           ]]>
+         </programlisting>
+         <para>Array parameters can be represented using the <literal>&lt;array&gt;</literal> element, with a child element to 
+         represent the type of the array. E.g.</para>
+         <programlisting>
+int method(MethodValueBean[] param);
+         </programlisting>        
+        <para>could be configured via xml using the following:</para>
+        <programlisting>
+            <![CDATA[
+<test:method>
+    <array>
+      <test:MethodValueBean/>
+    </array>
+</test:method>
+        ]]>
+        </programlisting>
+    </section>
+    
+    <section>
+        <title>Annotation Members</title>
+        <para>It is also possible to set the value of annotation members by. For example:</para>
+        <programlisting>
+            <![CDATA[
+public @interface OtherQualifier
+{
+   String value1();
+
+   int value2();
+
+   QualifierEnum value();
+}
+
+
+<test:QualifiedBean1>
+        <test:OtherQualifier value1="AA" value2="1">A</test:OtherQualifier>
+</test:QualifiedBean1>
+    
+<test:QualifiedBean2>
+        <test:OtherQualifier value1="BB" value2="2" value="B" />
+</test:QualifiedBean2>
+]]>
+        </programlisting>
+        <para>The value member can be set using the inner text of the node, as seen in the first example.</para>
+    </section>
+    
+    <section>
+        <title>More Information</title>
+        <para>For further information look at the units tests in the seam-xml distribution, also the JSR-299 
+        public review draft section on XML Configuration was the base for this extension, 
+        so it may also be worthwhile reading.</para>
+    </section>
+    
+</chapter>
