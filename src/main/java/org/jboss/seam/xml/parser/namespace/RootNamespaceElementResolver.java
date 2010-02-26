@@ -49,13 +49,13 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       }
       else if (item.equals("array"))
       {
-         return new ArrayXmlItem(parent, node.getDocument(), node.getLineNo());
+         return new ArrayXmlItem(parent, node.getAttributes(), node.getDocument(), node.getLineNo());
       }
       else if (item.equals("veto"))
       {
          return new VetoXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-     
+
       return null;
    }
 

@@ -4,144 +4,61 @@
  */
 package org.jboss.seam.xml.model;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
-public class ArrayXmlItem implements XmlItem
+public class ArrayXmlItem extends ParameterXmlItem
 {
 
-   XmlItem child = null, parent;
+   Class javaClass = null;
 
-   Class<?> javaClass;
+   int dimensions = 1;
 
-   final String document;
-
-   final int lineno;
-
-   public ArrayXmlItem(XmlItem parent, String document, int lineno)
+   public ArrayXmlItem(XmlItem parent, Map<String, String> attributes, String document, int lineno)
    {
-      allowed.add(XmlItemType.CLASS);
-      this.parent = parent;
-      this.document = document;
-      this.lineno = lineno;
-   }
-
-   public String getDocument()
-   {
-      return document;
-   }
-
-   public int getLineno()
-   {
-      return lineno;
-   }
-
-   Set<XmlItemType> allowed = new HashSet<XmlItemType>();
-
-   public Set<XmlItemType> getAllowedItem()
-   {
-      return allowed;
-   }
-
-   public void addChild(XmlItem xmlItem)
-   {
-      if (child != null)
+      super(parent, null, document, lineno);
+      if (attributes.containsKey("dimensions"))
       {
-         throw new XmlConfigurationException("Array elements can only have one child", getDocument(), getLineno());
+         try
+         {
+            dimensions = Integer.parseInt(attributes.get("dimensions"));
+         }
+         catch (NumberFormatException e)
+         {
+            throw new XmlConfigurationException("dimensions attribute on <array> must be an integer", document, lineno);
+         }
       }
-      child = xmlItem;
-   }
-
-   @SuppressWarnings("unchecked")
-   public Map<String, String> getAttributes()
-   {
-      return Collections.EMPTY_MAP;
-   }
-
-   public List<XmlItem> getChildren()
-   {
-      return Collections.singletonList(child);
-   }
-
-   public Field getField()
-   {
-      return null;
-   }
-
-   public FieldValueObject getFieldValue()
-   {
-      return null;
-   }
-
-   public String getInnerText()
-   {
-      return null;
-   }
-
-   public Class getJavaClass()
-   {
-      return javaClass;
-   }
-
-   public Method getMethod()
-   {
-      return null;
-   }
-
-   public XmlItem getParent()
-   {
-      return parent;
-   }
-
-   public XmlItemType getType()
-   {
-      return XmlItemType.CLASS;
    }
 
    public boolean resolveChildren()
    {
-      if (child == null)
+      List<ClassXmlItem> classXmlItems = getChildrenOfType(ClassXmlItem.class);
+      if (classXmlItems.isEmpty())
       {
          throw new XmlConfigurationException("<array>  element must have a child specifying the array type", getDocument(), getLineno());
       }
-      Class<?> l = child.getJavaClass();
-      try
+      else if (classXmlItems.size() != 1)
       {
-         javaClass = getClass().getClassLoader().loadClass("[L" + l.getName() + ";");
+         throw new XmlConfigurationException("<array>  element must have a single child specifying the array type", getDocument(), getLineno());
       }
-      catch (ClassNotFoundException e)
+      int[] dims = new int[dimensions];
+      for (int i = 0; i < dimensions; ++i)
       {
-         try
-         {
-            javaClass = Thread.currentThread().getContextClassLoader().loadClass("[L" + l.getName() + ";");
-         }
-         catch (ClassNotFoundException e2)
-         {
-            throw new XmlConfigurationException("Cannot create array class from " + l.getName(), getDocument(), getLineno());
-         }
+         dims[i] = 0;
       }
+      Class<?> l = classXmlItems.get(0).getJavaClass();
+      javaClass = Array.newInstance(l, dims).getClass();
+
       return true;
    }
-   public <T> List<T> getChildrenOfType(Class<T> type)
+
+   @Override
+   public Class<?> getJavaClass()
    {
-      List<T> ret = new ArrayList<T>();
-      for(XmlItem i : getChildren())
-      {
-         if(type.isAssignableFrom(i.getClass()))
-         {
-            ret.add((T)i);
-         }
-      }
-      return ret;
+      return javaClass;
    }
-   
+
 }

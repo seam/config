@@ -8,4 +8,6 @@ public class MethodTarget
 {
 
    public int value1, value2;
+
+   public long longValue;
 }

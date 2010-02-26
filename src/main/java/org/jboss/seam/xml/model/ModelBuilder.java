@@ -30,7 +30,7 @@ import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 
 /**
- * Parser for xml configration
+ * Builds an XML result from sax nodes
  * 
  * @author stuart
  * 
@@ -71,6 +71,7 @@ public class ModelBuilder
             if (node.getNamespaceUri() != null)
             {
                XmlItem rb = resolveNode(node, null);
+               // validateXmlItem(rb);
                addNodeToResult(ret, rb);
             }
          }
@@ -174,56 +175,52 @@ public class ModelBuilder
    {
 
       ResultType ret = null;
-      for (XmlItem it : item.getChildren())
+      for (AnnotationXmlItem it : item.getChildrenOfType(AnnotationXmlItem.class))
       {
-         if (it.getType() == XmlItemType.ANNOTATION)
-         {
-            if (it.getJavaClass() == InterceptorBinding.class)
-            {
-               if (ret != null)
-               {
-                  throw new XmlConfigurationException("Element cannot be both an INTERCEPTOR_BINDING and a " + ret.toString(), item.getDocument(), item.getLineno());
-               }
-               else
-               {
-                  ret = ResultType.INTERCEPTOR_BINDING;
-               }
-            }
-            else if (it.getJavaClass() == Qualifier.class)
-            {
-               if (ret != null)
-               {
-                  throw new XmlConfigurationException("Element cannot be both an QUALIFIER and a " + ret.toString(), item.getDocument(), item.getLineno());
-               }
-               else
-               {
-                  ret = ResultType.QUALIFIER;
-               }
-            }
-            else if (it.getJavaClass() == Stereotype.class)
-            {
-               if (ret != null)
-               {
-                  throw new XmlConfigurationException("Element cannot be both an STEREOTYPE and a " + ret.toString(), item.getDocument(), item.getLineno());
-               }
-               else
-               {
-                  ret = ResultType.STEREOTYPE;
-               }
-            }
-         }
-         else if (it.getType() == XmlItemType.VETO)
+         if (it.getJavaClass() == InterceptorBinding.class)
          {
             if (ret != null)
             {
-               throw new XmlConfigurationException("Element cannot be both an VETO and a " + ret.toString(), item.getDocument(), item.getLineno());
+               throw new XmlConfigurationException("Element cannot be both an INTERCEPTOR_BINDING and a " + ret.toString(), item.getDocument(), item.getLineno());
             }
             else
             {
-               ret = ResultType.VETO;
+               ret = ResultType.INTERCEPTOR_BINDING;
             }
          }
-
+         else if (it.getJavaClass() == Qualifier.class)
+         {
+            if (ret != null)
+            {
+               throw new XmlConfigurationException("Element cannot be both an QUALIFIER and a " + ret.toString(), item.getDocument(), item.getLineno());
+            }
+            else
+            {
+               ret = ResultType.QUALIFIER;
+            }
+         }
+         else if (it.getJavaClass() == Stereotype.class)
+         {
+            if (ret != null)
+            {
+               throw new XmlConfigurationException("Element cannot be both an STEREOTYPE and a " + ret.toString(), item.getDocument(), item.getLineno());
+            }
+            else
+            {
+               ret = ResultType.STEREOTYPE;
+            }
+         }
+      }
+      for (VetoXmlItem it : item.getChildrenOfType(VetoXmlItem.class))
+      {
+         if (ret != null)
+         {
+            throw new XmlConfigurationException("Element cannot be both an VETO and a " + ret.toString(), item.getDocument(), item.getLineno());
+         }
+         else
+         {
+            ret = ResultType.VETO;
+         }
       }
       if (ret == null)
       {

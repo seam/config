@@ -23,6 +23,7 @@ public class MethodTest extends AbstractXMLTest
       assert x != null;
       assert x.value1 == 1;
       assert x.value2 == 11;
+      assert x.longValue == 10;
 
    }
 

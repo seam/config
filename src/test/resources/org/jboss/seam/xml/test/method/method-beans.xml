@@ -26,11 +26,22 @@
                 <test:Qualifier2/>
             </test:MethodValueBean>
         </test:method>
+        
+        <test:method>
+            <Produces/>
+            <test:Qualifier1/>
+            <array dimensions="2">
+                <test:Qualifier2/>
+                <test:MethodValueBean/>
+            </array>
+        </test:method>
+        
     </test:MethodBean>
  
     <test:MethodTarget>
         <test:value1><Inject/></test:value1>
         <test:value2><Inject/><test:Qualifier1/></test:value2>
+        <test:longValue><Inject/><test:Qualifier1/></test:longValue>
     </test:MethodTarget>
     
     <test:MethodValueBean>

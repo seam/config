@@ -17,4 +17,9 @@ public class MethodBean
       return bean.value + 1;
    }
 
+   public long method(MethodValueBean[][] beans)
+   {
+      return beans.length;
+   }
+
 }
