@@ -5,7 +5,6 @@
 package org.jboss.seam.xml.parser.namespace;
 
 import org.jboss.seam.xml.model.ArrayXmlItem;
-import org.jboss.seam.xml.model.DependsXmlItem;
 import org.jboss.seam.xml.model.EntryXmlItem;
 import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
@@ -56,10 +55,7 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       {
          return new VetoXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("depends"))
-      {
-         return new DependsXmlItem(parent, node.getInnerText(), node.getDocument(), node.getLineNo());
-      }
+     
       return null;
    }
 

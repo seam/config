@@ -51,7 +51,13 @@ public abstract class AbstractXMLTest
       }
       else if (beans.size() != 1)
       {
-         throw new RuntimeException("More than one bean found with class: " + clazz + " and bindings " + bindings.toString());
+         StringBuilder bs = new StringBuilder("[");
+         for(Annotation a : bindings)
+         {
+            bs.append(a.toString() + ",");
+         }
+         bs.append("]");
+         throw new RuntimeException("More than one bean found with class: " + clazz + " and bindings " + bs);
       }
       Bean bean = beans.iterator().next();
       return (T) bean.create(manager.createCreationalContext(bean));

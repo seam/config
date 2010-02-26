@@ -7,6 +7,8 @@ package org.jboss.seam.xml.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.seam.xml.model.FieldXmlItem;
+import org.jboss.seam.xml.model.MethodXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
@@ -48,12 +50,12 @@ public class NamespaceResolverTest
 
       method.resolveChildren();
 
-      assert method.getMethod() != null : "Could not resolve method";
-      assert method.getMethod().getParameterTypes().length == 0 : "Wrong method was resolved";
+      assert ((MethodXmlItem) method).getMethod() != null : "Could not resolve method";
+      assert ((MethodXmlItem) method).getMethod().getParameterTypes().length == 0 : "Wrong method was resolved";
 
       XmlItem field = resolver.getItemForNamespace(new SaxNode("field1", null, null, null, null, 0), item);
-      assert field.getType() == XmlItemType.FIELD : "Element of wrong type returned";
-      assert field.getField() != null : "field was not set";
+      assert ((FieldXmlItem) field).getType() == XmlItemType.FIELD : "Element of wrong type returned";
+      assert ((FieldXmlItem) field).getField() != null : "field was not set";
 
    }
 

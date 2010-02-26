@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.jboss.seam.xml.model.AnnotationXmlItem;
 import org.jboss.seam.xml.model.ClassXmlItem;
+import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
@@ -52,7 +53,15 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
          }
          else
          {
-            return new ClassXmlItem(parent, c, node.getDocument(), node.getLineNo());
+            //if it is a method or constructor parameter
+            if(parent != null && (parent.getType() == XmlItemType.METHOD || parent.getType() == XmlItemType.CLASS))
+            {
+               return new ParameterXmlItem(parent, c, node.getDocument(), node.getLineNo());
+            }
+            else
+            {
+               return new ClassXmlItem(parent, c, node.getDocument(), node.getLineNo());
+            }
          }
 
       }

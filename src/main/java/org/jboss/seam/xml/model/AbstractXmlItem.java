@@ -4,15 +4,11 @@
  */
 package org.jboss.seam.xml.model;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.jboss.seam.xml.fieldset.FieldValueObject;
 
 public abstract class AbstractXmlItem implements XmlItem
 {
@@ -82,16 +78,6 @@ public abstract class AbstractXmlItem implements XmlItem
       return type;
    }
 
-   public Field getField()
-   {
-      return null;
-   }
-
-   public Method getMethod()
-   {
-      return null;
-   }
-
    public Class<?> getJavaClass()
    {
       return javaClass;
@@ -107,8 +93,16 @@ public abstract class AbstractXmlItem implements XmlItem
       return attributes;
    }
 
-   public FieldValueObject getFieldValue()
+   public <T> List<T> getChildrenOfType(Class<T> type)
    {
-      return null;
+      List<T> ret = new ArrayList<T>();
+      for (XmlItem i : children)
+      {
+         if (type.isAssignableFrom(i.getClass()))
+         {
+            ret.add((T) i);
+         }
+      }
+      return ret;
    }
 }

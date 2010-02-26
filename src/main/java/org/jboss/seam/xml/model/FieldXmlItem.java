@@ -49,7 +49,6 @@ public class FieldXmlItem extends AbstractXmlItem
       return field;
    }
 
-   @Override
    public FieldValueObject getFieldValue()
    {
       return fieldValue;

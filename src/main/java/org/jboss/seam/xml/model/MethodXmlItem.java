@@ -44,7 +44,7 @@ public class MethodXmlItem extends AbstractXmlItem
       }
       method = found;
       allowed.add(XmlItemType.ANNOTATION);
-      allowed.add(XmlItemType.CLASS);
+      allowed.add(XmlItemType.PARAMETER);
    }
 
    /**
@@ -66,7 +66,7 @@ public class MethodXmlItem extends AbstractXmlItem
       List<Class<?>> rtList = new ArrayList<Class<?>>();
       for (XmlItem c : children)
       {
-         if (c.getType() == XmlItemType.CLASS)
+         if (c.getType() == XmlItemType.PARAMETER)
          {
             Class<?> cl = c.getJavaClass();
             rtList.add(cl);

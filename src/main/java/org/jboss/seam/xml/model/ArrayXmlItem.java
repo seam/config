@@ -6,6 +6,7 @@ package org.jboss.seam.xml.model;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -130,5 +131,17 @@ public class ArrayXmlItem implements XmlItem
       }
       return true;
    }
-
+   public <T> List<T> getChildrenOfType(Class<T> type)
+   {
+      List<T> ret = new ArrayList<T>();
+      for(XmlItem i : getChildren())
+      {
+         if(type.isAssignableFrom(i.getClass()))
+         {
+            ret.add((T)i);
+         }
+      }
+      return ret;
+   }
+   
 }

@@ -96,22 +96,18 @@ public class ModelBuilder
             BeanResult<?> tp = buildAnnotatedType(rb);
             ret.getBeans().add(tp);
             List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
-            for (XmlItem xi : rb.getChildren())
+            for (FieldXmlItem xi : rb.getChildrenOfType(FieldXmlItem.class))
             {
-               if (xi.getType() == XmlItemType.FIELD)
+               FieldValueObject f = xi.getFieldValue();
+               if (f != null)
                {
-                  FieldValueObject f = xi.getFieldValue();
-                  if (f != null)
-                  {
-                     fields.add(f);
-                  }
+                  fields.add(f);
                }
             }
             if (!fields.isEmpty())
             {
                ret.getFieldValues().put(tp, fields);
             }
-
          }
          else if (type == ResultType.QUALIFIER)
          {
@@ -123,7 +119,7 @@ public class ModelBuilder
          }
          else if (type == ResultType.STEREOTYPE)
          {
-            addSteriotypeToResult(ret, rb);
+            addStereotypeToResult(ret, rb);
          }
       }
       else if (rb.getType() == XmlItemType.VETO)
@@ -243,65 +239,50 @@ public class ModelBuilder
       NewAnnotatedTypeBuilder<T> type = result.getBuilder();
       // list of constructor arguments
       List<XmlItem> constList = new ArrayList<XmlItem>();
-      for (XmlItem item : rb.getChildren())
+
+      for (AnnotationXmlItem item : rb.getChildrenOfType(AnnotationXmlItem.class))
       {
-         if (item.getType() == XmlItemType.ANNOTATION)
-         {
+         Annotation a = createAnnotation(item);
+         type.addToClass(a);
+      }
 
-            Annotation a = createAnnotation(item);
-            type.addToClass(a);
-         }
-         else if (item.getType() == XmlItemType.CLASS)
+      for (ParameterXmlItem item : rb.getChildrenOfType(ParameterXmlItem.class))
+      {
+         constList.add(item);
+      }
+      for (FieldXmlItem item : rb.getChildrenOfType(FieldXmlItem.class))
+      {
+         for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
          {
-            constList.add(item);
-
-         }
-         else if (item.getType() == XmlItemType.FIELD)
-         {
-            for (XmlItem fi : item.getChildren())
-            {
-               if (fi.getType() == XmlItemType.ANNOTATION)
-               {
-                  Annotation a = createAnnotation(fi);
-                  type.addToField(item.getField(), a);
-               }
-            }
-         }
-         else if (item.getType() == XmlItemType.METHOD)
-         {
-            int paramCount = 0;
-            for (XmlItem fi : item.getChildren())
-            {
-               if (fi.getType() == XmlItemType.ANNOTATION)
-               {
-
-                  // TODO: pass in attribute map
-                  Annotation a = createAnnotation(fi);
-                  type.addToMethod(item.getMethod(), a);
-               }
-               else if (fi.getType() == XmlItemType.CLASS)
-               {
-                  int param = paramCount++;
-                  for (XmlItem pan : fi.getChildren())
-                  {
-                     if (pan.getType() == XmlItemType.ANNOTATION)
-                     {
-                        Annotation a = createAnnotation(pan);
-                        type.addToMethodParameter(item.getMethod(), param, a);
-                     }
-                     else
-                     {
-                        throw new XmlConfigurationException("Method parameters may only have annotations as children in " + item.getJavaClass().getName(), rb.getDocument(), rb.getLineno());
-                     }
-                  }
-               }
-            }
-         }
-         else if (item.getType() == XmlItemType.DEPENDENCY)
-         {
-            result.getDependencies().add(item.getInnerText());
+            Annotation a = createAnnotation(fi);
+            type.addToField(item.getField(), a);
          }
       }
+      for (MethodXmlItem item : rb.getChildrenOfType(MethodXmlItem.class))
+      {
+         int paramCount = 0;
+
+         for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
+         {
+            Annotation a = createAnnotation(fi);
+            type.addToMethod(item.getMethod(), a);
+         }
+         for (ParameterXmlItem fi : item.getChildrenOfType(ParameterXmlItem.class))
+         {
+            int param = paramCount++;
+            for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
+            {
+               Annotation a = createAnnotation(pan);
+               type.addToMethodParameter(item.getMethod(), param, a);
+            }
+         }
+
+      }
+      for (DependsXmlItem item : rb.getChildrenOfType(DependsXmlItem.class))
+      {
+         result.addDependency(item.getInnerText());
+      }
+
       if (!constList.isEmpty())
       {
          // the bean defined constructor arguments
@@ -310,7 +291,7 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   void addSteriotypeToResult(XmlResult ret, XmlItem rb)
+   void addStereotypeToResult(XmlResult ret, XmlItem rb)
    {
 
       Annotation[] values = new Annotation[rb.getChildren().size()];
@@ -319,7 +300,7 @@ public class ModelBuilder
       {
          if (item.getType() == XmlItemType.ANNOTATION)
          {
-            Annotation a = createAnnotation(item);
+            Annotation a = createAnnotation((AnnotationXmlItem) item);
             values[count] = a;
          }
          else
@@ -333,7 +314,7 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   Annotation createAnnotation(XmlItem item)
+   Annotation createAnnotation(AnnotationXmlItem item)
    {
       Map<String, Object> typedVars = new HashMap<String, Object>();
       Class<?> anClass = item.getJavaClass();
@@ -353,7 +334,7 @@ public class ModelBuilder
          typedVars.put(mname, XmlObjectConverter.convert(returnType, e.getValue()));
       }
 
-      return ac.get(item.getJavaClass(), typedVars);
+      return ac.get((Class) item.getJavaClass(), typedVars);
    }
 
    public void validateXmlItem(XmlItem item)
