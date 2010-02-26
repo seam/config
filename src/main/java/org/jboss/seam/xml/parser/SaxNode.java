@@ -33,7 +33,7 @@ public class SaxNode
 
    public String getInnerText()
    {
-      if (innerText != null && innerText.isEmpty())
+      if (innerText != null && innerText.length() == 0)
       {
          return null;
       }

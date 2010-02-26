@@ -9,10 +9,9 @@ import java.util.Set;
 
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.util.AnnotationLiteral;
 
-import org.jboss.weld.environment.se.StartMain;
-import org.jboss.weld.environment.se.events.Shutdown;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -22,6 +21,8 @@ public abstract class AbstractXMLTest
    public static String[] ARGS_EMPTY = new String[] {};
 
    protected BeanManager manager;
+   
+   Weld weld;
 
    protected abstract String getXmlFileName();
 
@@ -30,13 +31,15 @@ public abstract class AbstractXMLTest
    {
       String fileName = getClass().getPackage().getName().replace('.', '/') + "/" + getXmlFileName();
       TestXmlProvider.fileName = fileName;
-      manager = new StartMain(ARGS_EMPTY).go();
+      weld = new Weld();
+      WeldContainer container = weld.initialize();
+      manager = container.getBeanManager();
    }
 
    @AfterClass
    public void teardown()
    {
-      manager.fireEvent(manager, new ShutdownAnnotation());
+     weld.shutdown();
    }
 
    public <T> T getReference(Class<T> clazz, Annotation... bindings)
@@ -54,8 +57,5 @@ public abstract class AbstractXMLTest
       return (T) bean.create(manager.createCreationalContext(bean));
    }
 
-   protected static class ShutdownAnnotation extends AnnotationLiteral<org.jboss.weld.environment.se.events.Shutdown> implements Shutdown
-   {
-   }
-
+  
 }
