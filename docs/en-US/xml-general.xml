@@ -126,10 +126,18 @@ public class ProducerBean
             <listitem><para><literal>value</literal></para></listitem>
             <listitem><para><literal>key</literal></para></listitem>
             <listitem><para><literal>entry</literal></para></listitem>
-            <listitem><para><literal>array</literal></para></listitem>
             <listitem><para><literal>e</literal> (alias for entry)</para></listitem>
             <listitem><para><literal>v</literal> (alias for value)</para></listitem>
             <listitem><para><literal>k</literal> (alias for key)</para></listitem>
+            <listitem><para><literal>array</literal></para></listitem>
+            <listitem><para><literal>int</literal></para></listitem>
+            <listitem><para><literal>short</literal></para></listitem>
+            <listitem><para><literal>long</literal></para></listitem>
+            <listitem><para><literal>byte</literal></para></listitem>
+            <listitem><para><literal>char</literal></para></listitem>
+            <listitem><para><literal>double</literal></para></listitem>
+            <listitem><para><literal>float</literal></para></listitem>
+            <listitem><para><literal>boolean</literal></para></listitem>
          </itemizedlist>
          
          <para>as well as classes from the following packages:</para>    
@@ -236,6 +244,14 @@ public class ProducerBean
                 <test:Qualifier2/>
             </test:MethodValueBean>
         </test:method>
+         <test:method>
+            <Produces/>
+            <test:Qualifier1/>
+            <array dimensions="2">
+                <test:Qualifier2/>
+                <test:MethodValueBean/>
+            </array>
+        </test:method>
     </test:MethodBean>
 </Beans>
 
@@ -257,10 +273,11 @@ public class MethodBean
             ]]>
         </programlisting>
 
-        <para>In this instance <literal>MethodBean</literal> has two methods, both of them rather imaginatively named <literal>method</literal>. 
+        <para>In this instance <literal>MethodBean</literal> has three methods, all of them rather imaginatively named <literal>method</literal>. 
         The first <literal>&lt;test:method&gt;</literal> entry in the XML file configures the method that takes no arguments. 
         The <literal>&lt;Produces&gt;</literal> element makes it into a producer method. The next entry in the file configures 
-        the method that takes a <literal>MethodValueBean</literal> as a parameter.When configuring methods non-annotation classes are 
+        the method that takes a <literal>MethodValueBean</literal> as a parameter. The final entry configures a method that takes a two
+        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  When configuring methods non-annotation classes are 
         considered to represent method paramters. If these parameters have annotation children they are taken to be annotations 
         on the parameter.</para> 
         

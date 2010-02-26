@@ -5,11 +5,14 @@
 package org.jboss.seam.xml.parser.namespace;
 
 import org.jboss.seam.xml.model.ArrayXmlItem;
+import org.jboss.seam.xml.model.ClassXmlItem;
 import org.jboss.seam.xml.model.EntryXmlItem;
 import org.jboss.seam.xml.model.KeyXmlItem;
+import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.VetoXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
+import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
 
 public class RootNamespaceElementResolver implements NamespaceElementResolver
@@ -54,6 +57,52 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       else if (item.equals("veto"))
       {
          return new VetoXmlItem(parent, node.getDocument(), node.getLineNo());
+      }
+      // now deal with primitive types
+
+      Class primType = null;
+      if (item.equals("int"))
+      {
+         primType = int.class;
+      }
+      else if (item.equals("short"))
+      {
+         primType = short.class;
+      }
+      else if (item.equals("long"))
+      {
+         primType = long.class;
+      }
+      else if (item.equals("byte"))
+      {
+         primType = byte.class;
+      }
+      else if (item.equals("char"))
+      {
+         primType = char.class;
+      }
+      else if (item.equals("double"))
+      {
+         primType = double.class;
+      }
+      else if (item.equals("float"))
+      {
+         primType = float.class;
+      }
+      else if (item.equals("boolean"))
+      {
+         primType = boolean.class;
+      }
+      if (primType != null)
+      {
+         if (parent != null && (parent.getType() == XmlItemType.METHOD || parent.getType() == XmlItemType.CLASS))
+         {
+            return new ParameterXmlItem(parent, primType, node.getDocument(), node.getLineNo());
+         }
+         else
+         {
+            return new ClassXmlItem(parent, primType, node.getDocument(), node.getLineNo());
+         }
       }
 
       return null;
