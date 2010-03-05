@@ -222,17 +222,7 @@ public class ModelBuilder
             }
          }
       }
-      for (VetoXmlItem it : item.getChildrenOfType(VetoXmlItem.class))
-      {
-         if (ret != null)
-         {
-            throw new XmlConfigurationException("Element cannot be both an VETO and a " + ret.toString(), item.getDocument(), item.getLineno());
-         }
-         else
-         {
-            ret = ResultType.VETO;
-         }
-      }
+
       if (ret == null)
       {
          ret = ResultType.BEAN;

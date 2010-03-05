@@ -13,7 +13,6 @@ import org.jboss.seam.xml.model.OverrideXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.ParametersXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
-import org.jboss.seam.xml.model.VetoXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
@@ -56,10 +55,6 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       else if (item.equals("array"))
       {
          return new ArrayXmlItem(parent, node.getAttributes(), node.getDocument(), node.getLineNo());
-      }
-      else if (item.equals("veto"))
-      {
-         return new VetoXmlItem(parent, node.getDocument(), node.getLineNo());
       }
       else if (item.equals("override"))
       {
