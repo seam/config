@@ -4,17 +4,13 @@
  */
 package org.jboss.seam.xml.core;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 
 public class BeanResult<X>
 {
    NewAnnotatedTypeBuilder<X> builder;
-   List<String> dependencies = new ArrayList<String>();
    Class<X> type;
+   boolean override, extend;
 
    public BeanResult(Class<X> type)
    {
@@ -27,18 +23,28 @@ public class BeanResult<X>
       return builder;
    }
 
-   public void addDependency(String className)
-   {
-      dependencies.add(className);
-   }
-
-   public List<String> getDependencies()
-   {
-      return Collections.unmodifiableList(dependencies);
-   }
-
    public Class<X> getType()
    {
       return type;
+   }
+
+   public boolean isOverride()
+   {
+      return override;
+   }
+
+   public void setOverride(boolean override)
+   {
+      this.override = override;
+   }
+
+   public boolean isExtend()
+   {
+      return extend;
+   }
+
+   public void setExtend(boolean extend)
+   {
+      this.extend = extend;
    }
 }

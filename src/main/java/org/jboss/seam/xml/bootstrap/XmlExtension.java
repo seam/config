@@ -33,6 +33,7 @@ import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 
 public class XmlExtension implements Extension
 {
@@ -46,6 +47,8 @@ public class XmlExtension implements Extension
    Set<Class<?>> veto = new HashSet<Class<?>>();
 
    Map<Class<?>, AnnotatedType<?>> types = new HashMap<Class<?>, AnnotatedType<?>>();
+
+   Map<Class<?>, BeanResult<?>> beanExtensions = new HashMap<Class<?>, BeanResult<?>>();
 
    int count = 0;
 
@@ -74,7 +77,6 @@ public class XmlExtension implements Extension
                ParserMain parser = new ParserMain();
                ModelBuilder builder = new ModelBuilder();
                SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), errors);
-               ;
                results.add(builder.build(parentNode));
             }
          }
@@ -118,25 +120,13 @@ public class XmlExtension implements Extension
          }
          for (BeanResult<?> bb : r.getBeans())
          {
-            boolean install = true;
-            for (Object className : bb.getDependencies())
-            {
-               try
-               {
-                  bb.getType().getClassLoader().loadClass(className.toString());
-               }
-               catch (ClassNotFoundException e)
-               {
-                  install = false;
-                  break;
-               }
-            }
-            if (install)
-            {
-               AnnotatedType<?> tp = bb.getBuilder().create();
-               event.addAnnotatedType(tp);
-               types.put(tp.getJavaClass(), tp);
-            }
+            AnnotatedType<?> tp = bb.getBuilder().create();
+            event.addAnnotatedType(tp);
+            types.put(tp.getJavaClass(), tp);
+         }
+         for (BeanResult<?> bb : r.getExtendBeans())
+         {
+            beanExtensions.put(bb.getType(), bb);
          }
          veto.addAll(r.getVeto());
 
@@ -149,6 +139,13 @@ public class XmlExtension implements Extension
       if (veto.contains(event.getAnnotatedType().getJavaClass()))
       {
          event.veto();
+      }
+      Class javaClass = event.getAnnotatedType().getJavaClass();
+      if (beanExtensions.containsKey(javaClass))
+      {
+         NewAnnotatedTypeBuilder typeBuilder = beanExtensions.get(javaClass).getBuilder();
+         typeBuilder.mergeAnnotations(event.getAnnotatedType(), false);
+         event.setAnnotatedType(typeBuilder.create());
       }
    }
 

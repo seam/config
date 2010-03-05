@@ -95,7 +95,18 @@ public class ModelBuilder
          if (type == ResultType.BEAN)
          {
             BeanResult<?> tp = buildAnnotatedType(rb);
-            ret.getBeans().add(tp);
+            if (tp.isExtend())
+            {
+               ret.getExtendBeans().add(tp);
+            }
+            else
+            {
+               ret.getBeans().add(tp);
+            }
+            if (tp.isOverride())
+            {
+               ret.addVeto(tp.getType());
+            }
             List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
             for (FieldXmlItem xi : rb.getChildrenOfType(FieldXmlItem.class))
             {
@@ -237,6 +248,15 @@ public class ModelBuilder
       // list of constructor arguments
       List<XmlItem> constList = new ArrayList<XmlItem>();
 
+      boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
+      boolean extend = !rb.getChildrenOfType(ExtendsXmlItem.class).isEmpty();
+      if (override && extend)
+      {
+         throw new XmlConfigurationException("A bean may not both <override> and <extend> an existing bean", rb.getDocument(), rb.getLineno());
+      }
+      result.setOverride(override);
+      result.setExtend(extend);
+
       for (AnnotationXmlItem item : rb.getChildrenOfType(AnnotationXmlItem.class))
       {
          Annotation a = createAnnotation(item);
@@ -274,10 +294,6 @@ public class ModelBuilder
             }
          }
 
-      }
-      for (DependsXmlItem item : rb.getChildrenOfType(DependsXmlItem.class))
-      {
-         result.addDependency(item.getInnerText());
       }
 
       if (!constList.isEmpty())

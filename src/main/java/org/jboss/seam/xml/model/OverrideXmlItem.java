@@ -7,12 +7,13 @@ package org.jboss.seam.xml.model;
 import java.util.Collections;
 import java.util.Set;
 
-public class DependsXmlItem extends AbstractXmlItem
+public class OverrideXmlItem extends AbstractXmlItem
 {
 
-   public DependsXmlItem(XmlItem parent, String innerTest, String document, int lineno)
+   public OverrideXmlItem(XmlItem parent, String document, int lineno)
    {
-      super(XmlItemType.DEPENDENCY, parent, null, innerTest, null, document, lineno);
+      super(XmlItemType.OVERRIDE, parent, null, null, null, document, lineno);
+
    }
 
    public Set<XmlItemType> getAllowedItem()

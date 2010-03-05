@@ -17,11 +17,8 @@ import org.testng.annotations.BeforeClass;
 
 public abstract class AbstractXMLTest
 {
-
-   public static String[] ARGS_EMPTY = new String[] {};
-
    protected BeanManager manager;
-   
+
    Weld weld;
 
    protected abstract String getXmlFileName();
@@ -39,7 +36,7 @@ public abstract class AbstractXMLTest
    @AfterClass
    public void teardown()
    {
-     weld.shutdown();
+      weld.shutdown();
    }
 
    public <T> T getReference(Class<T> clazz, Annotation... bindings)
@@ -52,7 +49,7 @@ public abstract class AbstractXMLTest
       else if (beans.size() != 1)
       {
          StringBuilder bs = new StringBuilder("[");
-         for(Annotation a : bindings)
+         for (Annotation a : bindings)
          {
             bs.append(a.toString() + ",");
          }
@@ -63,5 +60,4 @@ public abstract class AbstractXMLTest
       return (T) bean.create(manager.createCreationalContext(bean));
    }
 
-  
 }

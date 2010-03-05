@@ -24,5 +24,14 @@
         </test:produceBean3>
     </test:Bean2>
     
+    <test:OverriddenBean>
+         <override/>
+        <Named>someBean</Named>
+    </test:OverriddenBean>
+    
+    <test:ExtendedBean>
+         <extends/>
+         <test:ExtendedQualifier2/>
+    </test:ExtendedBean>
           
 </Beans>
