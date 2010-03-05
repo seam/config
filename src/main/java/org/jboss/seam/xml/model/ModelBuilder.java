@@ -5,6 +5,7 @@
 package org.jboss.seam.xml.model;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.enterprise.inject.Stereotype;
+import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Inject;
 import javax.inject.Qualifier;
 import javax.interceptor.InterceptorBinding;
 
@@ -24,6 +27,7 @@ import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.RootNamespaceElementResolver;
+import org.jboss.seam.xml.util.ReflectionUtils;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
@@ -94,7 +98,7 @@ public class ModelBuilder
          ResultType type = getItemType(rb);
          if (type == ResultType.BEAN)
          {
-            BeanResult<?> tp = buildAnnotatedType(rb);
+            BeanResult<?> tp = buildAnnotatedType((ClassXmlItem) rb);
             if (tp.isExtend())
             {
                ret.getExtendBeans().add(tp);
@@ -123,11 +127,11 @@ public class ModelBuilder
          }
          else if (type == ResultType.QUALIFIER)
          {
-            ret.getQualifiers().add(rb.getJavaClass());
+            ret.getQualifiers().add((Class) rb.getJavaClass());
          }
          else if (type == ResultType.INTERCEPTOR_BINDING)
          {
-            ret.getInterceptorBindings().add(rb.getJavaClass());
+            ret.getInterceptorBindings().add((Class) rb.getJavaClass());
          }
          else if (type == ResultType.STEREOTYPE)
          {
@@ -231,12 +235,12 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   <T> BeanResult<T> buildAnnotatedType(XmlItem rb)
+   BeanResult<?> buildAnnotatedType(ClassXmlItem rb)
    {
-      BeanResult<T> result = new BeanResult<T>(rb.getJavaClass());
-      NewAnnotatedTypeBuilder<T> type = result.getBuilder();
+      BeanResult<?> result = new BeanResult(rb.getJavaClass());
+      NewAnnotatedTypeBuilder<?> type = result.getBuilder();
       // list of constructor arguments
-      List<XmlItem> constList = new ArrayList<XmlItem>();
+      List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();
 
       boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
       boolean extend = !rb.getChildrenOfType(ExtendsXmlItem.class).isEmpty();
@@ -252,10 +256,17 @@ public class ModelBuilder
          Annotation a = createAnnotation(item);
          type.addToClass(a);
       }
-
-      for (ParameterXmlItem item : rb.getChildrenOfType(ParameterXmlItem.class))
+      List<ParametersXmlItem> constructorParameters = rb.getChildrenOfType(ParametersXmlItem.class);
+      if (constructorParameters.size() > 1)
       {
-         constList.add(item);
+         throw new XmlConfigurationException("A method may only have a single <parameters> element", rb.getDocument(), rb.getLineno());
+      }
+      else if (!constructorParameters.isEmpty())
+      {
+         for (ParameterXmlItem item : constructorParameters.get(0).getChildrenOfType(ParameterXmlItem.class))
+         {
+            constList.add(item);
+         }
       }
       for (FieldXmlItem item : rb.getChildrenOfType(FieldXmlItem.class))
       {
@@ -296,9 +307,38 @@ public class ModelBuilder
 
       if (!constList.isEmpty())
       {
-         // the bean defined constructor arguments
+         int paramCount = 0;
+         Constructor<?> c = resolveConstructor(rb, constList);
+         // we automatically add inject to the constructor
+         type.addToConstructor((Constructor) c, new AnnotationLiteral<Inject>()
+         {
+         });
+         for (ParameterXmlItem fi : constList)
+         {
+            int param = paramCount++;
+            for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
+            {
+               Annotation a = createAnnotation(pan);
+               type.addToConstructorParameter((Constructor) c, param, a);
+            }
+         }
       }
       return result;
+   }
+
+   protected static Constructor<?> resolveConstructor(ClassXmlItem bean, List<ParameterXmlItem> constList)
+   {
+      Class<?>[] params = new Class[constList.size()];
+      for (int i = 0; i < constList.size(); ++i)
+      {
+         params[i] = constList.get(i).getJavaClass();
+      }
+      Constructor<?> ret = ReflectionUtils.getConstructor(bean.getJavaClass(), params);
+      if (ret == null)
+      {
+         throw new XmlConfigurationException("Could not resolve constructor for " + bean.getJavaClass() + " with arguments " + params, bean.getDocument(), bean.getLineno());
+      }
+      return ret;
    }
 
    @SuppressWarnings("unchecked")
@@ -320,7 +360,7 @@ public class ModelBuilder
          }
          count++;
       }
-      ret.getStereotypes().put(rb.getJavaClass(), values);
+      ret.getStereotypes().put((Class) rb.getJavaClass(), values);
 
    }
 

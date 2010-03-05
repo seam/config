@@ -15,6 +15,7 @@ import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
+import org.jboss.seam.xml.util.ReflectionUtils;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
@@ -79,7 +80,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
          // if the item can be a method of a FIELD
          if (parent.getAllowedItem().contains(XmlItemType.METHOD) || parent.getAllowedItem().contains(XmlItemType.FIELD))
          {
-            return NamespaceUtils.resolveMethodOrField(name, parent, node.getInnerText(), node.getDocument(), node.getLineNo());
+            return ReflectionUtils.resolveMethodOrField(name, parent, node.getInnerText(), node.getDocument(), node.getLineNo());
          }
          else
          {

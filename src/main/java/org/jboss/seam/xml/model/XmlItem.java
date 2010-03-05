@@ -20,7 +20,7 @@ public interface XmlItem
 
    public XmlItemType getType();
 
-   public Class getJavaClass();
+   public Class<?> getJavaClass();
 
    /**
     * attempts to resolve any information that is not available at parse time

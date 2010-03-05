@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Beans xmlns="urn:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.constructor">
+
+	<test:ValueProvider>
+		<test:value>
+			<Produces/>
+			<value>10</value>
+		</test:value>
+	</test:ValueProvider>
+   
+   	<test:ConstructedBean>
+   		<override/>
+   		<parameters><int/></parameters>
+   	</test:ConstructedBean>
+   
+</Beans>
