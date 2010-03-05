@@ -9,6 +9,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * represents an XML element
+ * 
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ */
 public class SaxNode
 {
 

@@ -20,7 +20,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * Parser for xml configration, this class should only be used once
+ * Parser for xml configration, this class should only be used once and then
+ * discarded
  * 
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
@@ -46,15 +47,11 @@ public class ParserMain extends DefaultHandler
       document = fileUrl;
       try
       {
-
          XMLReader xr = XMLReaderFactory.createXMLReader();
-
          xr.setContentHandler(this);
          xr.setErrorHandler(this);
          xr.parse(inputSource);
-
          return parentNode;
-
       }
       catch (SAXException e)
       {

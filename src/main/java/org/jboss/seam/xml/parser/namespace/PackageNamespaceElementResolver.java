@@ -53,8 +53,8 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
          }
          else
          {
-            //if it is a method or constructor parameter
-            if(parent != null && (parent.getType() == XmlItemType.METHOD || parent.getType() == XmlItemType.CLASS))
+            // if it is a method or constructor parameter
+            if (parent != null && parent.getType() == XmlItemType.PARAMETERS)
             {
                return new ParameterXmlItem(parent, c, node.getDocument(), node.getLineNo());
             }

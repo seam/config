@@ -31,8 +31,6 @@ public class XmlObjectConverter
       }
       else if (target == Class.class)
       {
-         Class dval = null;
-
          try
          {
             return XmlObjectConverter.class.getClassLoader().loadClass(value);
@@ -56,13 +54,11 @@ public class XmlObjectConverter
          {
             java.util.Date dval = DateFormat.getDateTimeInstance().parse(value);
             return new java.sql.Date(dval.getYear(), dval.getMonth(), dval.getDay());
-
          }
          catch (ParseException e)
          {
             throw new RuntimeException("Cannot parse javax.sql.Date field value: " + value, e);
          }
-
       }
       else if (java.sql.Time.class == target)
       {
@@ -75,7 +71,6 @@ public class XmlObjectConverter
          {
             throw new RuntimeException("Cannot parse javax.sql.Date field value: " + value, e);
          }
-
       }
       else if (java.sql.Timestamp.class == target)
       {
@@ -83,7 +78,6 @@ public class XmlObjectConverter
          {
             java.util.Date dval = DateFormat.getDateTimeInstance().parse(value);
             return new java.sql.Timestamp(dval.getYear(), dval.getMonth(), dval.getDay(), dval.getHours(), dval.getMinutes(), dval.getSeconds(), 0);
-
          }
          catch (ParseException e)
          {
@@ -104,20 +98,17 @@ public class XmlObjectConverter
          {
             throw new RuntimeException("Cannot parse Calendar field value: " + value, e);
          }
-
       }
       else if (java.util.Date.class == target)
       {
          try
          {
             return DateFormat.getDateTimeInstance().parse(value);
-
          }
          catch (ParseException e)
          {
             throw new RuntimeException("Cannot parse Calendar field value: " + value, e);
          }
-
       }
       else if (target == BigDecimal.class)
       {
@@ -139,12 +130,10 @@ public class XmlObjectConverter
       else if (target == int.class || target == Integer.class)
       {
          return Integer.parseInt(value);
-
       }
       else if (target == short.class || target == Short.class)
       {
          return new Short(value);
-
       }
       else if (target == long.class || target == Long.class)
       {
@@ -153,7 +142,6 @@ public class XmlObjectConverter
       else if (target == byte.class || target == byte.class)
       {
          return new Byte(value);
-
       }
       else if (target == double.class || target == Double.class)
       {

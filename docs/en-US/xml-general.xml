@@ -240,17 +240,21 @@ public class ProducerBean
         <test:method>
             <Produces/>
             <test:Qualifier1/>
-            <test:MethodValueBean>
-                <test:Qualifier2/>
-            </test:MethodValueBean>
+            <parameters>
+                <test:MethodValueBean>
+                    <test:Qualifier2/>
+                </test:MethodValueBean>
+            </parameters>
         </test:method>
          <test:method>
             <Produces/>
             <test:Qualifier1/>
-            <array dimensions="2">
-                <test:Qualifier2/>
-                <test:MethodValueBean/>
-            </array>
+            <parameters>
+                <array dimensions="2">
+                    <test:Qualifier2/>
+                    <test:MethodValueBean/>
+                </array>
+            </parameters>
         </test:method>
     </test:MethodBean>
 </Beans>
@@ -266,6 +270,11 @@ public class MethodBean
    public int method(MethodValueBean bean)
    {
       return bean.value + 1;
+   }
+   
+   public void method(MethodValueBean[][] beans)
+   {
+      //do stuff
    }
 
 }

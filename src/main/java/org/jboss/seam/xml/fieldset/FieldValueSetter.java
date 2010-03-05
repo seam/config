@@ -3,6 +3,13 @@ package org.jboss.seam.xml.fieldset;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
+/**
+ * Class that knows how to set a field value, either directly or by calling a
+ * getter
+ * 
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ */
 public interface FieldValueSetter
 {
 

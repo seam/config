@@ -284,13 +284,21 @@ public class ModelBuilder
             Annotation a = createAnnotation(fi);
             type.addToMethod(item.getMethod(), a);
          }
-         for (ParameterXmlItem fi : item.getChildrenOfType(ParameterXmlItem.class))
+         List<ParametersXmlItem> parameters = item.getChildrenOfType(ParametersXmlItem.class);
+         if (parameters.size() > 1)
          {
-            int param = paramCount++;
-            for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
+            throw new XmlConfigurationException("A method may only have a single <parameters> element", item.getDocument(), item.getLineno());
+         }
+         else if (!parameters.isEmpty())
+         {
+            for (ParameterXmlItem fi : parameters.get(0).getChildrenOfType(ParameterXmlItem.class))
             {
-               Annotation a = createAnnotation(pan);
-               type.addToMethodParameter(item.getMethod(), param, a);
+               int param = paramCount++;
+               for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
+               {
+                  Annotation a = createAnnotation(pan);
+                  type.addToMethodParameter(item.getMethod(), param, a);
+               }
             }
          }
 

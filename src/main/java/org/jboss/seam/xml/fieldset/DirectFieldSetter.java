@@ -4,6 +4,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
+/**
+ * class that can set a field value directly
+ * 
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ */
 public class DirectFieldSetter implements FieldValueSetter
 {
 

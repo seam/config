@@ -11,6 +11,7 @@ import org.jboss.seam.xml.model.ExtendsXmlItem;
 import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.OverrideXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
+import org.jboss.seam.xml.model.ParametersXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.VetoXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
@@ -21,7 +22,7 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
 {
 
    CompositeNamespaceElementResolver delegate;
-   static final String[] namspaces = { "java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "javax.persistence", "javax.xml.ws", "javax.jms", "javax.sql" };
+   static final String[] namspaces = { "java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor" };
 
    public RootNamespaceElementResolver()
    {
@@ -68,6 +69,10 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       {
          return new ExtendsXmlItem(parent, node.getDocument(), node.getLineNo());
       }
+      else if (item.equals("parameters"))
+      {
+         return new ParametersXmlItem(parent, node.getDocument(), node.getLineNo());
+      }
 
       // now deal with primitive types
 
@@ -106,7 +111,7 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       }
       if (primType != null)
       {
-         if (parent != null && (parent.getType() == XmlItemType.METHOD || parent.getType() == XmlItemType.CLASS))
+         if (parent != null && parent.getType() == XmlItemType.PARAMETERS)
          {
             return new ParameterXmlItem(parent, primType, node.getDocument(), node.getLineNo());
          }

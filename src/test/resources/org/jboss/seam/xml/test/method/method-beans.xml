@@ -1,50 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Beans xmlns="urn:seam:core"
-          xmlns:test="urn:java:org.jboss.seam.xml.test.method">
-   
-   <veto>
-   	<test:MethodTarget/>
-   </veto>
-   
-   <test:Qualifier1>
-    	<Qualifier/>
-   </test:Qualifier1>
-   
-   <test:Qualifier2>
-    <Qualifier/>
-   </test:Qualifier2>
-   
+<Beans xmlns="urn:seam:core" xmlns:test="urn:java:org.jboss.seam.xml.test.method">
+
+    <veto>
+        <test:MethodTarget />
+    </veto>
+
+    <test:Qualifier1>
+        <Qualifier />
+    </test:Qualifier1>
+
+    <test:Qualifier2>
+        <Qualifier />
+    </test:Qualifier2>
+
     <test:MethodBean>
         <test:method>
-            <Produces/>
+            <Produces />
         </test:method>
-        
+
         <test:method>
-            <Produces/>
-            <test:Qualifier1/>
-            <test:MethodValueBean>
-                <test:Qualifier2/>
-            </test:MethodValueBean>
+            <Produces />
+            <test:Qualifier1 />
+            <parameters>
+                <test:MethodValueBean>
+                    <test:Qualifier2 />
+                </test:MethodValueBean>
+            </parameters>
         </test:method>
-        
+
         <test:method>
-            <Produces/>
-            <test:Qualifier1/>
-            <array dimensions="2">
-                <test:Qualifier2/>
-                <test:MethodValueBean/>
-            </array>
+            <Produces />
+            <test:Qualifier1 />
+            <parameters>
+                <array dimensions="2">
+                    <test:Qualifier2 />
+                    <test:MethodValueBean />
+                </array>
+            </parameters>
         </test:method>
-        
+
     </test:MethodBean>
- 
+
     <test:MethodTarget>
-        <test:value1><Inject/></test:value1>
-        <test:value2><Inject/><test:Qualifier1/></test:value2>
-        <test:longValue><Inject/><test:Qualifier1/></test:longValue>
+        <test:value1>
+            <Inject />
+        </test:value1>
+        <test:value2>
+            <Inject />
+            <test:Qualifier1 />
+        </test:value2>
+        <test:longValue>
+            <Inject />
+            <test:Qualifier1 />
+        </test:longValue>
     </test:MethodTarget>
-    
+
     <test:MethodValueBean>
-                <test:Qualifier2/>
+        <test:Qualifier2 />
     </test:MethodValueBean>
 </Beans>

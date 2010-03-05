@@ -23,6 +23,10 @@ public class MethodXmlItem extends AbstractXmlItem
    public MethodXmlItem(XmlItem parent, String methodName, String document, int lineno)
    {
       super(XmlItemType.METHOD, parent, parent.getJavaClass(), null, null, document, lineno);
+
+      allowed.add(XmlItemType.ANNOTATION);
+      allowed.add(XmlItemType.PARAMETERS);
+
       // methods are lazily resolved once we know the parameter types
       this.methodName = methodName;
       Method found = null;
@@ -43,8 +47,6 @@ public class MethodXmlItem extends AbstractXmlItem
          }
       }
       method = found;
-      allowed.add(XmlItemType.ANNOTATION);
-      allowed.add(XmlItemType.PARAMETER);
    }
 
    /**
@@ -64,9 +66,14 @@ public class MethodXmlItem extends AbstractXmlItem
       }
 
       List<Class<?>> rtList = new ArrayList<Class<?>>();
-      for (XmlItem c : children)
+      List<ParametersXmlItem> parameters = getChildrenOfType(ParametersXmlItem.class);
+      if (parameters.size() > 1)
       {
-         if (c.getType() == XmlItemType.PARAMETER)
+         throw new XmlConfigurationException("A method may only have a single <parameters> element", document, lineno);
+      }
+      else if (!parameters.isEmpty())
+      {
+         for (ParameterXmlItem c : parameters.get(0).getChildrenOfType(ParameterXmlItem.class))
          {
             Class<?> cl = c.getJavaClass();
             rtList.add(cl);

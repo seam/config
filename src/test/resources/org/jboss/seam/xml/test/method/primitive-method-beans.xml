@@ -15,14 +15,18 @@
         <test:add>
             <Produces/>
             <test:Qualifier1/>
-            <int/>
+            <parameters>
+                <int/>
+            </parameters>
         </test:add>
         <test:add>
             <Produces/>
-                <test:Qualifier2/>
-            <array>
-                <int/>
-            </array>
+            <test:Qualifier2/>
+            <parameters>    
+                <array>
+                    <int/>
+                </array>
+            </parameters>
         </test:add>
     </test:PrimitiveBean>
     

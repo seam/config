@@ -4,6 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
+/**
+ * class that sets a field value by calling a setter method
+ * 
+ * @author Stuart Douglas <stuart@baileyroberts.com.au>
+ * 
+ */
 public class MethodFieldSetter implements FieldValueSetter
 {
    Method method;

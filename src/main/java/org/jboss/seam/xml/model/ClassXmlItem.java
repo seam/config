@@ -18,7 +18,7 @@ public class ClassXmlItem extends AbstractXmlItem
       allowed.add(XmlItemType.ANNOTATION);
       allowed.add(XmlItemType.FIELD);
       allowed.add(XmlItemType.METHOD);
-      allowed.add(XmlItemType.PARAMETER);
+      allowed.add(XmlItemType.PARAMETERS);
 
    }
 
