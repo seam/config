@@ -2,11 +2,8 @@
 <Beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
    
-    <veto>
-    	<test:CollectionFieldValue/>
-    </veto>
-   
     <test:CollectionFieldValue>
+    	<override/>
         <test:iset>
         	<value>1</value>
         	<value>2</value>

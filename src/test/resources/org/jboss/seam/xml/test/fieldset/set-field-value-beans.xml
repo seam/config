@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
-   
-    <veto>
-   		<test:FieldValueBean />
-   		<test:FieldValueProducer/>
-    </veto>
-   
+
     <test:FieldValueBean>
+    	<override/>
         <test:ivalue>10</test:ivalue>
         <test:stringValue>hello world</test:stringValue>
         <test:enumValue>A</test:enumValue>

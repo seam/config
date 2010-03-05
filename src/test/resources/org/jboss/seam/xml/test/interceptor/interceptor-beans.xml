@@ -2,11 +2,8 @@
 <Beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.interceptor">
    
-   <veto>
-   		<test:InterceptedBean/>
-   </veto>
-   
     <test:InterceptedBean>
+    	<override/>
         <test:method>
             <test:InterceptorBinding/>
         </test:method>

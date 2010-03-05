@@ -2,10 +2,6 @@
 <Beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
    
-   <veto>
-   	<test:QualifierTestBean/>
-   </veto>
-   
     <test:OtherQualifier>
         <Qualifier/>
     </test:OtherQualifier>
@@ -19,6 +15,7 @@
     </test:QualifiedBean2>
     
     <test:QualifierTestBean>
+    	<override/>
         <test:bean1>
             <test:OtherQualifier value1="AA" value2="1" value="A" />
             <Inject/>

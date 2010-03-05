@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Beans xmlns="urn:seam:core" xmlns:test="urn:java:org.jboss.seam.xml.test.method">
 
-    <veto>
-        <test:MethodTarget />
-    </veto>
+
 
     <test:Qualifier1>
         <Qualifier />
@@ -42,6 +40,7 @@
     </test:MethodBean>
 
     <test:MethodTarget>
+    	<override/>
         <test:value1>
             <Inject />
         </test:value1>

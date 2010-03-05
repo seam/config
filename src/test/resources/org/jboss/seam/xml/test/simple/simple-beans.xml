@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.simple">
-   <veto>
-    <test:Bean2/>
-   </veto>
+
    
    
     <test:Bean1>
@@ -19,6 +17,7 @@
     </test:Bean1>
     
     <test:Bean2>
+    	<override/>
         <test:produceBean3>
             <Produces/>
         </test:produceBean3>

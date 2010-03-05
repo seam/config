@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
-   <veto>
-   	<test:ArrayFieldValue/>
-   </veto>
     <test:ArrayFieldValue>
+    	<override/>
         <test:iarray>
         	<value>1</value>
         	<value>2</value>
