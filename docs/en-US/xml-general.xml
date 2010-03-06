@@ -4,13 +4,13 @@
 <chapter id="remoting">
   <title>Seam XML General</title>
   
-  <para>Seam provides a method for configuring JSR-299 beans using XML. By default the XML configuration defines new beans, 
-        it does not change existing beans. 
+  <para>Seam provides a method for configuring JSR-299 beans using XML. Using XML it is possible to add new beans, override existing beans, and add 
+  extra configuration to existing beans. The default is to add a new bean.
   </para>
   
  <section>
     <title>Configuration</title>
-    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file in your delpoyment. </para>
+    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file in your deployment. </para>
  </section>
  
  <section>
@@ -122,7 +122,9 @@ public class ProducerBean
         
         <itemizedlist>
             <listitem><para><literal>Beans</literal></para></listitem>
-            <listitem><para><literal>veto</literal></para></listitem>
+            <listitem><para><literal>extends</literal></para></listitem>
+            <listitem><para><literal>override</literal></para></listitem>
+            <listitem><para><literal>parameters</literal></para></listitem>
             <listitem><para><literal>value</literal></para></listitem>
             <listitem><para><literal>key</literal></para></listitem>
             <listitem><para><literal>entry</literal></para></listitem>
@@ -152,10 +154,6 @@ public class ProducerBean
             <listitem><para><literal>javax.enterprise.event</literal></para></listitem>
             <listitem><para><literal>javax.decorator</literal></para></listitem>
             <listitem><para><literal>javax.interceptor</literal></para></listitem>
-            <listitem><para><literal>javax.persistence</literal></para></listitem>
-            <listitem><para><literal>javax.xml.ws</literal></para></listitem>
-            <listitem><para><literal>javax.jms</literal></para></listitem>
-            <listitem><para><literal>javax.sql</literal></para></listitem>
         </itemizedlist>
         
         <para>So the <literal>&lt;Produces&gt;</literal> element above actually resolved to <literal>java.enterprise.inject.Produces</literal> 
@@ -164,18 +162,24 @@ public class ProducerBean
     </section>
     
     <section>
-        <title>Replacing existing bean declarations</title>
-        <para>It is possible to prevent an existing bean being installed using the <literal>&lt;veto/&gt;</literal> tag:</para>
+        <title>Overriding and extending beans</title>
+        <para>The may be cases where you want to modify an existing bean rather that adding a new one. The <literal>&lt;override&gt;</literal> and <literal>&lt;extends&gt;</literal>
+        tags allow you to do this. The <literal>&lt;override&gt;</literal> tag prevents the existing bean from being installed, and registers a new one with the given configuration.
+        The <literal>&lt;extends&gt;</literal> tag allows you to add extra configuration to an existing bean.</para>
         <programlisting>
             <![CDATA[
-<veto>
-    <test:ProducerBean/>
-    <test:RecieverBean/>
-</veto>
+<test:MyBean>
+	<extends>
+	<test:NewQualifier/>
+</test:MyBean>
+
+<test:OtherBean>
+	<override>
+	<test:NewQualifier/>
+</test:OtherBean>
               ]]>
         </programlisting>
-        <para>The code above would prevent the <literal>ProducerBean</literal> and <literal>RecieverBean</literal> that was discovered in the bean discovery phase from being installed.
-         Using the veto tag it is possible to replace beans instead of just installing new ones. </para>
+        <para>The first entry above adds a new qualifier to an existing bean definition. The second prevents the existing bean from being installed, and registers a new bean with a single qualifier.</para>
     </section>
     
     <section>
@@ -286,16 +290,22 @@ public class MethodBean
         The first <literal>&lt;test:method&gt;</literal> entry in the XML file configures the method that takes no arguments. 
         The <literal>&lt;Produces&gt;</literal> element makes it into a producer method. The next entry in the file configures 
         the method that takes a <literal>MethodValueBean</literal> as a parameter. The final entry configures a method that takes a two
-        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  When configuring methods non-annotation classes are 
-        considered to represent method paramters. If these parameters have annotation children they are taken to be annotations 
-        on the parameter.</para> 
+        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  Method Parameters a specified inside the <literal>&lt;parameters&gt;</literal>
+        tag. If these parameters have annotation children they are taken to be annotations on the parameter. </para> 
         
-        <para>In this instance the corresponding java declaration would be:</para>
+        <para>The corresponding java declaration for the xml above would be:</para>
         <programlisting>
             <![CDATA[
 @Produces
+public int method() {//method body}            
+            
+@Produces
 @Qualifier1
 public int method(@Qualifier2 MethodValueBean param) {//method body}
+
+@Produces
+@Qualifier1
+public int method(@Qualifier2 MethodValueBean[][] param) {//method body}
            ]]>
          </programlisting>
          <para>Array parameters can be represented using the <literal>&lt;array&gt;</literal> element, with a child element to 

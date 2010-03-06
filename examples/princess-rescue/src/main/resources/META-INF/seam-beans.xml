@@ -22,11 +22,13 @@
    </p:GameManager>
    
    <p:GameRoom>
+   	<SessionScoped/>
    	<p:Room value="startRoom"/>
    	<p:north><Inject/><p:Room>emptyRoom1</p:Room></p:north>
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom1</p:Room>
    	<p:north><Inject/><p:Room>emptyRoom3</p:Room></p:north> 
    	<p:west><Inject/><p:Room>dwarfRoom</p:Room></p:west>
@@ -35,6 +37,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>dwarfRoom</p:Room>
    	<p:roomType>MONSTER</p:roomType>
    	<p:shootEffect>KILL</p:shootEffect>
@@ -46,6 +49,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>pitRoom1</p:Room>
    	<p:roomType>GAMEOVER</p:roomType>
    	<p:adjacentMessage>You feel a breeze.</p:adjacentMessage>
@@ -54,12 +58,14 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom2</p:Room>
    	<p:north><Inject/><p:Room>emptyRoom4</p:Room></p:north> 
    	<p:west><Inject/><p:Room>pitRoom1</p:Room></p:west>
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom3</p:Room>
    	<p:north><Inject/><p:Room>pitRoom2</p:Room></p:north> 
    	<p:east><Inject/><p:Room>batRoom</p:Room></p:east>
@@ -67,6 +73,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>batRoom</p:Room>
    	<p:adjacentMessage>You hear a screeching noise.</p:adjacentMessage>
    	<p:message>A swarm of bats lands on you and tries to pick you up. They fail miserably. You swat them away with your bow.</p:message>
@@ -78,6 +85,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom4</p:Room>
    	<p:east><Inject/><p:Room>emptyRoom5</p:Room></p:east>
    	<p:south><Inject/><p:Room>emptyRoom2</p:Room></p:south>
@@ -85,6 +93,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom5</p:Room>
    	<p:north><Inject/><p:Room>emptyRoom7</p:Room></p:north> 
    	<p:east><Inject/><p:Room>dragonRoom</p:Room></p:east>
@@ -92,6 +101,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>dragonRoom</p:Room>
    	<p:adjacentMessage>You hear a snoring noise. With every snore you see a flickering light, as if something were breathing flames from its nostrils.</p:adjacentMessage>
    	<p:roomType>GAMEOVER</p:roomType>
@@ -103,6 +113,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>pitRoom2</p:Room>
    	<p:roomType>GAMEOVER</p:roomType>
    	<p:adjacentMessage>You feel a breeze.</p:adjacentMessage>
@@ -112,6 +123,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom6</p:Room>
    	<p:north><Inject/><p:Room>emptyRoom8</p:Room></p:north> 
    	<p:west><Inject/><p:Room>pitRoom2</p:Room></p:west>
@@ -119,6 +131,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom7</p:Room>
    	<p:north><Inject/><p:Room>emptyRoom10</p:Room></p:north> 
    	<p:east><Inject/><p:Room>princessRoom</p:Room></p:east>
@@ -126,6 +139,7 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>princessRoom</p:Room>
    	<p:adjacentMessage>You hear a sobbing noise.</p:adjacentMessage>
    	<p:roomType>GAMEOVER</p:roomType>
@@ -137,12 +151,14 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom8</p:Room>
    	<p:east><Inject/><p:Room>emptyRoom9</p:Room></p:east>
    	<p:south><Inject/><p:Room>emptyRoom6</p:Room></p:south>
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom9</p:Room>
    	<p:north><Inject/><p:Room>wumpusRoom</p:Room></p:north> 
    	<p:east><Inject/><p:Room>emptyRoom10</p:Room></p:east>
@@ -150,12 +166,14 @@
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
    	<p:Room>emptyRoom10</p:Room>
    	<p:south><Inject/><p:Room>emptyRoom7</p:Room></p:south>
    	<p:west><Inject/><p:Room>emptyRoom9</p:Room></p:west>
    </p:GameRoom>
    
    <p:GameRoom>
+    <SessionScoped/>
     <p:roomType>MONSTER</p:roomType>
     <p:adjacentMessage>You smell a Wumpus</p:adjacentMessage>
     <p:shootMessage>You hear a 'Thud', followed by a roar of pain.</p:shootMessage>
