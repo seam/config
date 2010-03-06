@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   
+   
+   
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.jboss.seam.xml.examples</groupId>
+   <artifactId>princess-rescue</artifactId>
+   <packaging>war</packaging>
+   <name>princess-rescue</name>
+   <version>1.0.0-SNAPSHOT</version>
+
+   <properties>
+      <!--
+         Explicitly declaring the source encoding eliminates the following message:
+         [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+      -->
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <!-- The version of Weld extensions in use -->
+      <weld.extensions.version>1.0.1-SNAPSHOT</weld.extensions.version>
+   </properties>
+
+   <repositories>
+       <!-- Several key Java EE APIs and RIs are missing from the Maven Central Repository -->
+       <!-- The goal is to eventually eliminate the reliance on the JBoss repository -->
+       <repository>
+          <id>repository.jboss.org</id>
+          <name>JBoss Repository</name>
+          <url>http://repository.jboss.org/maven2</url>
+       </repository>
+   </repositories>
+
+   <dependencyManagement>
+      <dependencies>
+         <!-- Import scope will provide versions for dependencies below. -->
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-extensions-bom</artifactId>
+            <version>${weld.extensions.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
+   <dependencies>
+
+	  <dependency>
+         <groupId>org.jboss.seam</groupId>
+         <artifactId>seam-xml</artifactId>
+         <version>3.0.0-SNAPSHOT</version>
+      </dependency>
+
+      <!-- Common to JEE and Servlet containers -->
+      <dependency>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.annotation</groupId>
+         <artifactId>jsr250-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <!-- JSF 2.0 API -->
+      <dependency>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-api</artifactId>
+      </dependency>
+
+      <!-- Optional, but pretty useful. -->
+      <!--
+         <dependency> <groupId>javax.servlet</groupId> <artifactId>jstl</artifactId> </dependency>
+      -->
+
+      <!-- Optional, but highly recommended. -->
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <version>5.10</version>
+         <scope>test</scope>
+         <classifier>jdk15</classifier>
+      </dependency>
+
+      <!-- Jetty/Tomcat-specific scopes and artifacts -->
+
+      <!-- JSF 2.0 -->
+      <dependency>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-impl</artifactId>
+         <version>2.0.1-FCS</version>
+         <scope>runtime</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-api</artifactId>
+         <version>2.0.1-FCS</version>
+         <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.weld.servlet</groupId>
+         <artifactId>weld-servlet</artifactId>
+         <version>1.0.1-Final</version>
+         <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.glassfish.web</groupId>
+         <artifactId>el-impl</artifactId>
+         <version>2.1.2-b04</version>
+         <scope>runtime</scope>
+         <exclusions>
+            <exclusion>
+               <groupId>javax.el</groupId>
+               <artifactId>el-api</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <!-- end Jetty/Tomcat-specific scopes and artifacts -->
+
+      <!-- Bean Validation API (JSR 303) -->
+      <dependency>
+         <groupId>javax.validation</groupId>
+         <artifactId>validation-api</artifactId>
+      </dependency>
+
+      <!-- Bean Validation Implementation -->
+      <!-- Provides portable constraints such as @NotEmpty, @Email and @Url -->
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-validator</artifactId>
+         <version>4.0.0.GA</version>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <finalName>princess-rescue</finalName>
+      <plugins>
+         <!-- Compiler plugin enforces Java 1.5 compatibility -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <source>1.5</source>
+               <target>1.5</target>
+            </configuration>
+         </plugin>
+
+         <!-- Eclipse plugin - download source and JavaDoc jars automatically -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <configuration>
+               <wtpversion>2.0</wtpversion>
+               <downloadSources>true</downloadSources>
+               <downloadJavadocs>true</downloadJavadocs>
+            </configuration>
+         </plugin>
+
+         <!-- Embedded Jetty (jetty:run) -->
+         <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>maven-jetty-plugin</artifactId>
+            <configuration>
+               <!-- Delete this block to have Jetty run default port (8080) -->
+               <connectors>
+                  <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                     <port>9090</port>
+                  </connector>
+               </connectors>
+               <!-- force friendly name instead of artifact name + version -->
+               <contextPath>${project.build.finalName}</contextPath>
+               <!-- Where the BeanManager is constructed. This is where you'll declare datasources. -->
+               <jettyEnvXml>${basedir}/src/test/resources/jetty-env.xml</jettyEnvXml>
+               <!-- This parameter will auto-deploy modified classes. -->
+               <!-- You can save changes in a file or class and refresh your browser to view the changes. -->
+               <scanIntervalSeconds>3</scanIntervalSeconds>
+            </configuration>
+         </plugin>
+
+         <!-- Embedded Tomcat (package tomcat:run) -->
+         <!-- Standalone Tomcat (package tomcat:deploy) -->
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>tomcat-maven-plugin</artifactId>
+            <configuration>
+               <path>/${project.build.finalName}</path>
+               <!-- Embedded port -->
+               <port>9090</port>
+               <!--
+                  The default authentication credentials for remote deployment are username "admin" with no password To
+                  override credentials, define a server in settings.xml and activate it using the <server> element
+               -->
+               <url>http://localhost:8080/manager</url>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+</project>
