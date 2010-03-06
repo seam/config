@@ -12,10 +12,10 @@ public class BeanResult<X>
    Class<X> type;
    boolean override, extend;
 
-   public BeanResult(Class<X> type)
+   public BeanResult(Class<X> type, boolean readAnnotations)
    {
       this.type = type;
-      builder = new NewAnnotatedTypeBuilder<X>(type);
+      builder = new NewAnnotatedTypeBuilder<X>(type, readAnnotations);
    }
 
    public NewAnnotatedTypeBuilder<X> getBuilder()

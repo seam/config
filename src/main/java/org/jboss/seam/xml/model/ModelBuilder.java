@@ -27,10 +27,10 @@ import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.RootNamespaceElementResolver;
-import org.jboss.seam.xml.util.ReflectionUtils;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.util.ReflectionUtils;
 import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 
 /**
@@ -99,15 +99,8 @@ public class ModelBuilder
          if (type == ResultType.BEAN)
          {
             BeanResult<?> tp = buildAnnotatedType((ClassXmlItem) rb);
-            if (tp.isExtend())
-            {
-               ret.getExtendBeans().add(tp);
-            }
-            else
-            {
-               ret.getBeans().add(tp);
-            }
-            if (tp.isOverride())
+            ret.getBeans().add(tp);
+            if (tp.isOverride() || tp.isExtend())
             {
                ret.addVeto(tp.getType());
             }
@@ -237,13 +230,16 @@ public class ModelBuilder
    @SuppressWarnings("unchecked")
    BeanResult<?> buildAnnotatedType(ClassXmlItem rb)
    {
-      BeanResult<?> result = new BeanResult(rb.getJavaClass());
+      boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
+      boolean extend = !rb.getChildrenOfType(ExtendsXmlItem.class).isEmpty();
+
+      // if it is an extend we want to read the annotations from the underlying
+      // class
+      BeanResult<?> result = new BeanResult(rb.getJavaClass(), extend);
       NewAnnotatedTypeBuilder<?> type = result.getBuilder();
       // list of constructor arguments
       List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();
 
-      boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
-      boolean extend = !rb.getChildrenOfType(ExtendsXmlItem.class).isEmpty();
       if (override && extend)
       {
          throw new XmlConfigurationException("A bean may not both <override> and <extend> an existing bean", rb.getDocument(), rb.getLineno());

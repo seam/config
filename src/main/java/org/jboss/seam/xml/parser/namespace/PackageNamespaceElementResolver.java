@@ -4,6 +4,7 @@
  */
 package org.jboss.seam.xml.parser.namespace;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,11 +12,14 @@ import java.util.Set;
 
 import org.jboss.seam.xml.model.AnnotationXmlItem;
 import org.jboss.seam.xml.model.ClassXmlItem;
+import org.jboss.seam.xml.model.FieldXmlItem;
+import org.jboss.seam.xml.model.MethodXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
-import org.jboss.seam.xml.util.ReflectionUtils;
+import org.jboss.seam.xml.util.XmlConfigurationException;
+import org.jboss.weld.extensions.util.ReflectionUtils;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
@@ -80,7 +84,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
          // if the item can be a method of a FIELD
          if (parent.getAllowedItem().contains(XmlItemType.METHOD) || parent.getAllowedItem().contains(XmlItemType.FIELD))
          {
-            return ReflectionUtils.resolveMethodOrField(name, parent, node.getInnerText(), node.getDocument(), node.getLineNo());
+            return resolveMethodOrField(name, parent, node.getInnerText(), node.getDocument(), node.getLineNo());
          }
          else
          {
@@ -94,4 +98,25 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       return null;
    }
 
+   public static XmlItem resolveMethodOrField(String name, XmlItem parent, String innerText, String document, int lineno)
+   {
+      Class<?> p = parent.getJavaClass();
+      Field f = null;
+      boolean methodFound = ReflectionUtils.methodExists(p, name);
+      f = ReflectionUtils.getField(p, name);
+
+      if (methodFound && f != null)
+      {
+         throw new XmlConfigurationException(parent.getJavaClass().getName() + " has both a method and a field named " + name + " and so cannot be configured via XML", document, lineno);
+      }
+      if (methodFound)
+      {
+         return new MethodXmlItem(parent, name, document, lineno);
+      }
+      else if (f != null)
+      {
+         return new FieldXmlItem(parent, f, innerText, document, lineno);
+      }
+      return null;
+   }
 }
