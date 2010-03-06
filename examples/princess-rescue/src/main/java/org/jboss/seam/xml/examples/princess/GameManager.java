@@ -56,30 +56,37 @@ public class GameManager implements Serializable
       {
          gameOver = true;
       }
-      for (GameRoom g : getAdjacentRooms())
+      else
       {
-         gameMessage.add(g.getAdjacentMessage());
+         for (GameRoom g : getAdjacentRooms())
+         {
+            if (!g.isMonsterKilled())
+            {
+               gameMessage.add(g.getAdjacentMessage());
+            }
+         }
       }
    }
 
    public void runShoot(GameRoom room)
    {
-      if (room.getRoomType() == RoomType.MONSTER)
+      if (room.getShootEffect() == ShootEffect.KILL)
+      {
+         room.setMonsterKilled(true);
+      }
+      else if (room.getShootEffect() == ShootEffect.ANNOY)
+      {
+         gameOver = true;
+      }
+      if (room.getShootMessage() != null)
       {
          gameMessage.add(room.getShootMessage());
-         if (room.getShootEffect() == ShootEffect.KILL)
-         {
-            room.setMonsterKilled(true);
-         }
-         else if (room.getShootEffect() == ShootEffect.ANNOY)
-         {
-            gameOver = true;
-         }
       }
       else
       {
          gameMessage.add(emptyRoomShootMessage);
       }
+
    }
 
    private Set<GameRoom> getAdjacentRooms()
