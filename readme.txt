@@ -1,73 +1,39 @@
-Seam XML Extensions Readme
+Seam XML 3.0.0 Alpha 1
+==========================
 
-To use:
+Seam XML provides a way of configuring CDI beans via xml
 
-Place the seam-xml*.jar on the classpath,
+Contents of distribution
+========================
 
-The extension will look for a file called seam-beans.xml in the root of all archives in the deployment. There is an extension mechanism 
-that allows you to register other xml sources that will get documented in a future release (have a look at TestXmlProvider and the 
-org.jboss.seam.xml.XmlExtension file if you want more info).
+doc/
 
-The xml format:
+  API Docs and reference guide.
+  
+examples/
 
-The best way to understand the format is with some examples:
+  Seam XML Examples
+  
+lib/
 
-<Beans xmlns="urn:seam:core"
-          xmlns:test="urn:java:org.jboss.seam.xml.test.beans">
-    <test:Bean1/>
-</Beans>
+  Seam XML jar files
+  
+Licensing
+=========
 
-This registers a single bean, org.jboss.seam.xml.test.beans.Bean1
+This distribution, as a whole, is licensed under the terms of the GNU Lesser General Public License
+(LGPL) Version 2.1, the text of which is contained in the file lgpl.txt.
 
+Seam Remoting URLs
+==================
 
-<Beans xmlns="urn:jbraze:core"
-          xmlns:test="urn:java:org.jboss.seam.xml.test.beans">
-   
-    <test:Bean1>
-        <test:bean2>
-            <Inject/>
-        </test:bean2>
-    </test:Bean1>
-    
-    <test:Bean2>
-        <test:produceBean3>
-            <Produces/>
-        </test:produceBean3>
-    </test:Bean2>
-          
-</Beans>
-
-This registers two beans, Bean1 has injection target, a field named bean2. Bean2 has a producer field named produceBean3.
+Seam Framework Home Page:      http://www.seamframework.org
+Downloads:                     http://www.seamframework.org/Download/SeamDownloads
+Forums:                        http://www.seamframework.org/Community/SeamUsers
+Source Code:
+http://anonsvn.jboss.org/repos/seam/modules/xml/
+Issue Tracking:                http://jira.jboss.org/jira/browse/JBSEAM
 
 
-<Beans xmlns="urn:jbraze:core"
-          xmlns:test="urn:java:org.jboss.seam.xml.test.beans">
-   
-    <test:OtherQualifier>
-        <Qualifier/>
-    </test:OtherQualifier>
-     
-    <test:QualifiedBean1>
-        <test:OtherQualifier value1="AA" value2="1">A</test:OtherQualifier>
-    </test:QualifiedBean1>
-    
-    <test:QualifiedBean2>
-        <test:OtherQualifier value1="BB" value2="2" value="B" />
-    </test:QualifiedBean2>
-    
-    <test:QualifierTestBean>
-        <test:bean1>
-            <test:OtherQualifier value1="AA" value2="1" value="A" />
-            <Inject/>
-        </test:bean1>
-        <test:bean2>
-            <test:OtherQualifier value1="BB" value2="2">B</test:OtherQualifier>
-            <Inject/>
-        </test:bean2>
-    </test:QualifierTestBean>
-          
-</Beans>
 
-This registers a qualifier, and then registers two beans with the given values for the qualifiers attributes. 
-QualifierTestBean has two injection points, also with qualifiers. For more examples look at the
-src/test/resources folder. 
+
