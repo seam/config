@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
-<chapter id="remoting">
+<chapter id="xml">
   <title>Seam XML General</title>
   
   <para>Seam provides a method for configuring JSR-299 beans using XML. Using XML it is possible to add new beans, override existing beans, and add 
