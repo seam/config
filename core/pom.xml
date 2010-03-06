@@ -9,10 +9,10 @@
       <version>3.0.0-SNAPSHOT</version>
    </parent>
     
-   <artifactId>seam-xml</artifactId>
+   <artifactId>seam-xml-core</artifactId>
    <packaging>jar</packaging>
    <version>3.0.0-SNAPSHOT</version>
-   <name>Seam XML Configuration</name>
+   <name>Seam XML Extension Core</name>
  
    <repositories>
       <repository>
@@ -66,9 +66,9 @@
   </dependencies>
   
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk</developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/core</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/core</developerConnection>
+      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/core</url>
    </scm>
   
   <build>
@@ -97,7 +97,7 @@
 		     <artifactId>maven-surefire-plugin</artifactId>
 		     <configuration>
 		     <forkMode>once</forkMode>
-			 <argLine>-Xmx512Mb</argLine>
+			 <argLine>-Xmx512m</argLine>
 		     </configuration>
 		   </plugin>   
     </plugins>

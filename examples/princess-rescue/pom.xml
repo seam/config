@@ -8,7 +8,7 @@
    <groupId>org.jboss.seam.xml.examples</groupId>
    <artifactId>princess-rescue</artifactId>
    <packaging>war</packaging>
-   <name>princess-rescue</name>
+   <name>Seam XML Example Princess Rescue</name>
    <version>1.0.0-SNAPSHOT</version>
 
    <properties>
@@ -48,7 +48,7 @@
 
 	  <dependency>
          <groupId>org.jboss.seam</groupId>
-         <artifactId>seam-xml</artifactId>
+         <artifactId>seam-xml-core</artifactId>
          <version>3.0.0-SNAPSHOT</version>
       </dependency>
 
