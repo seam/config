@@ -4,20 +4,18 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
+   <parent>
+      <artifactId>weld-parent</artifactId>
+      <groupId>org.jboss.weld</groupId>
+      <version>8</version>
+   </parent>
 
    <groupId>org.jboss.seam.xml</groupId>
-   <artifactId>seam-xml-build-aggregator</artifactId>
+   <artifactId>seam-xml-parent</artifactId>
    <packaging>pom</packaging>
    <version>${seam.version}</version>
-   <name>Seam XML Build Aggregator</name>
+   <name>Seam XML Parent</name>
 
-   <modules>
-      <module>parent</module>
-      <module>core</module>
-      <module>docs</module>
-      <module>examples/princess-rescue</module>
-   </modules>
-   
    <properties>
       <seam.version>3.0.0-SNAPSHOT</seam.version>
    </properties>
@@ -37,6 +35,28 @@
       </plugins>
    </build>   
 
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <version>2.2</version>
+            <scope>provided</scope>
+         </dependency>
+         <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.0-SP1</version>
+         </dependency>
+         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
+   <!-- Snapshots repo to get parent -->
    <repositories>
       <repository>
          <id>oss.sonatype.org/jboss-snapshots</id>
@@ -53,9 +73,9 @@
    </repositories>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk</developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/parent</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/parent</developerConnection>
+      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/parent</url>
    </scm>
 
 </project>
