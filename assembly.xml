@@ -23,6 +23,7 @@
          <includes>
             <include>princess-rescue/pom.xml</include>
             <include>princess-rescue/src/**</include>
+            <include>princess-rescue/readme.txt</include>
          </includes>
       </fileSet>
       
@@ -40,6 +41,7 @@
       <moduleSet>
          <includes>
             <include>org.jboss.seam.xml:seam-xml-core:jar</include>
+            <include>org.jboss.weld:weld-extensions-core</include>
          </includes>
          <binaries>
             <outputDirectory>seam-xml/lib</outputDirectory>
