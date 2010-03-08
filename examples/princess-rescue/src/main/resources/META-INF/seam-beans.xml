@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Beans xmlns="urn:seam:core"
+<beans xmlns="urn:seam:core"
           xmlns:p="org.jboss.seam.xml.examples.princess">
    <!-- Makes the Room annotation a qualifier -->
    <p:Room>
@@ -184,4 +184,4 @@
    	<p:south><Inject/><p:Room>emptyRoom9</p:Room></p:south>
    </p:GameRoom>
 
-</Beans>
+</beans>

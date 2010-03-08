@@ -26,7 +26,7 @@
     <programlisting>
     <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<Beans xmlns="urn:seam:core"
+<beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
        
     <test:ProducerQualifier>
@@ -48,7 +48,7 @@
         </test:value>
    </test:RecieverBean>
    
-</Beans>
+</beans>
     ]]>
     </programlisting>
     <para>From the top:</para>
@@ -235,7 +235,7 @@ public class ProducerBean
         <programlisting>
             <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<Beans xmlns="urn:seam:core"
+<beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.method">
     <test:MethodBean>
         <test:method>
@@ -261,7 +261,7 @@ public class ProducerBean
             </parameters>
         </test:method>
     </test:MethodBean>
-</Beans>
+</beans>
 
 public class MethodBean
 {

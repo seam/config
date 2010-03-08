@@ -5,6 +5,7 @@
 package org.jboss.seam.xml.bootstrap;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -29,6 +30,8 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
    static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "WEB-INF/seam-beans.xml" };
 
    final String[] resources;
+
+   InputStream stream;
 
    public ClassPathXmlDocumentProvider()
    {
@@ -83,12 +86,33 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
 
    public void close()
    {
-      // noop
+      if (stream != null)
+      {
+         try
+         {
+            stream.close();
+         }
+         catch (Exception e)
+         {
+            e.printStackTrace();
+         }
+      }
    }
 
    public XmlDocument getNextDocument()
    {
-
+      if (stream != null)
+      {
+         try
+         {
+            stream.close();
+            stream = null;
+         }
+         catch (Exception e)
+         {
+            e.printStackTrace();
+         }
+      }
       if (!iterator.hasNext())
       {
          return null;
@@ -103,7 +127,8 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
             {
                try
                {
-                  return new InputSource(url.openStream());
+                  stream = url.openStream();
+                  return new InputSource(stream);
                }
                catch (IOException e)
                {

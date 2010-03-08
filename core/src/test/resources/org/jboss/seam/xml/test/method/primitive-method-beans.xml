@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Beans xmlns="urn:seam:core"
+<beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.method">
    
 
@@ -40,4 +40,4 @@
         </test:value2>
     </test:PrimitiveValueProducer>
  
-</Beans>
+</beans>

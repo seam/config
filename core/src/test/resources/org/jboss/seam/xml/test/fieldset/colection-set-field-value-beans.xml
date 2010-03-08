@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Beans xmlns="urn:seam:core"
+<beans xmlns="urn:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
    
     <test:CollectionFieldValue>
@@ -18,4 +18,4 @@
         </test:sset>
     </test:CollectionFieldValue>
    
-</Beans>
+</beans>
