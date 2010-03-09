@@ -10,17 +10,22 @@
   
  <section>
     <title>Configuration</title>
-    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file in your deployment. </para>
+    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file and the weld extensions jar in your deployment. </para>
  </section>
  
  <section>
     <title>Getting Started</title>
-    <para>By default XML files are discovered from the classpath. The extension looks for an XML file named <literal>seam-bean.xml</literal> in the following locations: </para>
+    <para>By default XML files are discovered from the classpath. The extension looks for an XML file in the following locations:</para>
     <itemizedlist>
-    <listitem><para>The root of an archive</para></listitem>
-    <listitem><para><literal>WEB-INF</literal></para></listitem>
-    <listitem><para><literal>META-INF</literal></para></listitem>
+    <listitem><para><literal>/WEB-INF/beans.xml</literal></para></listitem>
+    <listitem><para><literal>/META-INF/beans.xml</literal></para></listitem>
+    <listitem><para>/seam-beans.xml</para></listitem>
+    <listitem><para><literal>/WEB-INF/seam-beans.xml</literal></para></listitem>
+    <listitem><para><literal>/META-INF/seam-beans.xml</literal></para></listitem>
     </itemizedlist>
+    
+    <para>The syntax for beans.xml and seam-beans.xml is slightly different. Unless otherwise noted all example in this document 
+    use the seam-beans.xml format. Using beans.xml may cause problems with some JSR-299 implmentations.</para>
     
     <para>Lets start with a simple example</para>
     <programlisting>
@@ -350,6 +355,44 @@ public @interface OtherQualifier
 ]]>
         </programlisting>
         <para>The value member can be set using the inner text of the node, as seen in the first example.</para>
+    </section>
+    
+    <section>
+        <title>Using beans.xml instead of seam-beans.xml</title>
+        <para>
+            As the format is beans.xml is defined by the specification the format is slightly different:
+        </para>
+         <programlisting>
+            <![CDATA[
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:s="urn:seam:core"
+       xmlns:test="urn:java:org.jboss.seam.xml.test.interceptor"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
+       
+    <interceptors>
+        <class>org.jboss.seam.xml.test.interceptor.InterceptorBean</class>
+    </interceptors>
+    
+    <test:InterceptorBinding>
+        <s:InterceptorBinding/>
+    </test:InterceptorBinding>
+   
+   <test:InterceptorBean>
+        <s:override/>
+        <s:Interceptor/>
+        <test:InterceptorBinding/>
+        <test:myMethod>
+            <s:AroundInvoke/>
+        </test:myMethod>
+    </test:InterceptorBean>
+
+</beans>            
+]]>
+        </programlisting>    
+        <para>As you can see from the example above the beans.xml uses a different root namespace, so all elements in <literal>urn:seam:core </literal>
+        must be qualified. It is possible that some JST-299 implementations will not support this, so for maximum compatibility it is recommended that 
+        seam-beans.xml be used instead.</para>        
     </section>
     
     <section>

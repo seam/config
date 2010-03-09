@@ -27,7 +27,7 @@ import org.xml.sax.InputSource;
 public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
 {
 
-   static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "WEB-INF/seam-beans.xml" };
+   static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "WEB-INF/seam-beans.xml" , "META-INF/beans.xml", "WEB-INF/beans.xml"};
 
    final String[] resources;
 
@@ -113,34 +113,53 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
             e.printStackTrace();
          }
       }
-      if (!iterator.hasNext())
-      {
-         return null;
-      }
+      
       try
       {
-         final URL url = iterator.next();
-         return new XmlDocument()
+         while(iterator.hasNext())
          {
-
-            public InputSource getInputSource()
+            final URL url = iterator.next();
+            //ignore empty files
+            InputStream test = null;
+            try
             {
-               try
+                test = url.openStream();
+                if(test.available() == 0)
+                {
+                   break;
+                }
+            }
+            finally
+            {
+               if(test != null)
                {
-                  stream = url.openStream();
-                  return new InputSource(stream);
-               }
-               catch (IOException e)
-               {
-                  throw new RuntimeException(e);
+                  test.close();
                }
             }
-
-            public String getFileUrl()
+            
+            return new XmlDocument()
             {
-               return url.toString();
-            }
-         };
+   
+               public InputSource getInputSource()
+               {
+                  try
+                  {
+                     stream = url.openStream();
+                     return new InputSource(stream);
+                  }
+                  catch (IOException e)
+                  {
+                     throw new RuntimeException(e);
+                  }
+               }
+   
+               public String getFileUrl()
+               {
+                  return url.toString();
+               }
+            };
+         }
+         return null;
       }
       catch (Exception e)
       {
