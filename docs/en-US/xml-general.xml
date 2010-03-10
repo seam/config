@@ -31,7 +31,7 @@
     <programlisting>
     <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="urn:seam:core"
+<beans xmlns="urn:java:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
        
     <test:ProducerQualifier>
@@ -59,7 +59,7 @@
     <para>From the top:</para>
     
     
-    <para>The root element of the file has to be <literal>&lt;Beans/&gt;</literal>, and the root namespace should be <literal>urn:seam:core</literal>. 
+    <para>The root element of the file has to be <literal>&lt;Beans/&gt;</literal>, and the root namespace should be <literal>urn:java:seam:core</literal>. 
     You will also notice that there is a second namespace defined, <literal>urn:java:org.jboss.seam.xml.test.injection</literal>, this namespace is used
      to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>.</para>
     <programlisting>
@@ -240,7 +240,7 @@ public class ProducerBean
         <programlisting>
             <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="urn:seam:core"
+<beans xmlns="urn:java:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.method">
     <test:MethodBean>
         <test:method>

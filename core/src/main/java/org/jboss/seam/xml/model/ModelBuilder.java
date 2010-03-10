@@ -44,7 +44,7 @@ public class ModelBuilder
 
    AnnotationInstanceProvider ac = new AnnotationInstanceProvider();
 
-   static final String ROOT_NAMESPACE = "urn:seam:core";
+   static final String ROOT_NAMESPACE = "urn:java:seam:core";
 
    static final String BEANS_ROOT_NAMESPACE = "http://java.sun.com/xml/ns/javaee";
 
@@ -63,7 +63,7 @@ public class ModelBuilder
       }
       if (!(ROOT_NAMESPACE.equals(root.getNamespaceUri()) || BEANS_ROOT_NAMESPACE.equals(root.getNamespaceUri())))
       {
-         throw new XmlConfigurationException("Wrong root namespace for XML config file, expected:" + ROOT_NAMESPACE + " or " + BEANS_ROOT_NAMESPACE +" found:" + root.getNamespaceUri(), root.getDocument(), root.getLineNo());
+         throw new XmlConfigurationException("Wrong root namespace for XML config file, expected:" + ROOT_NAMESPACE + " or " + BEANS_ROOT_NAMESPACE + " found:" + root.getNamespaceUri(), root.getDocument(), root.getLineNo());
       }
 
       resolvers.put(ROOT_NAMESPACE, new RootNamespaceElementResolver());
@@ -76,10 +76,10 @@ public class ModelBuilder
             // nodes with a null namespace are whitespace nodes etc
             if (node.getNamespaceUri() != null)
             {
-            	if(node.getNamespaceUri().equals(BEANS_ROOT_NAMESPACE))
-            	{
-            		continue;
-            	}
+               if (node.getNamespaceUri().equals(BEANS_ROOT_NAMESPACE))
+               {
+                  continue;
+               }
                XmlItem rb = resolveNode(node, null);
                // validateXmlItem(rb);
                addNodeToResult(ret, rb);
