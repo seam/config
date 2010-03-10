@@ -19,53 +19,52 @@
     <itemizedlist>
     <listitem><para><literal>/WEB-INF/beans.xml</literal></para></listitem>
     <listitem><para><literal>/META-INF/beans.xml</literal></para></listitem>
-    <listitem><para>/seam-beans.xml</para></listitem>
     <listitem><para><literal>/WEB-INF/seam-beans.xml</literal></para></listitem>
     <listitem><para><literal>/META-INF/seam-beans.xml</literal></para></listitem>
     </itemizedlist>
     
-    <para>The syntax for beans.xml and seam-beans.xml is slightly different. Unless otherwise noted all example in this document 
-    use the seam-beans.xml format. Using beans.xml may cause problems with some JSR-299 implmentations.</para>
+    <para>The beans.xml file is the preferred way of configuring beans via XML, however it may be possible that some JSR-299 implementations will not allow this, 
+    so seam-beans.xml is provided as an alternative. </para>
     
     <para>Lets start with a simple example</para>
     <programlisting>
     <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="urn:java:seam:core"
-          xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:s="urn:java:seam:core" 
+       xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
        
     <test:ProducerQualifier>
-        <Qualifier/>
+        <s:Qualifier/>
     </test:ProducerQualifier>
     
     <test:ProducerBean>
         <test:value>
-            <Produces/>
+            <s:Produces/>
             <test:ProducerQualifier/>
-            <value>hello world</value>
+            <s:value>hello world</s:value>
         </test:value>
     </test:ProducerBean>
 
    <test:RecieverBean>
         <test:value>
             <test:ProducerQualifier/>
-            <Inject/>
+            <s:Inject/>
         </test:value>
    </test:RecieverBean>
    
 </beans>
     ]]>
     </programlisting>
-    <para>From the top:</para>
-    
-    
-    <para>The root element of the file has to be <literal>&lt;Beans/&gt;</literal>, and the root namespace should be <literal>urn:java:seam:core</literal>. 
-    You will also notice that there is a second namespace defined, <literal>urn:java:org.jboss.seam.xml.test.injection</literal>, this namespace is used
-     to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>.</para>
+    <para>You will notice that two new namspace declarations have been added to the beans.xml file: <literal>urn:java:seam:core</literal> and <literal>urn:java:org.jboss.seam.xml.test.injection</literal>. 
+    <literal>urn:java:seam:core</literal> is the main namespace used by the XML extension, we will cover exactly what lives in this namespace later. 
+    <literal>urn:java:org.jboss.seam.xml.test.injection</literal> is used to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>, so in the exaple above
+    <literal>&lt;test:ProducerBean&gt;</literal> resolves to <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>.</para>
     <programlisting>
         <![CDATA[
 <test:ProducerQualifier>
-    <Qualifier/>
+    <s:Qualifier/>
 </test:ProducerQualifier>
         ]]>
     </programlisting>
@@ -76,9 +75,9 @@
         <![CDATA[
 <test:ProducerBean>
     <test:value>
-        <Produces/>
+        <s:Produces/>
         <test:ProducerQualifier/>
-        <value>hello world</value>
+        <s:value>hello world</s:value>
     </test:value>
 </test:ProducerBean>
     ]]>
@@ -86,12 +85,12 @@
     
     <para>The next entry in the file is a bean declaration. The bean class is <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>. 
     It is important to note that this declaration does not change the existing declaration of ProducerBean, instead it installs a new bean. In 
-    this instance there will be two ProducerBean CDI beans.</para>
+    this instance there will be two <literal>ProducerBean</literal> CDI beans.</para>
 
-    <para>This bean has a field called 'value', this field is configured to be a producer field using XML (it is also possible to configure producer
-     methods, more on this later). The <literal>&lt;test:value/&gt;</literal> declaration has several child elements. The <literal>&lt;Produces/&gt;</literal>
+    <para>This bean has a field called <literal>value</literal>, this field is configured to be a producer field using XML (it is also possible to configure producer
+     methods, more on this later). The <literal>&lt;test:value/&gt;</literal> declaration has several child elements. The <literal>&lt;s:Produces/&gt;</literal>
      element tells the container that this is a producer field. <literal>&lt;test:ProducerQualifier/&gt;</literal> element defines a qualifier for the producer 
-     field. The <literal>&lt;value&gt;</literal> element defines an initial value for the field.</para>
+     field. The <literal>&lt;s:value&gt;</literal> element defines an initial value for the field.</para>
 
     <para>Child elements of fields, methods and classes that resolve to Annotation types are considered to be annotations on the corresponding element, 
     so the corresponding java declaration for the XML above would be:</para>
@@ -111,7 +110,7 @@ public class ProducerBean
 <test:RecieverBean>
     <test:value>
          <test:ProducerQualifier/>
-         <Inject/>
+         <s:Inject/>
     </test:value>
 </test:RecieverBean>
        ]]>
@@ -122,8 +121,8 @@ public class ProducerBean
     </section>
     
     <section>
-        <title>The root namespace</title>
-        <para>The root namesapce can contain the following elements:</para>
+        <title>The main namespace</title>
+        <para>The main namesapce is <literal>urn:java:seam:core</literal> can contain the following elements:</para>
         
         <itemizedlist>
             <listitem><para><literal>Beans</literal></para></listitem>
@@ -161,25 +160,25 @@ public class ProducerBean
             <listitem><para><literal>javax.interceptor</literal></para></listitem>
         </itemizedlist>
         
-        <para>So the <literal>&lt;Produces&gt;</literal> element above actually resolved to <literal>java.enterprise.inject.Produces</literal> 
-        and the <literal>&lt;Inject&gt;</literal> element resolved to <literal>javax.inject.Inject</literal>.</para>
+        <para>So the <literal>&lt;s:Produces&gt;</literal> element above actually resolved to <literal>java.enterprise.inject.Produces</literal> 
+        and the <literal>&lt;s:Inject&gt;</literal> element resolved to <literal>javax.inject.Inject</literal>.</para>
         
     </section>
     
     <section>
         <title>Overriding and extending beans</title>
-        <para>The may be cases where you want to modify an existing bean rather that adding a new one. The <literal>&lt;override&gt;</literal> and <literal>&lt;extends&gt;</literal>
-        tags allow you to do this. The <literal>&lt;override&gt;</literal> tag prevents the existing bean from being installed, and registers a new one with the given configuration.
-        The <literal>&lt;extends&gt;</literal> tag allows you to add extra configuration to an existing bean.</para>
+        <para>The may be cases where you want to modify an existing bean rather that adding a new one. The <literal>&lt;s:override&gt;</literal> and <literal>&lt;s:extends&gt;</literal>
+        tags allow you to do this. The <literal>&lt;s:override&gt;</literal> tag prevents the existing bean from being installed, and registers a new one with the given configuration.
+        The <literal>&lt;s:extends&gt;</literal> tag allows you to add extra configuration to an existing bean.</para>
         <programlisting>
             <![CDATA[
 <test:MyBean>
-	<extends>
+	<s:extends>
 	<test:NewQualifier/>
 </test:MyBean>
 
 <test:OtherBean>
-	<override>
+	<s:override>
 	<test:NewQualifier/>
 </test:OtherBean>
               ]]>
@@ -189,7 +188,7 @@ public class ProducerBean
     
     <section>
         <title>Initial Field Values</title>
-        <para>Inital field values can be set in two different ways, in addition to the <literal>&lt;value&gt;</literal> element shown above it can be set as follows:</para>
+        <para>Inital field values can be set in two different ways, in addition to the <literal>&lt;s:value&gt;</literal> element shown above it can be set as follows:</para>
         <programlisting>
             <![CDATA[
 <test:someField>hello world</test:someField>
@@ -203,27 +202,27 @@ public class ProducerBean
             <![CDATA[
 <test:ArrayFieldValue>
     <test:iarray>
-        <value>1</value>
-        <value>2</value>
+        <s:value>1</s:value>
+        <s:value>2</s:value>
     </test:iarray>
     <test:carray>
-        <value>java.lang.Integer</value>
-        <value>java.lang.Long</value>
+        <s:value>java.lang.Integer</s:value>
+        <s:value>java.lang.Long</s:value>
     </test:carray>
     <test:sarray>
-        <value>hello</value>
-        <value>world</value>
+        <s:value>hello</s:value>
+        <s:value>world</s:value>
     </test:sarray>
 </test:ArrayFieldValue>
 
 <test:MapFieldValue>
     <test:map1>
-        <entry><key>1</key><value>hello</value></entry>
-        <entry><key>2</key><value>world</value></entry>
+        <s:entry><s:key>1</s:key><s:value>hello</s:value></s:entry>
+        <s:entry><s:key>2</s:key><s:value>world</s:value></s:entry>
     </test:map1>
     <test:map2>
-        <e><k>1</k><v>java.lang.Integer</v></e>
-        <e><k>2</k><v>java.lang.Long</v></e>
+        <s:e><s:k>1</s:k><s:v>java.lang.Integer</s:v></s:e>
+        <s:e><s:k>2</s:k><s:v>java.lang.Long</s:v></s:e>
     </test:map2>
 </test:MapFieldValue>
           ]]>
@@ -240,30 +239,32 @@ public class ProducerBean
         <programlisting>
             <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="urn:java:seam:core"
-          xmlns:test="urn:java:org.jboss.seam.xml.test.method">
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:s="urn:java:seam:core" 
+       xmlns:test="urn:java:org.jboss.seam.xml.test.method">
     <test:MethodBean>
         <test:method>
-            <Produces/>
+            <s:Produces/>
         </test:method>
         <test:method>
-            <Produces/>
+            <s:Produces/>
             <test:Qualifier1/>
-            <parameters>
+            <s:parameters>
                 <test:MethodValueBean>
                     <test:Qualifier2/>
                 </test:MethodValueBean>
-            </parameters>
+            </s:parameters>
         </test:method>
          <test:method>
-            <Produces/>
+            <s:Produces/>
             <test:Qualifier1/>
-            <parameters>
-                <array dimensions="2">
+            <s:parameters>
+                <s:array dimensions="2">
                     <test:Qualifier2/>
                     <test:MethodValueBean/>
-                </array>
-            </parameters>
+                </s:array>
+            </s:parameters>
         </test:method>
     </test:MethodBean>
 </beans>
@@ -293,9 +294,9 @@ public class MethodBean
 
         <para>In this instance <literal>MethodBean</literal> has three methods, all of them rather imaginatively named <literal>method</literal>. 
         The first <literal>&lt;test:method&gt;</literal> entry in the XML file configures the method that takes no arguments. 
-        The <literal>&lt;Produces&gt;</literal> element makes it into a producer method. The next entry in the file configures 
+        The <literal>&lt;s:Produces&gt;</literal> element makes it into a producer method. The next entry in the file configures 
         the method that takes a <literal>MethodValueBean</literal> as a parameter. The final entry configures a method that takes a two
-        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  Method Parameters a specified inside the <literal>&lt;parameters&gt;</literal>
+        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  Method Parameters a specified inside the <literal>&lt;s:parameters&gt;</literal>
         tag. If these parameters have annotation children they are taken to be annotations on the parameter. </para> 
         
         <para>The corresponding java declaration for the xml above would be:</para>
@@ -313,7 +314,7 @@ public int method(@Qualifier2 MethodValueBean param) {//method body}
 public int method(@Qualifier2 MethodValueBean[][] param) {//method body}
            ]]>
          </programlisting>
-         <para>Array parameters can be represented using the <literal>&lt;array&gt;</literal> element, with a child element to 
+         <para>Array parameters can be represented using the <literal>&lt;s:array&gt;</literal> element, with a child element to 
          represent the type of the array. E.g.</para>
          <programlisting>
 int method(MethodValueBean[] param);
@@ -322,9 +323,9 @@ int method(MethodValueBean[] param);
         <programlisting>
             <![CDATA[
 <test:method>
-    <array>
+    <s:array>
       <test:MethodValueBean/>
-    </array>
+    </s:array>
 </test:method>
         ]]>
         </programlisting>
@@ -356,45 +357,7 @@ public @interface OtherQualifier
         </programlisting>
         <para>The value member can be set using the inner text of the node, as seen in the first example.</para>
     </section>
-    
-    <section>
-        <title>Using beans.xml instead of seam-beans.xml</title>
-        <para>
-            As the format is beans.xml is defined by the specification the format is slightly different:
-        </para>
-         <programlisting>
-            <![CDATA[
-<beans xmlns="http://java.sun.com/xml/ns/javaee"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:s="urn:seam:core"
-       xmlns:test="urn:java:org.jboss.seam.xml.test.interceptor"
-       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
-       
-    <interceptors>
-        <class>org.jboss.seam.xml.test.interceptor.InterceptorBean</class>
-    </interceptors>
-    
-    <test:InterceptorBinding>
-        <s:InterceptorBinding/>
-    </test:InterceptorBinding>
    
-   <test:InterceptorBean>
-        <s:override/>
-        <s:Interceptor/>
-        <test:InterceptorBinding/>
-        <test:myMethod>
-            <s:AroundInvoke/>
-        </test:myMethod>
-    </test:InterceptorBean>
-
-</beans>            
-]]>
-        </programlisting>    
-        <para>As you can see from the example above the beans.xml uses a different root namespace, so all elements in <literal>urn:seam:core </literal>
-        must be qualified. It is possible that some JST-299 implementations will not support this, so for maximum compatibility it is recommended that 
-        seam-beans.xml be used instead.</para>        
-    </section>
-    
     <section>
         <title>More Information</title>
         <para>For further information look at the units tests in the seam-xml distribution, also the JSR-299 
