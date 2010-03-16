@@ -28,7 +28,7 @@
             <version>2.2-beta-5</version>
             <configuration>
                <descriptors>
-                  <descriptor>assembly.xml</descriptor>
+                  <descriptor>../assembly.xml</descriptor>
                </descriptors>
             </configuration>
          </plugin>

@@ -17,16 +17,16 @@
     <title>Getting Started</title>
     <para>By default XML files are discovered from the classpath. The extension looks for an XML file in the following locations:</para>
     <itemizedlist>
-    <listitem><para><literal>/WEB-INF/beans.xml</literal></para></listitem>
-    <listitem><para><literal>/META-INF/beans.xml</literal></para></listitem>
-    <listitem><para><literal>/WEB-INF/seam-beans.xml</literal></para></listitem>
-    <listitem><para><literal>/META-INF/seam-beans.xml</literal></para></listitem>
+    <listitem><literal>/WEB-INF/beans.xml</literal></listitem>
+    <listitem><literal>/META-INF/beans.xml</literal></listitem>
+    <listitem><literal>/WEB-INF/seam-beans.xml</literal></listitem>
+    <listitem><literal>/META-INF/seam-beans.xml</literal></listitem>
     </itemizedlist>
     
-    <para>The beans.xml file is the preferred way of configuring beans via XML, however it may be possible that some JSR-299 implementations will not allow this, 
-    so seam-beans.xml is provided as an alternative. </para>
+    <para>The <literal>beans.xml</literal> file is the preferred way of configuring beans via XML, however it may be possible that some JSR-299 implementations will not allow this, 
+    so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
     
-    <para>Lets start with a simple example</para>
+    <para>Let's start with a simple example:</para>
     <programlisting>
     <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -47,20 +47,26 @@
         </test:value>
     </test:ProducerBean>
 
-   <test:RecieverBean>
+   <test:ReceiverBean>
         <test:value>
             <test:ProducerQualifier/>
             <s:Inject/>
         </test:value>
-   </test:RecieverBean>
+   </test:ReceiverBean>
    
 </beans>
     ]]>
     </programlisting>
-    <para>You will notice that two new namspace declarations have been added to the beans.xml file: <literal>urn:java:seam:core</literal> and <literal>urn:java:org.jboss.seam.xml.test.injection</literal>. 
-    <literal>urn:java:seam:core</literal> is the main namespace used by the XML extension, we will cover exactly what lives in this namespace later. 
-    <literal>urn:java:org.jboss.seam.xml.test.injection</literal> is used to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>, so in the exaple above
-    <literal>&lt;test:ProducerBean&gt;</literal> resolves to <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>.</para>
+    
+    <para>You will notice that two new namspace declarations have been added to the 
+      <literal>beans.xml</literal> file: <literal>urn:java:seam:core</literal> and 
+      <literal>urn:java:org.jboss.seam.xml.test.injection</literal>. The 
+      <literal>urn:java:seam:core</literal> namespace is the main one used by the XML 
+      extension, we will cover exactly what lives in this namespace later. The 
+      <literal>urn:java:org.jboss.seam.xml.test.injection</literal> namespace is used 
+      to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>, 
+      so in the example above <literal>&lt;test:ProducerBean&gt;</literal> resolves to 
+      <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>.</para>
     <programlisting>
         <![CDATA[
 <test:ProducerQualifier>
@@ -69,7 +75,8 @@
         ]]>
     </programlisting>
     
-    <para>The first entry in the file defines a new qualifier. <literal>ProducerQualifier</literal> is an annotation in the package <literal>org.jboss.seam.xml.test.injection</literal>.</para>
+    <para>The first entry in the file defines a new qualifier. <literal>ProducerQualifier</literal> 
+      is an annotation in the package <literal>org.jboss.seam.xml.test.injection</literal>.</para>
     
     <programlisting>
         <![CDATA[
@@ -83,8 +90,10 @@
     ]]>
     </programlisting>
     
-    <para>The next entry in the file is a bean declaration. The bean class is <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>. 
-    It is important to note that this declaration does not change the existing declaration of ProducerBean, instead it installs a new bean. In 
+    <para>The next entry in the file is a bean declaration. The bean class is 
+      <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>. 
+    It is important to note that this declaration does not change the existing declaration of 
+    <literal>ProducerBean</literal>, instead it installs a new bean. In 
     this instance there will be two <literal>ProducerBean</literal> CDI beans.</para>
 
     <para>This bean has a field called <literal>value</literal>, this field is configured to be a producer field using XML (it is also possible to configure producer
@@ -93,31 +102,28 @@
      field. The <literal>&lt;s:value&gt;</literal> element defines an initial value for the field.</para>
 
     <para>Child elements of fields, methods and classes that resolve to Annotation types are considered to be annotations on the corresponding element, 
-    so the corresponding java declaration for the XML above would be:</para>
+    so the corresponding Java declaration for the XML above would be:</para>
     
-    <programlisting>
-        <![CDATA[
-public class ProducerBean
-{
+    <programlisting><![CDATA[
+public class ProducerBean {
    @Produces
    @ProducerQualifier
    public String value = "hello world";
 }
-        ]]>
-    </programlisting>
-    <programlisting>
-        <![CDATA[
-<test:RecieverBean>
+    ]]></programlisting>
+    
+    <programlisting><![CDATA[
+<test:ReceiverBean>
     <test:value>
          <test:ProducerQualifier/>
          <s:Inject/>
     </test:value>
-</test:RecieverBean>
-       ]]>
-     </programlisting>
+</test:ReceiverBean>
+    ]]></programlisting>
      
-    <para>The XML above declares a new Bean that injects the value that was produced above. In this case the <literal>@Inject</literal> annotation is applied instead of
-     <literal>@Produces</literal> and no initial value is set.</para>
+    <para>The XML above declares a new bean that injects the value that was produced above. 
+      In this case the <literal>@Inject</literal> annotation is applied instead of
+      <literal>@Produces</literal> and no initial value is set.</para>
     </section>
     
     <section>
@@ -160,18 +166,23 @@ public class ProducerBean
             <listitem><para><literal>javax.interceptor</literal></para></listitem>
         </itemizedlist>
         
-        <para>So the <literal>&lt;s:Produces&gt;</literal> element above actually resolved to <literal>java.enterprise.inject.Produces</literal> 
-        and the <literal>&lt;s:Inject&gt;</literal> element resolved to <literal>javax.inject.Inject</literal>.</para>
+        <para>So the <literal>&lt;s:Produces&gt;</literal> element above actually resolves 
+        to <literal>java.enterprise.inject.Produces</literal> 
+        and the <literal>&lt;s:Inject&gt;</literal> element resolves to <literal>javax.inject.Inject</literal>.</para>
         
     </section>
     
     <section>
         <title>Overriding and extending beans</title>
-        <para>The may be cases where you want to modify an existing bean rather that adding a new one. The <literal>&lt;s:override&gt;</literal> and <literal>&lt;s:extends&gt;</literal>
-        tags allow you to do this. The <literal>&lt;s:override&gt;</literal> tag prevents the existing bean from being installed, and registers a new one with the given configuration.
-        The <literal>&lt;s:extends&gt;</literal> tag allows you to add extra configuration to an existing bean.</para>
-        <programlisting>
-            <![CDATA[
+        <para>There may be cases where you want to modify an existing bean rather than
+          adding a new one. The <literal>&lt;s:override&gt;</literal> and 
+          <literal>&lt;s:extends&gt;</literal> tags allow you to do this. The 
+          <literal>&lt;s:override&gt;</literal> tag prevents the existing bean from being 
+          installed, and registers a new one with the given configuration. The 
+          <literal>&lt;s:extends&gt;</literal> tag allows you to add extra configuration 
+          to an existing bean.</para>
+        
+        <programlisting><![CDATA[
 <test:MyBean>
 	<s:extends>
 	<test:NewQualifier/>
@@ -269,21 +280,17 @@ public class ProducerBean
     </test:MethodBean>
 </beans>
 
-public class MethodBean
-{
+public class MethodBean {
 
-   public int method()
-   {
+   public int method() {
       return 1;
    }
 
-   public int method(MethodValueBean bean)
-   {
+   public int method(MethodValueBean bean) {
       return bean.value + 1;
    }
    
-   public void method(MethodValueBean[][] beans)
-   {
+   public void method(MethodValueBean[][] beans) {
       //do stuff
    }
 
@@ -292,14 +299,18 @@ public class MethodBean
             ]]>
         </programlisting>
 
-        <para>In this instance <literal>MethodBean</literal> has three methods, all of them rather imaginatively named <literal>method</literal>. 
-        The first <literal>&lt;test:method&gt;</literal> entry in the XML file configures the method that takes no arguments. 
-        The <literal>&lt;s:Produces&gt;</literal> element makes it into a producer method. The next entry in the file configures 
-        the method that takes a <literal>MethodValueBean</literal> as a parameter. The final entry configures a method that takes a two
-        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  Method Parameters a specified inside the <literal>&lt;s:parameters&gt;</literal>
-        tag. If these parameters have annotation children they are taken to be annotations on the parameter. </para> 
+        <para>In this instance <literal>MethodBean</literal> has three methods, all of them rather 
+        imaginatively named <literal>method</literal>. The first <literal>&lt;test:method&gt;</literal> 
+        entry in the XML file configures the method that takes no arguments. The 
+        <literal>&lt;s:Produces&gt;</literal> element makes it into a producer method. The next 
+        entry in the file configures the method that takes a <literal>MethodValueBean</literal> 
+        as a parameter. The final entry configures a method that takes a two
+        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  
+        Method parameters are specified inside the <literal>&lt;s:parameters&gt;</literal>
+        element. If these parameters have annotation children they are taken to be annotations on 
+        the parameter. </para> 
         
-        <para>The corresponding java declaration for the xml above would be:</para>
+        <para>The corresponding Java declaration for the XML above would be:</para>
         <programlisting>
             <![CDATA[
 @Produces
@@ -333,15 +344,12 @@ int method(MethodValueBean[] param);
     
     <section>
         <title>Annotation Members</title>
-        <para>It is also possible to set the value of annotation members by. For example:</para>
+        <para>It is also possible to set the value of annotation members. For example:</para>
         <programlisting>
             <![CDATA[
-public @interface OtherQualifier
-{
+public @interface OtherQualifier {
    String value1();
-
    int value2();
-
    QualifierEnum value();
 }
 
@@ -360,8 +368,8 @@ public @interface OtherQualifier
    
     <section>
         <title>More Information</title>
-        <para>For further information look at the units tests in the seam-xml distribution, also the JSR-299 
-        public review draft section on XML Configuration was the base for this extension, 
+        <para>For further information look at the units tests in the seam-xml distribution, also the 
+          JSR-299 Public Review Draft section on XML Configuration was the base for this extension, 
         so it may also be worthwhile reading.</para>
     </section>
     
