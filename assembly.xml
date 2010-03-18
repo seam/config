@@ -9,8 +9,8 @@
    
    <fileSets>
       <fileSet>
-         <directory>core/target/apidocs</directory>
-         <outputDirectory>seam-xml/doc/apidocs</outputDirectory>
+         <directory>core/target/site/apidocs</directory>
+         <outputDirectory>seam-xml/doc/api</outputDirectory>
          <includes>
             <include>**</include>
          </includes>
@@ -35,13 +35,30 @@
            <include>lgpl.txt</include>
         </includes>
       </fileSet>
+
+      <fileSet>
+         <directory>core/src/main/java</directory>
+         <outputDirectory>seam-xml/source</outputDirectory>
+         <includes>
+            <include>**</include>
+         </includes>
+      </fileSet>
    </fileSets>
+
+   <dependencySets>
+      <dependencySet>
+         <outputDirectory>seam-xml/lib</outputDirectory>
+         <useProjectArtifact>false</useProjectArtifact>
+         <includes>
+            <include>org.jboss.weld:weld-extensions-core</include>
+         </includes>
+      </dependencySet>
+   </dependencySets>
 
    <moduleSets>
       <moduleSet>
          <includes>
             <include>org.jboss.seam.xml:seam-xml-core:jar</include>
-            <include>org.jboss.weld:weld-extensions-core</include>
          </includes>
          <binaries>
             <outputDirectory>seam-xml/lib</outputDirectory>

@@ -13,14 +13,15 @@
    <groupId>org.jboss.seam.xml</groupId>
    <artifactId>seam-xml-parent</artifactId>
    <packaging>pom</packaging>
-   <version>${seam.version}</version>
+   <version>3.0.0-SNAPSHOT</version>
    <name>Seam XML Parent</name>
 
-   <properties>
-      <seam.version>3.0.0-SNAPSHOT</seam.version>
-   </properties>
-   
-   
+   <modules>
+      <module>core</module>
+      <module>docs</module>
+      <module>examples/princess-rescue</module>
+   </modules>
+
    <build>
       <plugins>
          <plugin>
@@ -28,7 +29,7 @@
             <version>2.2-beta-5</version>
             <configuration>
                <descriptors>
-                  <descriptor>../assembly.xml</descriptor>
+                  <descriptor>assembly.xml</descriptor>
                </descriptors>
             </configuration>
          </plugin>
@@ -56,26 +57,18 @@
       </dependencies>
    </dependencyManagement>
 
-   <!-- Snapshots repo to get parent -->
-   <repositories>
-      <repository>
-         <id>oss.sonatype.org/jboss-snapshots</id>
-         <name>JBoss (Nexus) Snapshots Repository</name>
-         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </snapshots>
-      </repository>
-   </repositories>
+   <dependencies>
+      <dependency>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-extensions-core</artifactId>
+         <version>1.0.1-SNAPSHOT</version>
+      </dependency>
+   </dependencies>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/parent</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/parent</developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/parent</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk</developerConnection>
+      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk</url>
    </scm>
 
 </project>
