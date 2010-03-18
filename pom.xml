@@ -60,8 +60,8 @@
    <dependencies>
       <dependency>
          <groupId>org.jboss.weld</groupId>
-         <artifactId>weld-extensions-core</artifactId>
-         <version>1.0.1-SNAPSHOT</version>
+         <artifactId>weld-extensions</artifactId>
+         <version>1.0.0.Alpha1</version>
       </dependency>
    </dependencies>
 
