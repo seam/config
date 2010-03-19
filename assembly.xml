@@ -50,7 +50,7 @@
          <outputDirectory>seam-xml/lib</outputDirectory>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.weld:weld-extensions-core</include>
+            <include>org.jboss.weld:weld-extensions</include>
          </includes>
       </dependencySet>
    </dependencySets>
