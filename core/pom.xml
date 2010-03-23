@@ -35,11 +35,13 @@
       <artifactId>cdi-api</artifactId>
       <version>1.0-SP1</version>
     </dependency>
+    
     <dependency>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-core</artifactId>
       <version>1.0.1-Final</version>
-          </dependency>
+      <scope>test</scope>
+   </dependency>
 
     <dependency>
       <groupId>org.jboss.weld</groupId>
@@ -47,6 +49,7 @@
       <version>1.0.1-Final</version>
       <scope>test</scope>
     </dependency>
+    
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
