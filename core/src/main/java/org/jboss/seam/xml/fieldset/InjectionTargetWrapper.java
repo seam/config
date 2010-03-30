@@ -24,16 +24,16 @@ public class InjectionTargetWrapper<T> implements InjectionTarget<T>
 
    public void inject(T instance, CreationalContext<T> ctx)
    {
-      target.inject(instance, ctx);
-
-   }
-
-   public void postConstruct(T instance)
-   {
       for (FieldValueObject f : fieldValues)
       {
          f.setValue(instance);
       }
+      target.inject(instance, ctx);
+   }
+
+   public void postConstruct(T instance)
+   {
+
       target.postConstruct(instance);
 
    }
