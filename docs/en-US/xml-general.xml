@@ -343,6 +343,33 @@ int method(MethodValueBean[] param);
     </section>
     
     <section>
+        <title>Overriding the type of an injection point</title>
+        
+        <para>It is possible to limit which bean types are availible to inject int a given injection point:</para>
+             <programlisting>
+                  <![CDATA[
+                  
+public class SomeBean
+{
+	public Object someField;
+}                  
+                  
+<test:SomeBean>
+        <test:someField>
+         	<s:Inject/>
+         	<s:type>
+         		<test:InjectedBean/>
+         	</s:type>
+        </test:someField>
+</test:SomeBean>
+]]>
+</programlisting>
+<para>In the example above only beans that are assinable to InjectedBean will be eligable for injection into the field.
+	 This also works for parameter injection points.</para>
+        
+    </section>    
+    
+    <section>
         <title>Annotation Members</title>
         <para>It is also possible to set the value of annotation members. For example:</para>
         <programlisting>
