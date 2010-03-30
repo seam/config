@@ -7,8 +7,10 @@ package org.jboss.seam.xml.model;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -277,6 +279,23 @@ public class ModelBuilder
             Annotation a = createAnnotation(fi);
             type.addToField(item.getField(), a);
          }
+         List<TypeXmlItem> types = item.getChildrenOfType(TypeXmlItem.class);
+         if (types.size() > 1)
+         {
+            throw new XmlConfigurationException("Only one <type> element may be present on a field", rb.getDocument(), rb.getLineno());
+         }
+         if (!types.isEmpty())
+         {
+            Set<Type> fieldTypes = new HashSet<Type>();
+            List<ClassXmlItem> overridenTypes = types.get(0).getChildrenOfType(ClassXmlItem.class);
+            if (overridenTypes.size() != 1)
+            {
+               throw new XmlConfigurationException("<type> must have a single child element", rb.getDocument(), rb.getLineno());
+            }
+
+            type.overrideFieldType(item.getField(), overridenTypes.get(0).getJavaClass());
+         }
+
       }
       for (MethodXmlItem item : rb.getChildrenOfType(MethodXmlItem.class))
       {

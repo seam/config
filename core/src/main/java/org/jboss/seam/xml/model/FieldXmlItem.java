@@ -42,6 +42,7 @@ public class FieldXmlItem extends AbstractXmlItem
       }
       allowed.add(XmlItemType.ANNOTATION);
       allowed.add(XmlItemType.VALUE);
+      allowed.add(XmlItemType.TYPE);
    }
 
    public Field getField()

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.types">
+   
+
+    <test:TypeInjectedClass>
+       <override/>
+       <test:value>
+       	<Inject/>
+       	<type>
+       		<test:AllowedType/>
+       	</type>
+       </test:value>
+    </test:TypeInjectedClass>
+          
+</beans>

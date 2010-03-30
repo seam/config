@@ -12,6 +12,7 @@ import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.OverrideXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.ParametersXmlItem;
+import org.jboss.seam.xml.model.TypeXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
@@ -67,6 +68,10 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       else if (item.equals("parameters"))
       {
          return new ParametersXmlItem(parent, node.getDocument(), node.getLineNo());
+      }
+      else if (item.equals("type"))
+      {
+         return new TypeXmlItem(parent, node.getDocument(), node.getLineNo());
       }
 
       // now deal with primitive types
