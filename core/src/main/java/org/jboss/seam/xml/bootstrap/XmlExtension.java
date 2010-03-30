@@ -33,6 +33,8 @@ import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class XmlExtension implements Extension
 {
@@ -49,6 +51,8 @@ public class XmlExtension implements Extension
 
    int count = 0;
 
+   private static final Logger log = LoggerFactory.getLogger(XmlExtension.class);
+
    /**
     * map of syntetic bean id to a list of field value objects
     */
@@ -61,6 +65,7 @@ public class XmlExtension implements Extension
     */
    public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event)
    {
+      log.info("Seam XML Bean Config Starting");
       List<Class<? extends XmlDocumentProvider>> providers = getDocumentProviders();
       for (Class<? extends XmlDocumentProvider> cl : providers)
       {
@@ -71,6 +76,7 @@ public class XmlExtension implements Extension
             XmlDocument d;
             while ((d = provider.getNextDocument()) != null)
             {
+               log.info("Reading XML file: " + d.getFileUrl());
                ParserMain parser = new ParserMain();
                ModelBuilder builder = new ModelBuilder();
                SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), errors);
@@ -105,19 +111,24 @@ public class XmlExtension implements Extension
 
          for (Class<? extends Annotation> b : r.getQualifiers())
          {
+            log.info("Adding XML Defined Qualifier: " + b.getName());
             event.addQualifier(b);
          }
          for (Class<? extends Annotation> b : r.getInterceptorBindings())
          {
+            log.info("Adding XML Defined Interceptor Binding: " + b.getName());
             event.addInterceptorBinding(b);
          }
          for (Entry<Class<? extends Annotation>, Annotation[]> b : r.getStereotypes().entrySet())
          {
+            log.info("Adding XML Defined Stereotype: " + b.getKey().getName());
             event.addStereotype(b.getKey(), b.getValue());
          }
          for (BeanResult<?> bb : r.getBeans())
          {
+
             AnnotatedType<?> tp = bb.getBuilder().create();
+            log.info("Adding XML definied bean: " + tp.getJavaClass().getName());
             event.addAnnotatedType(tp);
             types.put(tp.getJavaClass(), tp);
          }
@@ -132,6 +143,7 @@ public class XmlExtension implements Extension
       // veto implementation
       if (veto.contains(event.getAnnotatedType().getJavaClass()))
       {
+         log.info("Preventing installation of default bean: " + event.getAnnotatedType().getJavaClass().getName());
          event.veto();
       }
 
@@ -144,6 +156,7 @@ public class XmlExtension implements Extension
       XmlId xid = at.getAnnotation(XmlId.class);
       if (xid != null)
       {
+         log.info("Wrapping InjectionTarget to set field values: " + event.getAnnotatedType().getJavaClass().getName());
          List<FieldValueObject> fvs = fieldValues.get(xid.value());
          event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs));
       }
@@ -172,6 +185,7 @@ public class XmlExtension implements Extension
             String[] providers = data.split("\\s");
             for (String provider : providers)
             {
+               log.info("Loading XmlDocumentProvider: " + provider);
                Class res = null;
                try
                {
