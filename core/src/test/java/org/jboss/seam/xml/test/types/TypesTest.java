@@ -26,6 +26,7 @@ public class TypesTest extends AbstractXMLTest
 
       TypeInjectedClass x = WeldManagerUtils.getInstanceByType(manager, TypeInjectedClass.class);
       assert x.value instanceof AllowedType;
+      assert x.createValue instanceof RestrictedType;
 
    }
 }

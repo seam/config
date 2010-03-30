@@ -321,6 +321,22 @@ public class ModelBuilder
                   Annotation a = createAnnotation(pan);
                   type.addToMethodParameter(item.getMethod(), param, a);
                }
+               List<TypeXmlItem> types = fi.getChildrenOfType(TypeXmlItem.class);
+               if (types.size() > 1)
+               {
+                  throw new XmlConfigurationException("Only one <type> element may be present on a parameter", rb.getDocument(), rb.getLineno());
+               }
+               if (!types.isEmpty())
+               {
+                  Set<Type> fieldTypes = new HashSet<Type>();
+                  List<ClassXmlItem> overridenTypes = types.get(0).getChildrenOfType(ClassXmlItem.class);
+                  if (overridenTypes.size() != 1)
+                  {
+                     throw new XmlConfigurationException("<type> must have a single child element", rb.getDocument(), rb.getLineno());
+                  }
+
+                  type.overrideMethodParameterType(item.getMethod(), overridenTypes.get(0).getJavaClass(), param);
+               }
             }
          }
 
@@ -341,6 +357,22 @@ public class ModelBuilder
             {
                Annotation a = createAnnotation(pan);
                type.addToConstructorParameter((Constructor) c, param, a);
+            }
+            List<TypeXmlItem> types = fi.getChildrenOfType(TypeXmlItem.class);
+            if (types.size() > 1)
+            {
+               throw new XmlConfigurationException("Only one <type> element may be present on a parameter", rb.getDocument(), rb.getLineno());
+            }
+            if (!types.isEmpty())
+            {
+               Set<Type> fieldTypes = new HashSet<Type>();
+               List<ClassXmlItem> overridenTypes = types.get(0).getChildrenOfType(ClassXmlItem.class);
+               if (overridenTypes.size() != 1)
+               {
+                  throw new XmlConfigurationException("<type> must have a single child element", rb.getDocument(), rb.getLineno());
+               }
+
+               type.overrideConstructorParameterType(c, overridenTypes.get(0).getJavaClass(), param);
             }
          }
       }

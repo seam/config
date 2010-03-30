@@ -11,6 +11,16 @@
        		<test:AllowedType/>
        	</type>
        </test:value>
+       <test:create>
+       	 <Inject/>
+       	 <parameters>
+       	 	<test:SomeInterface>
+       	 		<type>
+       	 			<test:RestrictedType/>
+       	 		</type>
+       	 	</test:SomeInterface>
+       	 </parameters>
+       </test:create>
     </test:TypeInjectedClass>
           
 </beans>
