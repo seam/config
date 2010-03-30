@@ -4,6 +4,9 @@
 
     <test:FieldValueBean>
     	<override/>
+        <test:init>
+            <Inject/>
+        </test:init>
         <test:ivalue>10</test:ivalue>
         <test:stringValue>hello world</test:stringValue>
         <test:enumValue>A</test:enumValue>

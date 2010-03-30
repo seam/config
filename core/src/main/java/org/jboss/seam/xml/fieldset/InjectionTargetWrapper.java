@@ -33,9 +33,7 @@ public class InjectionTargetWrapper<T> implements InjectionTarget<T>
 
    public void postConstruct(T instance)
    {
-
       target.postConstruct(instance);
-
    }
 
    public void preDestroy(T instance)

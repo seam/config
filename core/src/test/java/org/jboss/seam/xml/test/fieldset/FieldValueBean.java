@@ -11,6 +11,11 @@ import org.jboss.seam.xml.test.method.QualifierEnum;
 public class FieldValueBean
 {
 
+   public void init()
+   {
+      assert ivalue != 20;
+   }
+   
    private int ivalue = 20;
 
    public String stringValue;
