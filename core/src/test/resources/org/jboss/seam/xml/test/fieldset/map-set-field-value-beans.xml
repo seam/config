@@ -2,7 +2,7 @@
 <beans xmlns="urn:java:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
     <test:MapFieldValue>
-    	<override/>
+    	<overrides/>
         <test:map1>
         	<entry><key>1</key><value>hello</value></entry>
         	<entry><key>2</key><value>world</value></entry>

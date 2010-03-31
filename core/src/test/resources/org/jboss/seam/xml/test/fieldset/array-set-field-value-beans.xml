@@ -2,7 +2,7 @@
 <beans xmlns="urn:java:seam:core"
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
     <test:ArrayFieldValue>
-    	<override/>
+    	<overrides/>
         <test:iarray>
         	<value>1</value>
         	<value>2</value>

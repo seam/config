@@ -3,7 +3,7 @@
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
 
     <test:FieldValueBean>
-    	<override/>
+    	<overrides/>
         <test:init>
             <Inject/>
         </test:init>

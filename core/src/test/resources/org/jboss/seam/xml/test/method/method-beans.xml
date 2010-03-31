@@ -40,7 +40,7 @@
     </test:MethodBean>
 
     <test:MethodTarget>
-    	<override/>
+    	<overrides/>
         <test:value1>
             <Inject />
         </test:value1>

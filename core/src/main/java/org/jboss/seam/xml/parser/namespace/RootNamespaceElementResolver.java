@@ -7,11 +7,11 @@ package org.jboss.seam.xml.parser.namespace;
 import org.jboss.seam.xml.model.ArrayXmlItem;
 import org.jboss.seam.xml.model.ClassXmlItem;
 import org.jboss.seam.xml.model.EntryXmlItem;
-import org.jboss.seam.xml.model.ExtendsXmlItem;
 import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.OverrideXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.ParametersXmlItem;
+import org.jboss.seam.xml.model.SpecializesXmlItem;
 import org.jboss.seam.xml.model.TypeXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
@@ -57,13 +57,13 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       {
          return new ArrayXmlItem(parent, node.getAttributes(), node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("override"))
+      else if (item.equals("overrides"))
       {
          return new OverrideXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("extends"))
+      else if (item.equals("specializes"))
       {
-         return new ExtendsXmlItem(parent, node.getDocument(), node.getLineNo());
+         return new SpecializesXmlItem(parent, node.getDocument(), node.getLineNo());
       }
       else if (item.equals("parameters"))
       {

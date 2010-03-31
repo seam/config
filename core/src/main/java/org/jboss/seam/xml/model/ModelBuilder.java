@@ -239,7 +239,7 @@ public class ModelBuilder
    BeanResult<?> buildAnnotatedType(ClassXmlItem rb)
    {
       boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
-      boolean extend = !rb.getChildrenOfType(ExtendsXmlItem.class).isEmpty();
+      boolean extend = !rb.getChildrenOfType(SpecializesXmlItem.class).isEmpty();
 
       // if it is an extend we want to read the annotations from the underlying
       // class

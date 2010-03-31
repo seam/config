@@ -15,7 +15,7 @@
     </test:QualifiedBean2>
     
     <test:QualifierTestBean>
-    	<override/>
+    	<overrides/>
         <test:bean1>
             <test:OtherQualifier value1="AA" value2="1" value="A" />
             <Inject/>

@@ -132,8 +132,8 @@ public class ProducerBean {
         
         <itemizedlist>
             <listitem><para><literal>Beans</literal></para></listitem>
-            <listitem><para><literal>extends</literal></para></listitem>
-            <listitem><para><literal>override</literal></para></listitem>
+            <listitem><para><literal>specializes</literal></para></listitem>
+            <listitem><para><literal>overrides</literal></para></listitem>
             <listitem><para><literal>parameters</literal></para></listitem>
             <listitem><para><literal>value</literal></para></listitem>
             <listitem><para><literal>key</literal></para></listitem>
@@ -175,21 +175,21 @@ public class ProducerBean {
     <section>
         <title>Overriding and extending beans</title>
         <para>There may be cases where you want to modify an existing bean rather than
-          adding a new one. The <literal>&lt;s:override&gt;</literal> and 
-          <literal>&lt;s:extends&gt;</literal> tags allow you to do this. The 
-          <literal>&lt;s:override&gt;</literal> tag prevents the existing bean from being 
+          adding a new one. The <literal>&lt;s:overrides&gt;</literal> and 
+          <literal>&lt;s:specializes&gt;</literal> tags allow you to do this. The 
+          <literal>&lt;s:overrides&gt;</literal> tag prevents the existing bean from being 
           installed, and registers a new one with the given configuration. The 
-          <literal>&lt;s:extends&gt;</literal> tag allows you to add extra configuration 
+          <literal>&lt;s:specializes&gt;</literal> tag allows you to add extra configuration 
           to an existing bean.</para>
         
         <programlisting><![CDATA[
 <test:MyBean>
-	<s:extends>
+	<s:specializes>
 	<test:NewQualifier/>
 </test:MyBean>
 
 <test:OtherBean>
-	<s:override>
+	<s:overrides>
 	<test:NewQualifier/>
 </test:OtherBean>
               ]]>

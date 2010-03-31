@@ -17,19 +17,19 @@
     </test:Bean1>
     
     <test:Bean2>
-    	<override/>
+    	<overrides/>
         <test:produceBean3>
             <Produces/>
         </test:produceBean3>
     </test:Bean2>
     
     <test:OverriddenBean>
-         <override/>
+         <overrides/>
         <Named>someBean</Named>
     </test:OverriddenBean>
     
     <test:ExtendedBean>
-         <extends/>
+         <specializes/>
          <test:ExtendedQualifier2/>
     </test:ExtendedBean>
           

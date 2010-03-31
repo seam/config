@@ -13,7 +13,7 @@
     </test:InterceptorBinding>
    
    <test:InterceptorBean>
-        <s:override/>
+        <s:overrides/>
         <s:Interceptor/>
         <test:InterceptorBinding/>
         <test:myMethod>
