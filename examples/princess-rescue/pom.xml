@@ -8,12 +8,11 @@
       <relativePath>../../pom.xml</relativePath>
    </parent>
    
-   
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.seam.xml</groupId>
    <artifactId>princess-rescue</artifactId>
    <packaging>war</packaging>
-   <name>Seam XML Example Princess Rescue</name>
+   <name>Seam XML Bean Config Example: Princess Rescue</name>
    <version>3.0.0-SNAPSHOT</version>
 
    <properties>

@@ -11,7 +11,7 @@
    <artifactId>seam-xml-bean-config-parent</artifactId>
    <packaging>pom</packaging>
    <version>3.0.0-SNAPSHOT</version>
-   <name>Seam XML Bean Configuration Parent</name>
+   <name>Seam XML Bean Config Parent</name>
 
    <modules>
       <module>core</module>

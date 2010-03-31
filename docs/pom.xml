@@ -11,7 +11,7 @@
    <artifactId>seam-xml-bean-config-reference-guide</artifactId>
    <version>3.0.0-SNAPSHOT</version>
    <packaging>jdocbook</packaging>
-   <name>Seam XML Reference Guide</name>
+   <name>Seam XML Bean Config Reference Guide</name>
    
    <pluginRepositories>
       <pluginRepository>
