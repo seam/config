@@ -11,7 +11,7 @@
   <groupId>org.jboss.seam.xml</groupId>
   <artifactId>seam-xml-bean-config</artifactId>
   <packaging>jar</packaging>
-  <name>Seam XML Bean Config</name>
+  <name>Seam XML Bean Config Module</name>
 
   <repositories>
     <repository>
