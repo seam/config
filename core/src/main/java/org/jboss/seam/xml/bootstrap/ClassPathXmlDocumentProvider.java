@@ -27,7 +27,7 @@ import org.xml.sax.InputSource;
 public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
 {
 
-   static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "WEB-INF/seam-beans.xml" , "META-INF/beans.xml", "WEB-INF/beans.xml"};
+   static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "META-INF/beans.xml"};
 
    final String[] resources;
 
@@ -52,7 +52,6 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
 
    public void open()
    {
-
       factory = DocumentBuilderFactory.newInstance();
       factory.setNamespaceAware(true);
       factory.setIgnoringComments(true);
@@ -66,11 +65,16 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
          throw new RuntimeException(e1);
       }
       docs = new ArrayList<URL>();
+      ClassLoader cl = Thread.currentThread().getContextClassLoader();
+      if (cl == null)
+      {
+         cl = getClass().getClassLoader();
+      }
       for (String i : resources)
       {
          try
          {
-            Enumeration<URL> e = getClass().getClassLoader().getResources(i);
+            Enumeration<URL> e = cl.getResources(i);
             while (e.hasMoreElements())
             {
                docs.add(e.nextElement());
@@ -126,7 +130,7 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
                 test = url.openStream();
                 if(test.available() == 0)
                 {
-                   break;
+                   continue;
                 }
             }
             finally
