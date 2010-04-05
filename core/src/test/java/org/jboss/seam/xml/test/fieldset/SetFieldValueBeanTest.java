@@ -31,6 +31,7 @@ public class SetFieldValueBeanTest extends AbstractXMLTest
       assert x.getIvalue() == 11;
       assert x.lvalue == 23;
       assert x.svalue == 4;
+      assert x.noFieldValue == 7;
 
    }
 

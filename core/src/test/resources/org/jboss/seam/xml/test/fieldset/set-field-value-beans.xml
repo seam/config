@@ -16,7 +16,10 @@
         <test:lvalue>23</test:lvalue>
         <test:svalue>4</test:svalue>
         <test:bigDecimalValue>10</test:bigDecimalValue>
+        <test:noField>7</test:noField>
     </test:FieldValueBean>
+    
+    
     
    
 </beans>

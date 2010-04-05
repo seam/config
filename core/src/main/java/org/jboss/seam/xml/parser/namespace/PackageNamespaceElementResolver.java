@@ -5,6 +5,7 @@
 package org.jboss.seam.xml.parser.namespace;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.jboss.seam.xml.model.ClassXmlItem;
 import org.jboss.seam.xml.model.FieldXmlItem;
 import org.jboss.seam.xml.model.MethodXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
+import org.jboss.seam.xml.model.PropertyXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
@@ -116,6 +118,19 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       else if (f != null)
       {
          return new FieldXmlItem(parent, f, innerText, document, lineno);
+      }
+
+      String methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
+      if (ReflectionUtils.methodExists(p, methodName))
+      {
+         Set<Method> methods = ReflectionUtils.getMethods(p);
+         for (Method m : methods)
+         {
+            if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)
+            {
+               return new PropertyXmlItem(parent, name, m, innerText, document, lineno);
+            }
+         }
       }
       return null;
    }

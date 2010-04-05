@@ -15,7 +15,7 @@ public class FieldValueBean
    {
       assert ivalue != 20;
    }
-   
+
    private int ivalue = 20;
 
    public String stringValue;
@@ -34,6 +34,8 @@ public class FieldValueBean
 
    public long lvalue;
 
+   int noFieldValue;
+
    public void setIvalue(int value)
    {
       this.ivalue = value + 1;
@@ -42,6 +44,16 @@ public class FieldValueBean
    public int getIvalue()
    {
       return ivalue;
+   }
+
+   public int getNoField()
+   {
+      return noFieldValue;
+   }
+
+   public void setNoField(int value)
+   {
+      noFieldValue = value;
    }
 
 }

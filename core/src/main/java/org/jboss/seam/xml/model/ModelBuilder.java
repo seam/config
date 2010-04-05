@@ -121,6 +121,14 @@ public class ModelBuilder
                   fields.add(f);
                }
             }
+            for (PropertyXmlItem xi : rb.getChildrenOfType(PropertyXmlItem.class))
+            {
+               FieldValueObject f = xi.getFieldValue();
+               if (f != null)
+               {
+                  fields.add(f);
+               }
+            }
             if (!fields.isEmpty())
             {
                ret.getFieldValues().put(tp, fields);
