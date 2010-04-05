@@ -7,10 +7,8 @@ package org.jboss.seam.xml.model;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -107,7 +105,14 @@ public class ModelBuilder
          if (type == ResultType.BEAN)
          {
             BeanResult<?> tp = buildAnnotatedType((ClassXmlItem) rb);
-            ret.getBeans().add(tp);
+            if (rb.getJavaClass().isInterface())
+            {
+               ret.getInterfaces().add(tp);
+            }
+            else
+            {
+               ret.getBeans().add(tp);
+            }
             if (tp.isOverride() || tp.isExtend())
             {
                ret.addVeto(tp.getType());
@@ -131,7 +136,14 @@ public class ModelBuilder
             }
             if (!fields.isEmpty())
             {
-               ret.getFieldValues().put(tp, fields);
+               if (rb.getJavaClass().isInterface())
+               {
+                  ret.getInterfaceFieldValues().put(tp.getType(), fields);
+               }
+               else
+               {
+                  ret.getFieldValues().put(tp, fields);
+               }
             }
          }
          else if (type == ResultType.QUALIFIER)
@@ -294,7 +306,6 @@ public class ModelBuilder
          }
          if (!types.isEmpty())
          {
-            Set<Type> fieldTypes = new HashSet<Type>();
             List<ClassXmlItem> overridenTypes = types.get(0).getChildrenOfType(ClassXmlItem.class);
             if (overridenTypes.size() != 1)
             {
@@ -336,7 +347,6 @@ public class ModelBuilder
                }
                if (!types.isEmpty())
                {
-                  Set<Type> fieldTypes = new HashSet<Type>();
                   List<ClassXmlItem> overridenTypes = types.get(0).getChildrenOfType(ClassXmlItem.class);
                   if (overridenTypes.size() != 1)
                   {
@@ -373,7 +383,6 @@ public class ModelBuilder
             }
             if (!types.isEmpty())
             {
-               Set<Type> fieldTypes = new HashSet<Type>();
                List<ClassXmlItem> overridenTypes = types.get(0).getChildrenOfType(ClassXmlItem.class);
                if (overridenTypes.size() != 1)
                {

@@ -33,7 +33,11 @@ public class XmlResult
 
    List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
 
+   List<BeanResult<?>> interfaces = new ArrayList<BeanResult<?>>();
+
    Map<BeanResult<?>, List<FieldValueObject>> fieldValues = new HashMap<BeanResult<?>, List<FieldValueObject>>();
+
+   Map<Class<?>, List<FieldValueObject>> interfaceFieldValues = new HashMap<Class<?>, List<FieldValueObject>>();
 
    public Map<Class<? extends Annotation>, Annotation[]> getStereotypes()
    {
@@ -78,6 +82,16 @@ public class XmlResult
    public List<Class<?>> getVeto()
    {
       return veto;
+   }
+
+   public List<BeanResult<?>> getInterfaces()
+   {
+      return interfaces;
+   }
+
+   public Map<Class<?>, List<FieldValueObject>> getInterfaceFieldValues()
+   {
+      return interfaceFieldValues;
    }
 
 }

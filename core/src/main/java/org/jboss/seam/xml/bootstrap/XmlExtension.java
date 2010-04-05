@@ -33,6 +33,7 @@ import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +47,6 @@ public class XmlExtension implements Extension
    List<XmlResult> results = new ArrayList<XmlResult>();
 
    Set<Class<?>> veto = new HashSet<Class<?>>();
-
-   Map<Class<?>, AnnotatedType<?>> types = new HashMap<Class<?>, AnnotatedType<?>>();
 
    int count = 0;
 
@@ -130,7 +129,6 @@ public class XmlExtension implements Extension
             AnnotatedType<?> tp = bb.getBuilder().create();
             log.info("Adding XML definied bean: " + tp.getJavaClass().getName());
             event.addAnnotatedType(tp);
-            types.put(tp.getJavaClass(), tp);
          }
 
          veto.addAll(r.getVeto());
@@ -146,6 +144,23 @@ public class XmlExtension implements Extension
          log.info("Preventing installation of default bean: " + event.getAnnotatedType().getJavaClass().getName());
          event.veto();
       }
+      boolean found = false;
+      NewAnnotatedTypeBuilder builder = new NewAnnotatedTypeBuilder(event.getAnnotatedType());
+      for (XmlResult r : results)
+      {
+         for (BeanResult<?> i : r.getInterfaces())
+         {
+            if (i.getType().isAssignableFrom(event.getAnnotatedType().getJavaClass()))
+            {
+               found = true;
+               builder.mergeAnnotations(i.getBuilder().create(), true);
+            }
+         }
+      }
+      if (found)
+      {
+         event.setAnnotatedType(builder.create());
+      }
 
    }
 
@@ -160,7 +175,18 @@ public class XmlExtension implements Extension
          List<FieldValueObject> fvs = fieldValues.get(xid.value());
          event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs));
       }
-
+      for (XmlResult r : results)
+      {
+         for (Entry<Class<?>, List<FieldValueObject>> e : r.getInterfaceFieldValues().entrySet())
+         {
+            if (e.getKey().isAssignableFrom(event.getAnnotatedType().getJavaClass()))
+            {
+               log.info("Wrapping InjectionTarget to set field values based on interface " + e.getKey().getName() + ": " + event.getAnnotatedType().getJavaClass().getName());
+               List<FieldValueObject> fvs = e.getValue();
+               event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs));
+            }
+         }
+      }
    }
 
    public void processAfterBeanDeployment(@Observes AfterBeanDiscovery event)

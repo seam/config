@@ -76,7 +76,7 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
 
       // now deal with primitive types
 
-      Class primType = null;
+      Class<?> primType = null;
       if (item.equals("int"))
       {
          primType = int.class;
