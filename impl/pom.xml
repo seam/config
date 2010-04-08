@@ -61,9 +61,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/core</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/core</developerConnection>
-    <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/core</url>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/impl</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/impl</developerConnection>
+    <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/impl</url>
   </scm>
 
   <build>

@@ -14,7 +14,7 @@
    <name>Seam XML Bean Config Parent</name>
 
    <modules>
-      <module>core</module>
+      <module>impl</module>
       <module>docs</module>
       <module>examples/princess-rescue</module>
    </modules>

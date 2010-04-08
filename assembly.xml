@@ -9,7 +9,7 @@
    
    <fileSets>
       <fileSet>
-         <directory>core/target/site/apidocs</directory>
+         <directory>impl/target/site/apidocs</directory>
          <outputDirectory>seam-xml/doc/api</outputDirectory>
          <includes>
             <include>**</include>
@@ -37,7 +37,7 @@
       </fileSet>
 
       <fileSet>
-         <directory>core/src/main/java</directory>
+         <directory>impl/src/main/java</directory>
          <outputDirectory>seam-xml/source</outputDirectory>
          <includes>
             <include>**</include>
@@ -58,7 +58,7 @@
    <moduleSets>
       <moduleSet>
          <includes>
-            <include>org.jboss.seam.xml:seam-xml-core:jar</include>
+            <include>org.jboss.seam.xml:seam-xml-impl:jar</include>
          </includes>
          <binaries>
             <outputDirectory>seam-xml/lib</outputDirectory>
