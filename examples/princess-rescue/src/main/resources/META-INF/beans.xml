@@ -13,7 +13,7 @@
    </p:Room>
    
    <p:GameManager>
-   		<s:extends/>
+   		<s:specializes/>
    		<p:allRooms>
    			<s:Any/>
    			<s:Inject/>
