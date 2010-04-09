@@ -23,6 +23,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 
+import org.jboss.seam.xml.annotations.XmlConfigured;
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.XmlId;
 import org.jboss.seam.xml.core.XmlResult;
@@ -143,6 +144,13 @@ public class XmlExtension implements Extension
       {
          log.info("Preventing installation of default bean: " + event.getAnnotatedType().getJavaClass().getName());
          event.veto();
+         return;
+      }
+      if(event.getAnnotatedType().isAnnotationPresent(XmlConfigured.class))
+      {
+    	  log.info("Preventing installation of @XmlConfigured bean: " + event.getAnnotatedType().getJavaClass().getName());
+          event.veto();
+          return;
       }
       boolean found = false;
       NewAnnotatedTypeBuilder builder = new NewAnnotatedTypeBuilder(event.getAnnotatedType());
