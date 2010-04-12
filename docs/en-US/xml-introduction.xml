@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+
+<chapter id="introduction">
+  <title>Seam XML Introduction</title>
+  
+  <para>Seam provides a method for configuring JSR-299 beans using XML. Using XML it is possible to add new beans, override existing beans, and add 
+  extra configuration to existing beans. The default is to add a new bean.
+  </para>
+  
+ <section>
+    <title>Getting Started</title>
+    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file and the weld extensions jar in your deployment. </para>
+    <para>The first thing we need is some xml files, by default these are discovered from the classpath in the following locations:</para>
+    <itemizedlist>
+	    <listitem><literal>/META-INF/beans.xml</literal></listitem>
+	    <listitem><literal>/WEB-INF/classes/seam-beans.xml</literal></listitem>
+	    <listitem><literal>/META-INF/seam-beans.xml</literal></listitem>
+	    <listitem><literal>/seam-beans.xml</literal></listitem>
+    </itemizedlist>
+    <important>
+    	<para>It is currently not possible to load beans.xml from WEB-INF. This will be addressed before the final release of seam-xml.</para>
+    </important>
+
+    <para>The <literal>beans.xml</literal> file is the preferred way of configuring beans via XML, however it may be possible that some JSR-299 implementations will not allow this, 
+    so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
+    
+    <para>Let's start with a simple example. Say we have the following classes:</para>
+	<programlisting role="JAVA">
+    <![CDATA[public class Robot
+{
+	@Inject RobotArm leftArm;
+	
+	@Inject RobotArm rightArm;  
+}
+
+public class RobotArm
+{
+	String attchment = "welder";
+	
+	public void doStuff()
+	{
+		//do robot things...
+	}
+}
+
+@Retention(RUNTIME)
+public @Interface LeftArm{}
+
+@Retention(RUNTIME)
+public @Interface RightArm{}
+    ]]>
+    </programlisting>
+    <para>This is all well and good, however at some point in the future we decide that our robot is no longer needed for welding, instead it needs a plasma cutter in it's left hand and a 
+    	  vice in its right hand. Rather than modifying the class files, we decide to configure this up with xml:</para>
+         <programlistingco>
+    <areaspec>
+                            <area id="namepsace-declaration-seam" coords="5"/>
+                            <area id="namepsace-declaration-robots" coords="6"/>
+                            <area id="right-arm-qualifier" coords="9"/>
+                            <area id="robot-right-arm" coords="16"/>
+                            <area id="overrrides" coords="17"/>
+                            <area id="left-arm-applied-qualifier" coords="18"/>
+                            <area id="left-arm-set-length" coords="19"/>
+                            <area id="specializes" coords="29"/>
+                            <area id="left-arm-injected" coords="30"/>
+                        </areaspec>
+                        <programlisting role="XML">
+    <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:s="urn:java:seam:core" 
+       xmlns:r="urn:java:org.example.robots">
+       
+ 	<r:RightArm>
+ 		<s:Qualifier/>
+ 	</r:RightArm>
+ 	
+ 	<r:LeftArm>
+ 		<s:Qualifier/>
+ 	</r:LeftArm>
+ 	
+ 	<r:RobotArm>
+ 		<s:overrides/>
+ 		<r:LeftArm/>
+ 		<r:attchment>Plasma Cutter</r:attchment>
+  	</r:RobotArm>
+  	
+  	<r:RobotArm>
+ 		<s:overrides/>
+ 		<r:RightArm/>
+ 		<r:attchment>Vice</r:attchment>
+  	</r:RobotArm>
+  	
+  	<r:Robot>
+  		<s:specializes/>
+  		<r:leftArm>
+  			<r:LeftArm/>
+  		</r:leftArm>
+  		<r:rightArm>
+  			<r:RightArm/>
+  		</r:rightArm>
+  	</r:Robot>
+  	
+</beans>
+    ]]>
+    </programlisting>
+    <calloutlist>
+                            <callout arearefs="namepsace-declaration-seam">
+                                <para>The namespace <literal>urn:java:seam:core</literal> is seam-xml's root namespace. More on this later</para>
+                            </callout>
+                            <callout arearefs="namepsace-declaration-robots">
+                                <para>The namespace <literal>urn:java:org.example.robots</literal> corresponds to the package <literal>org.example.robots</literal>, where our robot classes live.</para>
+                            </callout>
+                            <callout arearefs="right-arm-qualifier">
+                                <para>This declares the <literal>@RightArm</literal> annotation to be a qualifier. The <literal>&lt;r:RightArm&gt;</literal> declaration resolves to 
+                                <literal>org.example.robots.RightArm</literal> and the <literal>&lt;s:Qualifier&gt;</literal> declaration tells seam-xml to register this class as a qualifier.</para>
+                            </callout>
+                            <callout arearefs="robot-right-arm">
+                                <para>The <literal>&lt;r:RobotArm&gt;</literal> declaration configures an instance of our <literal>RobotArm</literal> class.</para>
+                            </callout>
+                            <callout arearefs="overrrides">
+                                <para>The <literal>&lt;s:overrides&gt;</literal> tells CDI that this bean overrides the default bean. The existing <literal>RobotArm</literal> definition will not be 
+                                installed, only <literal>RobotArm</literal> beans that are configured via XML.</para>
+                            </callout>
+                            <callout arearefs="left-arm-applied-qualifier">
+                                <para>The <literal>&lt;r:LeftArm&gt;</literal> element applies the <literal>@LeftArm</literal> annotation to the enclosing element, in this case out <literal>RobotArm</literal>
+                                class (remember we declared <literal>@LeftArm</literal> to be a qualifier). In seam-xml an element that resolves to an annotation means 'apply this annotation to the parent element'.</para>
+                            </callout>
+                            <callout arearefs="left-arm-set-length">
+                                <para>This sets the arm's attachment field to the string <literal>Plasma Cutter</literal></para>
+                            </callout>
+                            <callout arearefs="specializes">
+                                <para>The <literal>&lt;s:specializes&gt;</literal> is similar to <literal>&lt;s:overrides&gt;</literal>. The difference is that <literal>&lt;s:specializes&gt;</literal>
+                                 beans have the annotated from the java class merged with the annotations in XML.</para>
+                            </callout>
+                            <callout arearefs="left-arm-injected">
+                                <para>This configures a qualifier on the injection point. There is no need for an <literal>&lt;s:Inject&gt;</literal> as it is present on the underlying class.</para>
+                            </callout>
+                             
+    </calloutlist>
+    </programlistingco>
+    
+    </section>
+    
+</chapter>
