@@ -4,6 +4,8 @@
  */
 package org.jboss.seam.xml.test.method;
 
+import javax.enterprise.inject.Instance;
+
 public class MethodBean
 {
 
@@ -20,6 +22,11 @@ public class MethodBean
    public long method(MethodValueBean[][] beans)
    {
       return beans.length;
+   }
+   
+   public int method(Instance<MethodValueBean> bean)
+   {
+	   return bean.get().getValue() + 1;
    }
 
 }

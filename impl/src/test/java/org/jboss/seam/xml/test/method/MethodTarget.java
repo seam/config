@@ -7,7 +7,7 @@ package org.jboss.seam.xml.test.method;
 public class MethodTarget
 {
 
-   public int value1, value2;
+   public int value1, value2,value3;
 
    public long longValue;
 }
