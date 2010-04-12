@@ -18,12 +18,15 @@ import java.util.Map.Entry;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
+import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.seam.xml.core.BeanResult;
+import org.jboss.seam.xml.core.XmlConfiguredBean;
 import org.jboss.seam.xml.core.XmlId;
 import org.jboss.seam.xml.core.XmlResult;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
@@ -59,7 +62,7 @@ public class XmlExtension implements Extension
 
    List<Exception> errors = new ArrayList<Exception>();
 
-   Set<XmlProcessAnnotatedType<?>> queuedEvents = new HashSet<XmlProcessAnnotatedType<?>>();
+   Set<XmlProcessAnnotatedType> queuedEvents = new HashSet<XmlProcessAnnotatedType>();
 
    /**
     * This is the entry point for the extension
@@ -127,9 +130,12 @@ public class XmlExtension implements Extension
          }
          for (BeanResult<?> bb : r.getBeans())
          {
-
+            bb.getBuilder().addToClass(new AnnotationLiteral<XmlConfiguredBean>()
+            {
+            });
             AnnotatedType<?> tp = bb.getBuilder().create();
             log.info("Adding XML definied bean: " + tp.getJavaClass().getName());
+            queuedEvents.add(new XmlProcessAnnotatedType(tp));
             event.addAnnotatedType(tp);
          }
 
@@ -138,13 +144,22 @@ public class XmlExtension implements Extension
       }
    }
 
-   public <T> void processAnotated(@Observes ProcessAnnotatedType<T> event)
+   public <T> void processAnotated(@Observes ProcessAnnotatedType<T> event, BeanManager manager)
    {
-      // do not re-process events that we fired
-      if (event instanceof XmlProcessAnnotatedType<?>)
+      if (event.getAnnotatedType().isAnnotationPresent(XmlConfiguredBean.class))
       {
          return;
       }
+      // first see if we should fire queued events
+      if (!queuedEvents.isEmpty())
+      {
+         for (XmlProcessAnnotatedType i : queuedEvents)
+         {
+            manager.fireEvent(i);
+         }
+         queuedEvents.clear();
+      }
+
       // veto implementation
       if (veto.contains(event.getAnnotatedType().getJavaClass()))
       {

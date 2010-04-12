@@ -6,6 +6,7 @@
    <toc/>
    
    <title>Seam XML Configuration</title>      
+   <xi:include href="xml-introduction.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  
    <xi:include href="xml-general.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  
 
 </book>
