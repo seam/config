@@ -23,7 +23,6 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 
-import org.jboss.seam.xml.annotations.XmlConfigured;
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.XmlId;
 import org.jboss.seam.xml.core.XmlResult;
@@ -59,6 +58,8 @@ public class XmlExtension implements Extension
    Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
 
    List<Exception> errors = new ArrayList<Exception>();
+
+   Set<XmlProcessAnnotatedType<?>> queuedEvents = new HashSet<XmlProcessAnnotatedType<?>>();
 
    /**
     * This is the entry point for the extension
@@ -139,18 +140,17 @@ public class XmlExtension implements Extension
 
    public <T> void processAnotated(@Observes ProcessAnnotatedType<T> event)
    {
+      // do not re-process events that we fired
+      if (event instanceof XmlProcessAnnotatedType<?>)
+      {
+         return;
+      }
       // veto implementation
       if (veto.contains(event.getAnnotatedType().getJavaClass()))
       {
          log.info("Preventing installation of default bean: " + event.getAnnotatedType().getJavaClass().getName());
          event.veto();
          return;
-      }
-      if(event.getAnnotatedType().isAnnotationPresent(XmlConfigured.class))
-      {
-    	  log.info("Preventing installation of @XmlConfigured bean: " + event.getAnnotatedType().getJavaClass().getName());
-          event.veto();
-          return;
       }
       boolean found = false;
       NewAnnotatedTypeBuilder builder = new NewAnnotatedTypeBuilder(event.getAnnotatedType());

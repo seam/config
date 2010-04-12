@@ -352,7 +352,6 @@ public class ModelBuilder
                   {
                      throw new XmlConfigurationException("<type> must have a single child element", rb.getDocument(), rb.getLineno());
                   }
-
                   type.overrideMethodParameterType(item.getMethod(), overridenTypes.get(0).getJavaClass(), param);
                }
             }
