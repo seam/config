@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ import javax.inject.Qualifier;
 import javax.interceptor.InterceptorBinding;
 
 import org.jboss.seam.xml.core.BeanResult;
+import org.jboss.seam.xml.core.GenericBeanResult;
 import org.jboss.seam.xml.core.XmlResult;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.parser.SaxNode;
@@ -107,11 +109,11 @@ public class ModelBuilder
             BeanResult<?> tp = buildAnnotatedType((ClassXmlItem) rb);
             if (rb.getJavaClass().isInterface())
             {
-               ret.getInterfaces().add(tp);
+               ret.addInterface(tp);
             }
             else
             {
-               ret.getBeans().add(tp);
+               ret.addBean(tp);
             }
             if (tp.isOverride() || tp.isExtend())
             {
@@ -138,21 +140,21 @@ public class ModelBuilder
             {
                if (rb.getJavaClass().isInterface())
                {
-                  ret.getInterfaceFieldValues().put(tp.getType(), fields);
+                  ret.addInterfaceFieldValues(tp.getType(), fields);
                }
                else
                {
-                  ret.getFieldValues().put(tp, fields);
+                  ret.addFieldValue(tp, fields);
                }
             }
          }
          else if (type == ResultType.QUALIFIER)
          {
-            ret.getQualifiers().add((Class) rb.getJavaClass());
+            ret.addQualifier((Class) rb.getJavaClass());
          }
          else if (type == ResultType.INTERCEPTOR_BINDING)
          {
-            ret.getInterceptorBindings().add((Class) rb.getJavaClass());
+            ret.addInterceptorBinding((Class) rb.getJavaClass());
          }
          else if (type == ResultType.STEREOTYPE)
          {
@@ -165,6 +167,16 @@ public class ModelBuilder
          {
             ret.addVeto(it.getJavaClass());
          }
+      }
+      else if (rb.getType() == XmlItemType.GENERIC_BEAN)
+      {
+         GenericBeanXmlItem item = (GenericBeanXmlItem) rb;
+         Set<Class> classes = new HashSet<Class>();
+         for (ClassXmlItem c : rb.getChildrenOfType(ClassXmlItem.class))
+         {
+            classes.add(c.getJavaClass());
+         }
+         ret.addGenericBean(new GenericBeanResult(item.getJavaClass(), classes));
       }
    }
 
@@ -429,7 +441,7 @@ public class ModelBuilder
          }
          count++;
       }
-      ret.getStereotypes().put((Class) rb.getJavaClass(), values);
+      ret.addStereotype((Class) rb.getJavaClass(), values);
 
    }
 

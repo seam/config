@@ -7,6 +7,7 @@ package org.jboss.seam.xml.parser.namespace;
 import org.jboss.seam.xml.model.ArrayXmlItem;
 import org.jboss.seam.xml.model.ClassXmlItem;
 import org.jboss.seam.xml.model.EntryXmlItem;
+import org.jboss.seam.xml.model.GenericBeanXmlItem;
 import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.OverrideXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
@@ -73,7 +74,10 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       {
          return new TypeXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-
+      else if (item.equals("genericBean"))
+      {
+         return new GenericBeanXmlItem(parent, node.getAttributes(), node.getDocument(), node.getLineNo());
+      }
       // now deal with primitive types
 
       Class<?> primType = null;
