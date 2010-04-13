@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:seam:core"
+          xmlns:test="urn:java:org.jboss.seam.xml.test.generic">
+
+	<genericBean class="org.jboss.seam.xml.test.generic.GenericMain" >
+		<test:GenericDependant/>
+	</genericBean>
+	
+	<test:GenericMain>
+		<test:HighGenericQualifier/>
+		<test:configuredValue><value>100</value></test:configuredValue>
+	</test:GenericMain>
+	
+	<test:GenericMain>
+		<test:LowGenericQualifier/>
+		<test:configuredValue><value>10</value></test:configuredValue>
+	</test:GenericMain>
+	
+</beans>

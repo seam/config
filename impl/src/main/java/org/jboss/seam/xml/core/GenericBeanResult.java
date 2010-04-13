@@ -9,7 +9,7 @@ public class GenericBeanResult
 
    final Set<Class> secondaryBeans;
 
-   public GenericBeanResult(Class genericBean, Set<Class> secondaryBeans)
+   public GenericBeanResult(Class<?> genericBean, Set<Class> secondaryBeans)
    {
       this.genericBean = genericBean;
       this.secondaryBeans = new HashSet<Class>(secondaryBeans);
