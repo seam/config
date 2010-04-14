@@ -10,7 +10,7 @@ public class BeanResult<X>
 {
    NewAnnotatedTypeBuilder<X> builder;
    Class<X> type;
-   boolean override, extend;
+   BeanResultType beanType = BeanResultType.ADD;
 
    public BeanResult(Class<X> type, boolean readAnnotations)
    {
@@ -28,23 +28,14 @@ public class BeanResult<X>
       return type;
    }
 
-   public boolean isOverride()
+   public BeanResultType getBeanType()
    {
-      return override;
+      return beanType;
    }
 
-   public void setOverride(boolean override)
+   public void setBeanType(BeanResultType beanType)
    {
-      this.override = override;
+      this.beanType = beanType;
    }
 
-   public boolean isExtend()
-   {
-      return extend;
-   }
-
-   public void setExtend(boolean extend)
-   {
-      this.extend = extend;
-   }
 }

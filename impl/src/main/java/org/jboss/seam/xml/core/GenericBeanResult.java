@@ -7,12 +7,12 @@ public class GenericBeanResult
 {
    final Class genericBean;
 
-   final Set<Class> secondaryBeans;
+   final Set<BeanResult<?>> secondaryBeans;
 
-   public GenericBeanResult(Class<?> genericBean, Set<Class> secondaryBeans)
+   public GenericBeanResult(Class<?> genericBean, Set<BeanResult<?>> secondaryBeans)
    {
       this.genericBean = genericBean;
-      this.secondaryBeans = new HashSet<Class>(secondaryBeans);
+      this.secondaryBeans = new HashSet<BeanResult<?>>(secondaryBeans);
    }
 
    public Class getGenericBean()
@@ -20,7 +20,7 @@ public class GenericBeanResult
       return genericBean;
    }
 
-   public Set<Class> getSecondaryBeans()
+   public Set<BeanResult<?>> getSecondaryBeans()
    {
       return secondaryBeans;
    }

@@ -6,8 +6,6 @@ package org.jboss.seam.xml.bootstrap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -19,9 +17,11 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Disposes;
-import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.AnnotatedConstructor;
+import javax.enterprise.inject.spi.AnnotatedField;
+import javax.enterprise.inject.spi.AnnotatedMethod;
+import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
@@ -29,8 +29,8 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Inject;
 
+import org.jboss.seam.xml.annotations.internal.ApplyQualifiers;
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.GenericBeanResult;
 import org.jboss.seam.xml.core.XmlConfiguredBean;
@@ -43,7 +43,6 @@ import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
-import org.jboss.weld.extensions.util.ReflectionUtils;
 import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -276,16 +275,19 @@ public class XmlExtension implements Extension
       return ret;
    }
 
+   /**
+    * installs a set of secondary beans for a given generic bean, the secondary
+    * beans have the same qualifiers added to them as the generic bean, in
+    * addition the generic beans qualifiers are added whereever the
+    * ApplyQualiers annotation is found
+    * 
+    */
    public List<AnnotatedType<?>> processGenericBeans(BeanResult<?> bean, GenericBeanResult genericBeans, BeanManager beanManager)
    {
       List<AnnotatedType<?>> ret = new ArrayList<AnnotatedType<?>>();
       AnnotatedType<?> rootType = bean.getBuilder().create();
       // ret.add(rootType);
       Set<Annotation> qualifiers = new HashSet<Annotation>();
-
-      Set<Class> allBeans = new HashSet<Class>();
-      allBeans.add(genericBeans.getGenericBean());
-      allBeans.addAll(genericBeans.getSecondaryBeans());
 
       for (Annotation i : rootType.getAnnotations())
       {
@@ -294,110 +296,70 @@ public class XmlExtension implements Extension
             qualifiers.add(i);
          }
       }
-
-      for (Class<?> c : genericBeans.getSecondaryBeans())
+      for (BeanResult<?> c : genericBeans.getSecondaryBeans())
       {
-         NewAnnotatedTypeBuilder<?> gb = new NewAnnotatedTypeBuilder(c, true);
-         for (Annotation a : qualifiers)
-         {
-            gb.addToClass(a);
-         }
-         for (Field f : ReflectionUtils.getFields(c))
-         {
 
-            if (allBeans.contains(f.getType()))
+         AnnotatedType<?> type = c.getBuilder().create();
+         NewAnnotatedTypeBuilder<?> gb = new NewAnnotatedTypeBuilder(type);
+         // we always apply qualifiers to the actual type
+         for (Annotation q : qualifiers)
+         {
+            gb.addToClass(q);
+         }
+         for (AnnotatedField<?> f : type.getFields())
+         {
+            if (f.isAnnotationPresent(ApplyQualifiers.class))
             {
-               if (f.isAnnotationPresent(Produces.class) || f.isAnnotationPresent(Inject.class))
+               for (Annotation q : qualifiers)
                {
-                  for (Annotation a : qualifiers)
-                  {
-                     gb.addToField(f, a);
-                  }
+                  gb.addToField(f.getJavaMember(), q);
                }
             }
          }
-         // now deal with the methods
-         for (Method m : ReflectionUtils.getMethods(c))
+         for (AnnotatedMethod<?> m : type.getMethods())
          {
-            // if this method is eligable for injection we need to check the
-            // parameters
-            boolean inject = false;
-            if (m.isAnnotationPresent(Produces.class))
+            if (m.isAnnotationPresent(ApplyQualifiers.class))
             {
-               inject = true;
-               // if it is a producer add qualifiers
-               if (allBeans.contains(m.getReturnType()))
+               for (Annotation q : qualifiers)
                {
-                  for (Annotation a : qualifiers)
-                  {
-                     gb.addToMethod(m, a);
-                  }
+                  gb.addToMethod(m.getJavaMember(), q);
                }
             }
-            // even if it is not a producer it may be a disposer or an observer
-            if (!inject)
-            {
-               for (int i = 0; i < m.getParameterTypes().length; ++i)
-               {
-                  Annotation[] an = m.getParameterAnnotations()[i];
-                  for (Annotation a : an)
-                  {
-                     if (a.annotationType() == Disposes.class || a.annotationType() == Observes.class)
-                     {
-                        inject = true;
-                        break;
-                     }
-                  }
-                  if (inject)
-                  {
-                     break;
-                  }
-               }
-            }
-            // if we need to apply qualifiers to the parameters
-            if (inject)
-            {
-               for (int i = 0; i < m.getParameterTypes().length; ++i)
-               {
-                  Class<?> type = m.getParameterTypes()[i];
-                  if (allBeans.contains(type))
-                  {
-                     for (Annotation a : qualifiers)
-                     {
-                        gb.addToMethodParameter(m, i, a);
-                     }
-                  }
-               }
-            }
-         }
-         // now deal with constructors
-         for (Constructor<?> con : c.getDeclaredConstructors())
-         {
-            // if this constructor is eligible for injection we need to check
-            // the
-            // parameters
-            boolean inject = false;
-            if (con.isAnnotationPresent(Inject.class))
-            {
-               inject = true;
 
-            }
-            // if we need to apply qualifiers to the parameters
-            if (inject)
+            for (AnnotatedParameter<?> p : m.getParameters())
             {
-               for (int i = 0; i < con.getParameterTypes().length; ++i)
+               if (p.isAnnotationPresent(ApplyQualifiers.class))
                {
-                  Class<?> type = con.getParameterTypes()[i];
-                  if (allBeans.contains(type))
+                  for (Annotation q : qualifiers)
                   {
-                     for (Annotation a : qualifiers)
-                     {
-                        gb.addToConstructorParameter((Constructor) con, i, a);
-                     }
+                     gb.addToMethodParameter(m.getJavaMember(), p.getPosition(), q);
                   }
                }
             }
          }
+
+         for (AnnotatedConstructor<?> con : type.getConstructors())
+         {
+            if (con.isAnnotationPresent(ApplyQualifiers.class))
+            {
+               for (Annotation q : qualifiers)
+               {
+                  gb.addToConstructor((Constructor) con.getJavaMember(), q);
+               }
+            }
+
+            for (AnnotatedParameter<?> p : con.getParameters())
+            {
+               if (p.isAnnotationPresent(ApplyQualifiers.class))
+               {
+                  for (Annotation q : qualifiers)
+                  {
+                     gb.addToConstructorParameter((Constructor) con.getJavaMember(), p.getPosition(), q);
+                  }
+               }
+            }
+         }
+
          ret.add(gb.create());
       }
       return ret;

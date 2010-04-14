@@ -22,6 +22,7 @@ import javax.inject.Qualifier;
 import javax.interceptor.InterceptorBinding;
 
 import org.jboss.seam.xml.core.BeanResult;
+import org.jboss.seam.xml.core.BeanResultType;
 import org.jboss.seam.xml.core.GenericBeanResult;
 import org.jboss.seam.xml.core.XmlResult;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
@@ -115,7 +116,7 @@ public class ModelBuilder
             {
                ret.addBean(tp);
             }
-            if (tp.isOverride() || tp.isExtend())
+            if (tp.getBeanType() != BeanResultType.ADD)
             {
                ret.addVeto(tp.getType());
             }
@@ -171,10 +172,15 @@ public class ModelBuilder
       else if (rb.getType() == XmlItemType.GENERIC_BEAN)
       {
          GenericBeanXmlItem item = (GenericBeanXmlItem) rb;
-         Set<Class> classes = new HashSet<Class>();
+         Set<BeanResult<?>> classes = new HashSet<BeanResult<?>>();
          for (ClassXmlItem c : rb.getChildrenOfType(ClassXmlItem.class))
          {
-            classes.add(c.getJavaClass());
+            BeanResult<?> br = buildAnnotatedType(c);
+            if (br.getBeanType() != BeanResultType.ADD)
+            {
+               ret.addVeto(br.getType());
+            }
+            classes.add(br);
          }
          ret.addGenericBean(new GenericBeanResult(item.getJavaClass(), classes));
       }
@@ -284,8 +290,14 @@ public class ModelBuilder
       {
          throw new XmlConfigurationException("A bean may not both <override> and <extend> an existing bean", rb.getDocument(), rb.getLineno());
       }
-      result.setOverride(override);
-      result.setExtend(extend);
+      if (override)
+      {
+         result.setBeanType(BeanResultType.OVERRIDE);
+      }
+      else if (extend)
+      {
+         result.setBeanType(BeanResultType.SPECIALISE);
+      }
 
       for (AnnotationXmlItem item : rb.getChildrenOfType(AnnotationXmlItem.class))
       {

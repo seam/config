@@ -3,7 +3,13 @@
           xmlns:test="urn:java:org.jboss.seam.xml.test.generic">
 
 	<genericBean class="org.jboss.seam.xml.test.generic.GenericMain" >
-		<test:GenericDependant/>
+		<test:GenericDependant>
+			<ApplyQualifiers/>
+			<specializes/>
+			<test:instance>
+				<ApplyQualifiers/>
+			</test:instance>
+		</test:GenericDependant>
 	</genericBean>
 	
 	<test:GenericMain>
