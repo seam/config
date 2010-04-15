@@ -17,7 +17,9 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
 import javax.enterprise.inject.spi.AnnotatedField;
 import javax.enterprise.inject.spi.AnnotatedMethod;
@@ -29,6 +31,7 @@ import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Named;
 
 import org.jboss.seam.xml.annotations.internal.ApplyQualifiers;
 import org.jboss.seam.xml.core.BeanResult;
@@ -301,6 +304,11 @@ public class XmlExtension implements Extension
 
          AnnotatedType<?> type = c.getBuilder().create();
          NewAnnotatedTypeBuilder<?> gb = new NewAnnotatedTypeBuilder(type);
+         //if the original type was qualified @Default we add that as well
+         if(!isQualifierPresent(type, beanManager))
+         {
+            gb.addToClass( new DefaultLiteral());
+         }
          // we always apply qualifiers to the actual type
          for (Annotation q : qualifiers)
          {
@@ -309,7 +317,14 @@ public class XmlExtension implements Extension
          for (AnnotatedField<?> f : type.getFields())
          {
             if (f.isAnnotationPresent(ApplyQualifiers.class))
-            {
+            {  
+               //we need to manually add @default as it stops being applied when 
+               //we add our qualifiers, however if we are deling with the main type we do not 
+               //bother, as it should not be qualified @Default
+               if(!isQualifierPresent(f, beanManager) && f.getJavaMember().getType() != rootType.getJavaClass())
+               {
+                  gb.addToField(f.getJavaMember(), new DefaultLiteral());
+               }
                for (Annotation q : qualifiers)
                {
                   gb.addToField(f.getJavaMember(), q);
@@ -318,8 +333,14 @@ public class XmlExtension implements Extension
          }
          for (AnnotatedMethod<?> m : type.getMethods())
          {
+           
             if (m.isAnnotationPresent(ApplyQualifiers.class))
             {
+              
+               if(!isQualifierPresent(m, beanManager))
+               {
+                  gb.addToMethod(m.getJavaMember(), new DefaultLiteral());
+               }
                for (Annotation q : qualifiers)
                {
                   gb.addToMethod(m.getJavaMember(), q);
@@ -328,8 +349,13 @@ public class XmlExtension implements Extension
 
             for (AnnotatedParameter<?> p : m.getParameters())
             {
+               
                if (p.isAnnotationPresent(ApplyQualifiers.class))
                {
+                  if(!isQualifierPresent(p, beanManager) && p.getBaseType() != rootType.getJavaClass())
+                  {
+                     gb.addToMethodParameter(m.getJavaMember(),p.getPosition(), new DefaultLiteral());
+                  }
                   for (Annotation q : qualifiers)
                   {
                      gb.addToMethodParameter(m.getJavaMember(), p.getPosition(), q);
@@ -342,6 +368,10 @@ public class XmlExtension implements Extension
          {
             if (con.isAnnotationPresent(ApplyQualifiers.class))
             {
+               if(!isQualifierPresent(con, beanManager))
+               {
+                  gb.addToConstructor((Constructor) con.getJavaMember(), new DefaultLiteral());
+               }
                for (Annotation q : qualifiers)
                {
                   gb.addToConstructor((Constructor) con.getJavaMember(), q);
@@ -350,8 +380,12 @@ public class XmlExtension implements Extension
 
             for (AnnotatedParameter<?> p : con.getParameters())
             {
-               if (p.isAnnotationPresent(ApplyQualifiers.class))
+               if (p.isAnnotationPresent(ApplyQualifiers.class) && p.getBaseType() != rootType.getJavaClass())
                {
+                  if(!isQualifierPresent(p, beanManager))
+                  {
+                     gb.addToConstructorParameter((Constructor) con.getJavaMember(),p.getPosition(), new DefaultLiteral());
+                  }
                   for (Annotation q : qualifiers)
                   {
                      gb.addToConstructorParameter((Constructor) con.getJavaMember(), p.getPosition(), q);
@@ -364,4 +398,22 @@ public class XmlExtension implements Extension
       }
       return ret;
    }
+   
+   public boolean isQualifierPresent(Annotated f, BeanManager beanManager)
+   {
+      for(Annotation a : f.getAnnotations())
+      {
+         if(a.annotationType().equals(Named.class))
+         {
+            continue;
+         }
+         if(beanManager.isQualifier(a.annotationType()))
+         {
+            return true;
+         }
+      }
+      return false;
+   }
+   
+   public static class DefaultLiteral extends AnnotationLiteral<Default> implements Default {};
 }
