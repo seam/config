@@ -150,9 +150,18 @@ public class XmlExtension implements Extension
          }
          for (BeanResult<?> bb : r.getBeans())
          {
-            if (genericBeans.containsKey(bb.getType()))
+            GenericBeanResult found = null;
+            for(Class g : genericBeans.keySet())
             {
-               List<AnnotatedType<?>> types = processGenericBeans(bb, genericBeans.get(bb.getType()), beanManager);
+               if(g.isAssignableFrom(bb.getType()))
+               {
+                  found = genericBeans.get(g);
+                  break;
+               }
+            }
+            if (found != null)
+            {
+               List<AnnotatedType<?>> types = processGenericBeans(bb, found, beanManager);
                for (AnnotatedType<?> i : types)
                {
                   event.addAnnotatedType(i);
@@ -336,7 +345,6 @@ public class XmlExtension implements Extension
            
             if (m.isAnnotationPresent(ApplyQualifiers.class))
             {
-              
                if(!isQualifierPresent(m, beanManager))
                {
                   gb.addToMethod(m.getJavaMember(), new DefaultLiteral());
