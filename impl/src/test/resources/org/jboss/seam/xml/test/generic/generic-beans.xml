@@ -12,12 +12,12 @@
 		</test:GenericDependant>
 	</genericBean>
 	
-	<test:GenericMain>
+	<test:GenericMain><specializes/>
 		<test:HighGenericQualifier/>
 		<test:configuredValue><value>100</value></test:configuredValue>
 	</test:GenericMain>
 	
-	<test:GenericMain>
+	<test:GenericMain><specializes/>
 		<test:LowGenericQualifier/>
 		<test:configuredValue><value>10</value></test:configuredValue>
 	</test:GenericMain>

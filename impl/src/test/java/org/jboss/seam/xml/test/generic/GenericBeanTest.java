@@ -32,4 +32,21 @@ public class GenericBeanTest extends AbstractXMLTest
       ;
    }
 
+   @Test
+   public void genericBeansInitMethodTest()
+   {
+      GenericDependant dep = getReference(GenericDependant.class, new AnnotationLiteral<HighGenericQualifier>()
+      {
+      });
+      assert dep.initCalled;
+      dep = getReference(GenericDependant.class, new AnnotationLiteral<LowGenericQualifier>()
+      {
+      });
+      assert dep.initCalled;
+      GenericMain main = getReference(GenericMain.class, new AnnotationLiteral<LowGenericQualifier>()
+      {
+      });
+      assert main.init;
+   }
+
 }
