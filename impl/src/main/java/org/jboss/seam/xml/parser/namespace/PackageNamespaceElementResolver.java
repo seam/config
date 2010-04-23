@@ -67,7 +67,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
             }
             else
             {
-               return new ClassXmlItem(parent, c, node.getDocument(), node.getLineNo());
+               return new ClassXmlItem(parent, c, node.getAttributes(), node.getDocument(), node.getLineNo());
             }
          }
 

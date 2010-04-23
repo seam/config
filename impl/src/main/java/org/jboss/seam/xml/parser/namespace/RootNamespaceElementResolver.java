@@ -121,7 +121,7 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
          }
          else
          {
-            return new ClassXmlItem(parent, primType, node.getDocument(), node.getLineNo());
+            return new ClassXmlItem(parent, primType, node.getAttributes(), node.getDocument(), node.getLineNo());
          }
       }
 

@@ -23,7 +23,7 @@ import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
-public class FieldXmlItem extends AbstractXmlItem
+public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
 {
 
    FieldValueSetter fieldSetter;
@@ -149,5 +149,10 @@ public class FieldXmlItem extends AbstractXmlItem
          return new MethodFieldSetter(setter);
       }
       return new DirectFieldSetter(field);
+   }
+
+   public String getFieldName()
+   {
+      return field.getName();
    }
 }

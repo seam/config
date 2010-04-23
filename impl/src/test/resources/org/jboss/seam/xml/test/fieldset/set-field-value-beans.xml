@@ -19,7 +19,11 @@
         <test:noField>7</test:noField>
     </test:FieldValueBean>
     
-    
-    
-   
+    <test:FieldValueBean ivalue="10" stringValue="hello world" enumValue="A" fvalue="0" dvalue="0" bvalue="true" lvalue="23" svalue="4" bigDecimalValue="10" noField="7" >
+    	<overrides/>
+        <test:init>
+            <Inject/>
+        </test:init>
+        <test:FieldsetQualifier/>
+    </test:FieldValueBean>
 </beans>

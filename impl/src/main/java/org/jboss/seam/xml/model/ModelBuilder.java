@@ -53,6 +53,9 @@ public class ModelBuilder
 
    Map<String, NamespaceElementResolver> resolvers;
 
+   /**
+    * builds an XML result from a parsed xml document
+    */
    public XmlResult build(SaxNode root)
    {
 
@@ -79,6 +82,7 @@ public class ModelBuilder
             // nodes with a null namespace are whitespace nodes etc
             if (node.getNamespaceUri() != null)
             {
+               // ignore <alternatives> <interceptors> etc
                if (node.getNamespaceUri().equals(BEANS_ROOT_NAMESPACE))
                {
                   continue;
@@ -105,10 +109,13 @@ public class ModelBuilder
       if (rb.getType() == XmlItemType.CLASS || rb.getType() == XmlItemType.ANNOTATION)
       {
          ResultType type = getItemType(rb);
+         // if we are configuring a bean
          if (type == ResultType.BEAN)
          {
-            BeanResult<?> tp = buildAnnotatedType((ClassXmlItem) rb);
-            if (rb.getJavaClass().isInterface())
+            ClassXmlItem cxml = (ClassXmlItem) rb;
+            // get the AnnotatedType information
+            BeanResult<?> tp = buildAnnotatedType(cxml);
+            if (cxml.getJavaClass().isInterface())
             {
                ret.addInterface(tp);
             }
@@ -116,27 +123,33 @@ public class ModelBuilder
             {
                ret.addBean(tp);
             }
+            // <override> or <speciailizes> need to veto the bean
             if (tp.getBeanType() != BeanResultType.ADD)
             {
                ret.addVeto(tp.getType());
             }
+            // get all the field values from the bean
+            Set<String> configuredFields = new HashSet<String>();
             List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
-            for (FieldXmlItem xi : rb.getChildrenOfType(FieldXmlItem.class))
+            for (FieldValueXmlItem xi : cxml.getChildrenOfType(FieldValueXmlItem.class))
             {
                FieldValueObject f = xi.getFieldValue();
                if (f != null)
                {
                   fields.add(f);
+                  configuredFields.add(xi.getFieldName());
                }
             }
-            for (PropertyXmlItem xi : rb.getChildrenOfType(PropertyXmlItem.class))
+
+            for (FieldValueXmlItem f : cxml.getShorthandFieldValues())
             {
-               FieldValueObject f = xi.getFieldValue();
-               if (f != null)
+               if (configuredFields.contains(f.getFieldName()))
                {
-                  fields.add(f);
+                  throw new XmlConfigurationException("Field configured in two places: " + cxml.getJavaClass().getName() + "." + f.getFieldName(), cxml.getDocument(), cxml.getLineno());
                }
+               fields.add(f.getFieldValue());
             }
+
             if (!fields.isEmpty())
             {
                if (rb.getJavaClass().isInterface())
@@ -162,15 +175,9 @@ public class ModelBuilder
             addStereotypeToResult(ret, rb);
          }
       }
-      else if (rb.getType() == XmlItemType.VETO)
-      {
-         for (XmlItem it : rb.getChildren())
-         {
-            ret.addVeto(it.getJavaClass());
-         }
-      }
       else if (rb.getType() == XmlItemType.GENERIC_BEAN)
       {
+
          GenericBeanXmlItem item = (GenericBeanXmlItem) rb;
          Set<BeanResult<?>> classes = new HashSet<BeanResult<?>>();
          for (ClassXmlItem c : rb.getChildrenOfType(ClassXmlItem.class))
@@ -186,6 +193,9 @@ public class ModelBuilder
       }
    }
 
+   /**
+    * resolves the appropriate java elements from the xml
+    */
    protected XmlItem resolveNode(SaxNode node, XmlItem parent)
    {
       NamespaceElementResolver resolver = resolveNamepsace(node.getNamespaceUri());

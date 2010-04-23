@@ -21,7 +21,7 @@ import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
-public class PropertyXmlItem extends AbstractXmlItem
+public class PropertyXmlItem extends AbstractXmlItem implements FieldValueXmlItem
 {
 
    FieldValueSetter fieldSetter;
@@ -118,6 +118,11 @@ public class PropertyXmlItem extends AbstractXmlItem
    public Set<XmlItemType> getAllowedItem()
    {
       return allowed;
+   }
+
+   public String getFieldName()
+   {
+      return name;
    }
 
 }
