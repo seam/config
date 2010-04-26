@@ -36,7 +36,7 @@
 
 public class RobotArm
 {
-	String attchment = "welder";
+	String attachment = "welder";
 	
 	public void doStuff()
 	{
@@ -51,7 +51,7 @@ public @Interface LeftArm{}
 public @Interface RightArm{}
     ]]>
     </programlisting>
-    <para>This is all well and good, however at some point in the future we decide that our robot is no longer needed for welding, instead it needs a plasma cutter in it's left hand and a 
+    <para>So we have a robot class that injects a left arm and a right arm, with both arms having a welder attachment.  At some point in the future we decide that our robot is no longer needed for welding, instead it needs a plasma cutter in it's left hand and a 
     	  vice in its right hand. Rather than modifying the class files, we decide to configure this up with xml:</para>
          <programlistingco>
     <areaspec>
@@ -83,13 +83,13 @@ public @Interface RightArm{}
  	<r:RobotArm>
  		<s:overrides/>
  		<r:LeftArm/>
- 		<r:attchment>Plasma Cutter</r:attchment>
+ 		<r:attachment>Plasma Cutter</r:attachment>
   	</r:RobotArm>
   	
   	<r:RobotArm>
  		<s:overrides/>
  		<r:RightArm/>
- 		<r:attchment>Vice</r:attchment>
+ 		<r:attachment>Vice</r:attachment>
   	</r:RobotArm>
   	
   	<r:Robot>
