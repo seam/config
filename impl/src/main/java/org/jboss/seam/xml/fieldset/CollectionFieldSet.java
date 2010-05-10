@@ -17,6 +17,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.jboss.seam.xml.model.XmlItem;
+import org.jboss.seam.xml.util.TypeReader;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 
 /**
@@ -68,54 +69,45 @@ public class CollectionFieldSet implements FieldValueObject
 
          if (parameterizedType.getRawType() == Collection.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedHashSet.class;
          }
          else if (parameterizedType.getRawType() == List.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = ArrayList.class;
          }
          else if (parameterizedType.getRawType() == Set.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedHashSet.class;
          }
          else if (parameterizedType.getRawType() == SortedSet.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = TreeSet.class;
          }
          else if (parameterizedType.getRawType() == HashSet.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = HashSet.class;
          }
          else if (parameterizedType.getRawType() == ArrayList.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = ArrayList.class;
          }
          else if (parameterizedType.getRawType() == LinkedList.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedList.class;
          }
          else if (parameterizedType.getRawType() == LinkedHashSet.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = LinkedHashSet.class;
          }
          else if (parameterizedType.getRawType() == TreeSet.class)
          {
-            elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             collectionType = TreeSet.class;
          }
          else
          {
             throw new RuntimeException("Could not determine element type for " + field.getDeclaringClass().getName() + "." + field.getName());
          }
-
+         elementType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[0]);
       }
       else
       {

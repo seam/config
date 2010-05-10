@@ -12,5 +12,5 @@ public class CollectionFieldValue
 {
    public Set<Integer> iset;
    public SortedSet<String> sset;
-   public List<Class> clist;
+   public List<Class<?>> clist;
 }

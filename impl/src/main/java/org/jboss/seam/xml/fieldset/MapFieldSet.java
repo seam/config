@@ -15,6 +15,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.jboss.seam.xml.model.EntryXmlItem;
+import org.jboss.seam.xml.util.TypeReader;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 
 /**
@@ -66,20 +67,14 @@ public class MapFieldSet implements FieldValueObject
 
          if (parameterizedType.getRawType() == Map.class)
          {
-            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = LinkedHashMap.class;
          }
          else if (parameterizedType.getRawType() == LinkedHashMap.class)
          {
-            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = LinkedHashMap.class;
          }
          else if (parameterizedType.getRawType() == HashMap.class)
          {
-            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = HashMap.class;
          }
          else if (parameterizedType.getRawType() == SortedMap.class)
@@ -90,8 +85,6 @@ public class MapFieldSet implements FieldValueObject
          }
          else if (parameterizedType.getRawType() == TreeMap.class)
          {
-            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
             collectionType = TreeMap.class;
          }
          else
@@ -99,6 +92,8 @@ public class MapFieldSet implements FieldValueObject
             throw new RuntimeException("Could not determine element type for map " + field.getDeclaringClass().getName() + "." + field.getName());
          }
 
+         keyType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[0]);
+         valueType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[1]);
       }
       else
       {
