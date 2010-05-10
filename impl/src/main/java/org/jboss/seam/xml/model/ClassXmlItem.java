@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.jboss.seam.xml.util.XmlConfigurationException;
-import org.jboss.weld.extensions.util.ReflectionUtils;
+import org.jboss.weld.extensions.util.Reflections;
 
 public class ClassXmlItem extends AbstractXmlItem
 {
@@ -40,7 +40,7 @@ public class ClassXmlItem extends AbstractXmlItem
       for (Entry<String, String> e : attributes.entrySet())
       {
 
-         Field field = ReflectionUtils.getField(getJavaClass(), e.getKey());
+         Field field = Reflections.getField(getJavaClass(), e.getKey());
          if (field != null)
          {
             values.add(new FieldXmlItem(this, field, e.getValue(), document, lineno));
@@ -48,9 +48,9 @@ public class ClassXmlItem extends AbstractXmlItem
          else
          {
             String methodName = "set" + Character.toUpperCase(e.getKey().charAt(0)) + e.getKey().substring(1);
-            if (ReflectionUtils.methodExists(getJavaClass(), methodName))
+            if (Reflections.methodExists(getJavaClass(), methodName))
             {
-               Set<Method> methods = ReflectionUtils.getMethods(getJavaClass());
+               Set<Method> methods = Reflections.getMethods(getJavaClass());
                for (Method m : methods)
                {
                   if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)

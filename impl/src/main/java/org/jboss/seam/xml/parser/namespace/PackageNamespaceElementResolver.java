@@ -21,7 +21,7 @@ import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.XmlConfigurationException;
-import org.jboss.weld.extensions.util.ReflectionUtils;
+import org.jboss.weld.extensions.util.Reflections;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
@@ -104,8 +104,8 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
    {
       Class<?> p = parent.getJavaClass();
       Field f = null;
-      boolean methodFound = ReflectionUtils.methodExists(p, name);
-      f = ReflectionUtils.getField(p, name);
+      boolean methodFound = Reflections.methodExists(p, name);
+      f = Reflections.getField(p, name);
 
       if (methodFound && f != null)
       {
@@ -121,9 +121,9 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       }
 
       String methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
-      if (ReflectionUtils.methodExists(p, methodName))
+      if (Reflections.methodExists(p, methodName))
       {
-         Set<Method> methods = ReflectionUtils.getMethods(p);
+         Set<Method> methods = Reflections.getMethods(p);
          for (Method m : methods)
          {
             if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)

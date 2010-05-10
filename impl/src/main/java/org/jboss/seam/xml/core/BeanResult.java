@@ -4,21 +4,25 @@
  */
 package org.jboss.seam.xml.core;
 
-import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
+import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 
 public class BeanResult<X>
 {
-   NewAnnotatedTypeBuilder<X> builder;
+   AnnotatedTypeBuilder<X> builder;
    Class<X> type;
    BeanResultType beanType = BeanResultType.ADD;
 
    public BeanResult(Class<X> type, boolean readAnnotations)
    {
       this.type = type;
-      builder = new NewAnnotatedTypeBuilder<X>(type, readAnnotations);
+      builder = AnnotatedTypeBuilder.newInstance(type);
+      if (readAnnotations)
+      {
+         builder.readAnnotationsFromUnderlyingType();
+      }
    }
 
-   public NewAnnotatedTypeBuilder<X> getBuilder()
+   public AnnotatedTypeBuilder<X> getBuilder()
    {
       return builder;
    }

@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class GenericBeanResult
 {
-   final Class genericBean;
+   final Class<?> genericBean;
 
    final Set<BeanResult<?>> secondaryBeans;
 
@@ -15,7 +15,7 @@ public class GenericBeanResult
       this.secondaryBeans = new HashSet<BeanResult<?>>(secondaryBeans);
    }
 
-   public Class getGenericBean()
+   public Class<?> getGenericBean()
    {
       return genericBean;
    }

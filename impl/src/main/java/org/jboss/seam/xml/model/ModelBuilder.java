@@ -32,9 +32,9 @@ import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.RootNamespaceElementResolver;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.seam.xml.util.XmlObjectConverter;
+import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
-import org.jboss.weld.extensions.util.ReflectionUtils;
-import org.jboss.weld.extensions.util.annotated.NewAnnotatedTypeBuilder;
+import org.jboss.weld.extensions.util.Reflections;
 
 /**
  * Builds an XML result from sax nodes
@@ -292,7 +292,7 @@ public class ModelBuilder
       // if it is an extend we want to read the annotations from the underlying
       // class
       BeanResult<?> result = new BeanResult(rb.getJavaClass(), extend);
-      NewAnnotatedTypeBuilder<?> type = result.getBuilder();
+      AnnotatedTypeBuilder<?> type = result.getBuilder();
       // list of constructor arguments
       List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();
 
@@ -436,7 +436,7 @@ public class ModelBuilder
       {
          params[i] = constList.get(i).getJavaClass();
       }
-      Constructor<?> ret = ReflectionUtils.getConstructor(bean.getJavaClass(), params);
+      Constructor<?> ret = Reflections.getConstructor(bean.getJavaClass(), params);
       if (ret == null)
       {
          throw new XmlConfigurationException("Could not resolve constructor for " + bean.getJavaClass() + " with arguments " + params, bean.getDocument(), bean.getLineno());

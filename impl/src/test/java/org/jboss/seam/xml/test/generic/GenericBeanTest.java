@@ -29,7 +29,6 @@ public class GenericBeanTest extends AbstractXMLTest
       {
       });
       assert dep.getValue() == 11 : " actual " + dep.getValue();
-      ;
    }
 
    @Test
