@@ -67,6 +67,17 @@
       to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>, 
       so in the example above <literal>&lt;test:ProducerBean&gt;</literal> resolves to 
       <literal>org.jboss.seam.xml.test.injection.ProducerBean</literal>.</para>
+      
+      <para>It is possible to map an XML namespace to multiple java packages. This is
+      done by sperating the packages with a colon like so:</para>
+      <programlisting>
+        <![CDATA[
+        xmlns:test="urn:java:com.mydomain.package1:com.mydomain.package2"
+       ]]>
+     </programlisting> 
+      <para>The namespaces are searched in the order they are specified in the xml 
+      document.</para>
+      
     <programlisting>
         <![CDATA[
 <test:ProducerQualifier>
