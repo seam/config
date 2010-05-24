@@ -8,14 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jboss.weld.extensions.resourceLoader.ResourceLoader;
+import org.jboss.weld.extensions.util.service.ServiceLoader;
 import org.xml.sax.InputSource;
 
 /**
@@ -24,23 +27,30 @@ import org.xml.sax.InputSource;
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
-public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
+public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
 {
 
-   static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "META-INF/beans.xml"};
+   private final List<ResourceLoader> resourceLoaders;
+
+   static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "META-INF/beans.xml" };
 
    final String[] resources;
 
    InputStream stream;
 
-   public ClassPathXmlDocumentProvider()
+   public ResourceLoaderXmlDocumentProvider()
    {
-      resources = DEFAULT_RESOURCES;
+      this(DEFAULT_RESOURCES);
    }
 
-   public ClassPathXmlDocumentProvider(String[] resources)
+   public ResourceLoaderXmlDocumentProvider(String[] resources)
    {
       this.resources = resources;
+      resourceLoaders = new ArrayList<ResourceLoader>();
+      for (ResourceLoader resourceLoader : ServiceLoader.load(ResourceLoader.class))
+      {
+         resourceLoaders.add(resourceLoader);
+      }
    }
 
    List<URL> docs;
@@ -65,27 +75,23 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
          throw new RuntimeException(e1);
       }
       docs = new ArrayList<URL>();
-      ClassLoader cl = Thread.currentThread().getContextClassLoader();
-      if (cl == null)
-      {
-         cl = getClass().getClassLoader();
-      }
+
       for (String i : resources)
       {
-         try
-         {
-            Enumeration<URL> e = cl.getResources(i);
-            while (e.hasMoreElements())
-            {
-               docs.add(e.nextElement());
-            }
-            iterator = docs.listIterator();
-         }
-         catch (IOException e)
-         {
-            throw new RuntimeException(e);
-         }
+         Set<URL> e = getResources(i);
+         docs.addAll(e);
+         iterator = docs.listIterator();
       }
+   }
+
+   protected Set<URL> getResources(String resource)
+   {
+      Set<URL> ret = new HashSet<URL>();
+      for (ResourceLoader r : resourceLoaders)
+      {
+         ret.addAll(r.getResources(resource));
+      }
+      return ret;
    }
 
    public void close()
@@ -117,33 +123,33 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
             e.printStackTrace();
          }
       }
-      
+
       try
       {
-         while(iterator.hasNext())
+         while (iterator.hasNext())
          {
             final URL url = iterator.next();
-            //ignore empty files
+            // ignore empty files
             InputStream test = null;
             try
             {
-                test = url.openStream();
-                if(test.available() == 0)
-                {
-                   continue;
-                }
+               test = url.openStream();
+               if (test.available() == 0)
+               {
+                  continue;
+               }
             }
             finally
             {
-               if(test != null)
+               if (test != null)
                {
                   test.close();
                }
             }
-            
+
             return new XmlDocument()
             {
-   
+
                public InputSource getInputSource()
                {
                   try
@@ -156,7 +162,7 @@ public class ClassPathXmlDocumentProvider implements XmlDocumentProvider
                      throw new RuntimeException(e);
                   }
                }
-   
+
                public String getFileUrl()
                {
                   return url.toString();

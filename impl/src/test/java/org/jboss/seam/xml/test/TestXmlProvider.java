@@ -4,7 +4,7 @@
  */
 package org.jboss.seam.xml.test;
 
-import org.jboss.seam.xml.bootstrap.ClassPathXmlDocumentProvider;
+import org.jboss.seam.xml.bootstrap.ResourceLoaderXmlDocumentProvider;
 import org.jboss.seam.xml.bootstrap.XmlDocument;
 import org.jboss.seam.xml.bootstrap.XmlDocumentProvider;
 
@@ -13,7 +13,7 @@ public class TestXmlProvider implements XmlDocumentProvider
 
    public static String fileName;
 
-   ClassPathXmlDocumentProvider docProvider;
+   ResourceLoaderXmlDocumentProvider docProvider;
 
    public void close()
    {
@@ -29,7 +29,7 @@ public class TestXmlProvider implements XmlDocumentProvider
    {
       String[] r = new String[1];
       r[0] = fileName;
-      docProvider = new ClassPathXmlDocumentProvider(r);
+      docProvider = new ResourceLoaderXmlDocumentProvider(r);
       docProvider.open();
    }
 
