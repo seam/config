@@ -5,7 +5,7 @@
   <parent>
     <artifactId>seam-xml-config-parent</artifactId>
     <groupId>org.jboss.seam.xml</groupId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0.Alpha2</version>
   </parent>
 
   <groupId>org.jboss.seam.xml</groupId>
@@ -68,9 +68,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/impl</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/impl</developerConnection>
-    <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/impl</url>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/tags/3.0.0.Alpha2/impl</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/tags/3.0.0.Alpha2/impl</developerConnection>
+    <url>http://fisheye.jboss.org/browse/Seam/modules/xml/tags/3.0.0.Alpha2/impl</url>
   </scm>
 
   <build>
