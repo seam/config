@@ -80,7 +80,7 @@ public class XmlExtension implements Extension
     */
    public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
    {
-      log.info("Seam XML Bean Config Starting");
+      log.info("Seam XML Config Starting...");
       List<Class<? extends XmlDocumentProvider>> providers = getDocumentProviders();
       for (Class<? extends XmlDocumentProvider> cl : providers)
       {
