@@ -30,8 +30,8 @@ import javax.enterprise.inject.spi.InjectionTarget;
 
 public class InjectionTargetWrapper<T> implements InjectionTarget<T>
 {
-   InjectionTarget<T> target;
-   List<FieldValueObject> fieldValues;
+   private final InjectionTarget<T> target;
+   private final List<FieldValueObject> fieldValues;
 
    public InjectionTargetWrapper(InjectionTarget<T> target, List<FieldValueObject> fieldValues)
    {

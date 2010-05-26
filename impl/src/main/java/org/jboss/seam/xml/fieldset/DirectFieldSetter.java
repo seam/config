@@ -34,7 +34,7 @@ import java.lang.reflect.Type;
 public class DirectFieldSetter implements FieldValueSetter
 {
 
-   Field field;
+   private final Field field;
 
    public DirectFieldSetter(Field field)
    {

@@ -48,37 +48,16 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class CollectionFieldSet implements FieldValueObject
 {
-   FieldValueSetter field;
-   List<CFS> values;
-   Class<?> elementType;
-   Class<? extends Collection> collectionType;
+   private final FieldValueSetter field;
+   private final List<CFS> values;
+   private final Class<?> elementType;
+   private final Class<? extends Collection> collectionType;
 
    public CollectionFieldSet(FieldValueSetter field, List<XmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<CFS>();
-      discoverElementType();
 
-      CFS setter;
-      for (XmlItem i : items)
-      {
-         final Object fv = XmlObjectConverter.convert(elementType, i.getInnerText());
-
-         setter = new CFS()
-         {
-            public void add(Collection<Object> o) throws IllegalAccessException
-            {
-               o.add(fv);
-            }
-         };
-
-         values.add(setter);
-      }
-
-   }
-
-   public void discoverElementType()
-   {
       Type type = field.getGenericType();
       if (type instanceof ParameterizedType)
       {
@@ -129,6 +108,22 @@ public class CollectionFieldSet implements FieldValueObject
       else
       {
          throw new RuntimeException("Could not determine element type for " + field.getDeclaringClass().getName() + "." + field.getName());
+      }
+
+      CFS setter;
+      for (XmlItem i : items)
+      {
+         final Object fv = XmlObjectConverter.convert(elementType, i.getInnerText());
+
+         setter = new CFS()
+         {
+            public void add(Collection<Object> o) throws IllegalAccessException
+            {
+               o.add(fv);
+            }
+         };
+
+         values.add(setter);
       }
 
    }

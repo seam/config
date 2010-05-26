@@ -29,16 +29,16 @@ import java.util.Map;
 
 public abstract class AbstractXmlItem implements XmlItem
 {
-   final XmlItemType type;
-   final XmlItem parent;
-   final Class<?> javaClass;
+   protected final XmlItemType type;
+   protected final XmlItem parent;
+   protected final Class<?> javaClass;
 
-   final String innerText;
-   final Map<String, String> attributes;
+   protected final String innerText;
+   protected final Map<String, String> attributes;
 
-   final int lineno;
+   protected final int lineno;
 
-   final String document;
+   protected final String document;
 
    public String getInnerText()
    {

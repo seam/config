@@ -28,9 +28,9 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
 public class SimpleFieldValue implements FieldValueObject
 {
 
-   final FieldValueSetter field;
+   private final FieldValueSetter field;
 
-   FS setter;
+   private final FS setter;
 
    public SimpleFieldValue(Class<?> javaObject, final FieldValueSetter f, final String value)
    {

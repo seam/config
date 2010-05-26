@@ -39,7 +39,7 @@ import org.jboss.seam.xml.parser.SaxNode;
 public class RootNamespaceElementResolver implements NamespaceElementResolver
 {
 
-   CompositeNamespaceElementResolver delegate;
+   private final CompositeNamespaceElementResolver delegate;
    static final String[] namspaces = { "java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "org.jboss.seam.xml.annotations.internal" };
 
    public RootNamespaceElementResolver()

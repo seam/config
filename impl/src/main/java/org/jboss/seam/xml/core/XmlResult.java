@@ -38,25 +38,25 @@ import org.jboss.seam.xml.fieldset.FieldValueObject;
 public class XmlResult
 {
 
-   private Map<Class<? extends Annotation>, Annotation[]> stereotypes = new HashMap<Class<? extends Annotation>, Annotation[]>();
+   private final Map<Class<? extends Annotation>, Annotation[]> stereotypes = new HashMap<Class<? extends Annotation>, Annotation[]>();
 
-   private List<Class<? extends Annotation>> qualifiers = new ArrayList<Class<? extends Annotation>>();
+   private final List<Class<? extends Annotation>> qualifiers = new ArrayList<Class<? extends Annotation>>();
 
-   private List<Class<? extends Annotation>> interceptorBindings = new ArrayList<Class<? extends Annotation>>();
+   private final List<Class<? extends Annotation>> interceptorBindings = new ArrayList<Class<? extends Annotation>>();
 
-   private List<Class<?>> veto = new ArrayList<Class<?>>();
+   private final List<Class<?>> veto = new ArrayList<Class<?>>();
 
-   private List<String> problems = new ArrayList<String>();
+   private final List<String> problems = new ArrayList<String>();
 
-   private List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
+   private final List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
 
-   private List<BeanResult<?>> interfaces = new ArrayList<BeanResult<?>>();
+   private final List<BeanResult<?>> interfaces = new ArrayList<BeanResult<?>>();
 
-   private List<GenericBeanResult> genericBeans = new ArrayList<GenericBeanResult>();
+   private final List<GenericBeanResult> genericBeans = new ArrayList<GenericBeanResult>();
 
-   private Map<BeanResult<?>, List<FieldValueObject>> fieldValues = new HashMap<BeanResult<?>, List<FieldValueObject>>();
+   private final Map<BeanResult<?>, List<FieldValueObject>> fieldValues = new HashMap<BeanResult<?>, List<FieldValueObject>>();
 
-   private Map<Class<?>, List<FieldValueObject>> interfaceFieldValues = new HashMap<Class<?>, List<FieldValueObject>>();
+   private final Map<Class<?>, List<FieldValueObject>> interfaceFieldValues = new HashMap<Class<?>, List<FieldValueObject>>();
 
    public void addStereotype(Class<? extends Annotation> an, Annotation[] values)
    {

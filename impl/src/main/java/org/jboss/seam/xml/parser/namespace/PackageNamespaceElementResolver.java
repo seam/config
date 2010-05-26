@@ -42,9 +42,9 @@ import org.jboss.weld.extensions.util.Reflections;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
-   String pack;
-   Map<String, Class<?>> cache = new HashMap<String, Class<?>>();
-   Set<String> notFound = new HashSet<String>();
+   private final String pack;
+   private final Map<String, Class<?>> cache = new HashMap<String, Class<?>>();
+   private final Set<String> notFound = new HashSet<String>();
 
    public PackageNamespaceElementResolver(String pack)
    {

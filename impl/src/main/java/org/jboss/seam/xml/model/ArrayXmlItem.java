@@ -30,7 +30,7 @@ import org.jboss.seam.xml.util.XmlConfigurationException;
 public class ArrayXmlItem extends ParameterXmlItem
 {
 
-   Class javaClass = null;
+   Class<?> javaClass = null;
 
    int dimensions = 1;
 

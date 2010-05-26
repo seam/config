@@ -62,13 +62,11 @@ import org.jboss.weld.extensions.util.Reflections;
 public class ModelBuilder
 {
 
-   AnnotationInstanceProvider ac = new AnnotationInstanceProvider();
+   final AnnotationInstanceProvider ac = new AnnotationInstanceProvider();
 
    static final String ROOT_NAMESPACE = "urn:java:seam:core";
 
    static final String BEANS_ROOT_NAMESPACE = "http://java.sun.com/xml/ns/javaee";
-
-   Map<String, NamespaceElementResolver> resolvers;
 
    /**
     * builds an XML result from a parsed xml document
@@ -76,7 +74,7 @@ public class ModelBuilder
    public XmlResult build(SaxNode root)
    {
 
-      resolvers = new HashMap<String, NamespaceElementResolver>();
+      Map<String, NamespaceElementResolver> resolvers = new HashMap<String, NamespaceElementResolver>();
 
       XmlResult ret = new XmlResult();
 
@@ -104,7 +102,7 @@ public class ModelBuilder
                {
                   continue;
                }
-               XmlItem rb = resolveNode(node, null);
+               XmlItem rb = resolveNode(node, null, resolvers);
                // validateXmlItem(rb);
                addNodeToResult(ret, rb);
             }
@@ -213,9 +211,9 @@ public class ModelBuilder
    /**
     * resolves the appropriate java elements from the xml
     */
-   protected XmlItem resolveNode(SaxNode node, XmlItem parent)
+   protected XmlItem resolveNode(SaxNode node, XmlItem parent, Map<String, NamespaceElementResolver> resolvers)
    {
-      NamespaceElementResolver resolver = resolveNamepsace(node.getNamespaceUri());
+      NamespaceElementResolver resolver = resolveNamepsace(node.getNamespaceUri(), resolvers);
 
       XmlItem ret = resolver.getItemForNamespace(node, parent);
 
@@ -228,7 +226,7 @@ public class ModelBuilder
       {
          if (n.getNamespaceUri() != null)
          {
-            XmlItem rb = resolveNode(n, ret);
+            XmlItem rb = resolveNode(n, ret, resolvers);
             ret.addChild(rb);
          }
       }
@@ -237,7 +235,7 @@ public class ModelBuilder
 
    }
 
-   protected NamespaceElementResolver resolveNamepsace(String namespaceURI)
+   protected NamespaceElementResolver resolveNamepsace(String namespaceURI, Map<String, NamespaceElementResolver> resolvers)
    {
       if (resolvers.containsKey(namespaceURI))
       {

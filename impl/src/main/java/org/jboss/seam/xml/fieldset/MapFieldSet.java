@@ -44,17 +44,54 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class MapFieldSet implements FieldValueObject
 {
-   FieldValueSetter field;
-   List<MFS> values;
-   Class<?> keyType;
-   Class<?> valueType;
-   Class<? extends Map> collectionType;
+   private final FieldValueSetter field;
+   private final List<MFS> values;
+   private final Class<?> keyType;
+   private final Class<?> valueType;
+   private final Class<? extends Map> collectionType;
 
    public MapFieldSet(FieldValueSetter field, List<EntryXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<MFS>();
-      discoverElementType();
+      // figure out the collection type
+      Type type = field.getGenericType();
+      if (type instanceof ParameterizedType)
+      {
+         ParameterizedType parameterizedType = (ParameterizedType) type;
+
+         if (parameterizedType.getRawType() == Map.class)
+         {
+            collectionType = LinkedHashMap.class;
+         }
+         else if (parameterizedType.getRawType() == LinkedHashMap.class)
+         {
+            collectionType = LinkedHashMap.class;
+         }
+         else if (parameterizedType.getRawType() == HashMap.class)
+         {
+            collectionType = HashMap.class;
+         }
+         else if (parameterizedType.getRawType() == SortedMap.class)
+         {
+            collectionType = TreeMap.class;
+         }
+         else if (parameterizedType.getRawType() == TreeMap.class)
+         {
+            collectionType = TreeMap.class;
+         }
+         else
+         {
+            throw new RuntimeException("Could not determine element type for map " + field.getDeclaringClass().getName() + "." + field.getName());
+         }
+
+         keyType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[0]);
+         valueType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[1]);
+      }
+      else
+      {
+         throw new RuntimeException("Could not determine element type for map " + field.getDeclaringClass().getName() + "." + field.getName());
+      }
 
       for (EntryXmlItem i : items)
       {
@@ -77,45 +114,6 @@ public class MapFieldSet implements FieldValueObject
 
    public void discoverElementType()
    {
-      Type type = field.getGenericType();
-      if (type instanceof ParameterizedType)
-      {
-         ParameterizedType parameterizedType = (ParameterizedType) type;
-
-         if (parameterizedType.getRawType() == Map.class)
-         {
-            collectionType = LinkedHashMap.class;
-         }
-         else if (parameterizedType.getRawType() == LinkedHashMap.class)
-         {
-            collectionType = LinkedHashMap.class;
-         }
-         else if (parameterizedType.getRawType() == HashMap.class)
-         {
-            collectionType = HashMap.class;
-         }
-         else if (parameterizedType.getRawType() == SortedMap.class)
-         {
-            keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-            valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
-            collectionType = TreeMap.class;
-         }
-         else if (parameterizedType.getRawType() == TreeMap.class)
-         {
-            collectionType = TreeMap.class;
-         }
-         else
-         {
-            throw new RuntimeException("Could not determine element type for map " + field.getDeclaringClass().getName() + "." + field.getName());
-         }
-
-         keyType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[0]);
-         valueType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[1]);
-      }
-      else
-      {
-         throw new RuntimeException("Could not determine element type for map " + field.getDeclaringClass().getName() + "." + field.getName());
-      }
 
    }
 

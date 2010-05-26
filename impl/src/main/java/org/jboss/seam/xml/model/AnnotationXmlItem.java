@@ -27,7 +27,7 @@ import java.util.Set;
 
 public class AnnotationXmlItem extends AbstractXmlItem
 {
-   HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
+   private final HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
 
    public AnnotationXmlItem(XmlItem parent, Class<?> c, String innerText, Map<String, String> attributes, String document, int lineno)
    {

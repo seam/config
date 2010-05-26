@@ -33,7 +33,7 @@ import java.lang.reflect.Type;
  */
 public class MethodFieldSetter implements FieldValueSetter
 {
-   Method method;
+   private final Method method;
 
    public MethodFieldSetter(Method method)
    {

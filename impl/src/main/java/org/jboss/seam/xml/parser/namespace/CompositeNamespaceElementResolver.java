@@ -39,8 +39,8 @@ import org.jboss.seam.xml.parser.SaxNode;
 public class CompositeNamespaceElementResolver implements NamespaceElementResolver
 {
 
-   Set<String> notFound = new HashSet<String>();
-   List<PackageNamespaceElementResolver> resolvers = new ArrayList<PackageNamespaceElementResolver>();
+   private final Set<String> notFound = new HashSet<String>();
+   private final List<PackageNamespaceElementResolver> resolvers = new ArrayList<PackageNamespaceElementResolver>();
 
    public CompositeNamespaceElementResolver(Collection<String> packages)
    {

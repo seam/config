@@ -36,9 +36,9 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class ArrayFieldSet implements FieldValueObject
 {
-   FieldValueSetter field;
-   List<AFS> values;
-   Class arrayType;
+   final private FieldValueSetter field;
+   final private List<AFS> values;
+   final private Class arrayType;
 
    public ArrayFieldSet(FieldValueSetter field, List<XmlItem> items)
    {
