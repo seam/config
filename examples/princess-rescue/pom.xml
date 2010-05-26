@@ -123,17 +123,6 @@
       <finalName>princess-rescue</finalName>
       <plugins>
 
-         <!-- Eclipse plugin - download source and JavaDoc jars automatically -->
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-eclipse-plugin</artifactId>
-            <configuration>
-               <wtpversion>2.0</wtpversion>
-               <downloadSources>true</downloadSources>
-               <downloadJavadocs>true</downloadJavadocs>
-            </configuration>
-         </plugin>
-
          <!-- Embedded Jetty (jetty:run) -->
          <plugin>
             <groupId>org.mortbay.jetty</groupId>
