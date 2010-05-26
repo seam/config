@@ -50,7 +50,7 @@
          <outputDirectory>seam-xml/lib</outputDirectory>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.weld:weld-extensions</include>
+            <include>org.jboss.weld:weld-extensions:jar</include>
          </includes>
       </dependencySet>
    </dependencySets>
@@ -58,7 +58,7 @@
    <moduleSets>
       <moduleSet>
          <includes>
-            <include>org.jboss.seam.xml:seam-xml-impl:jar</include>
+            <include>org.jboss.seam.xml:seam-xml-config:jar</include>
          </includes>
          <binaries>
             <outputDirectory>seam-xml/lib</outputDirectory>
@@ -68,7 +68,7 @@
 
       <moduleSet>
         <includes>
-          <include>org.jboss.seam.xml:seam-xml-reference-guide</include>
+          <include>org.jboss.seam.xml:seam-xml-config-reference-guide</include>
         </includes>
         <binaries>
           <outputDirectory>seam-xml/doc/reference</outputDirectory>
