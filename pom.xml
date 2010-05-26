@@ -23,12 +23,11 @@
       <plugins>
          <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
-            <version>2.2-beta-5</version>
             <configuration>
                <descriptors>
-                  <descriptor>assembly.xml</descriptor>
+                  <descriptor>src/main/assembly/assembly.xml</descriptor>
                </descriptors>
-	       <finalName>seam-xml-config-${pom.version}</finalName>
+	           <finalName>seam-xml-config-${pom.version}</finalName>
             </configuration>
          </plugin>
       </plugins>
