@@ -3,8 +3,8 @@
           xmlns:test="urn:java:org.jboss.seam.xml.test.simple">
 
    
-   
     <test:Bean1>
+    	<overrides/>
         <test:bean2>
             <Inject/>
         </test:bean2>

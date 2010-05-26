@@ -27,7 +27,6 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.jboss.weld.environment.se.util.WeldManagerUtils;
 import org.testng.annotations.Test;
 
 /**
@@ -45,11 +44,11 @@ public class SimpleBeanTest extends AbstractXMLTest
    @Test
    public void simpleBeanTest()
    {
-      Bean1 x = WeldManagerUtils.getInstanceByType(manager, Bean1.class);
+      Bean1 x = getReference(Bean1.class);
       assert x != null;
       assert x.bean2 != null;
 
-      Bean3 y = WeldManagerUtils.getInstanceByType(manager, Bean3.class);
+      Bean3 y = getReference(Bean3.class);
       assert y != null;
       assert x.value == 1 : "Post construct method not called";
    }

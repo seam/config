@@ -21,6 +21,9 @@
  */
 package org.jboss.seam.xml.test.simple;
 
+import org.jboss.weld.extensions.core.Veto;
+
+@Veto
 public class Bean3
 {
 
