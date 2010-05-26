@@ -215,6 +215,7 @@ public class XmlExtension implements Extension
       }
       boolean found = false;
       AnnotatedTypeBuilder builder = AnnotatedTypeBuilder.newInstance(event.getAnnotatedType());
+      builder.mergeAnnotations(event.getAnnotatedType(), true);
       for (XmlResult r : results)
       {
          for (BeanResult<?> i : r.getInterfaces())
@@ -223,6 +224,7 @@ public class XmlExtension implements Extension
             {
                found = true;
                builder.mergeAnnotations(i.getBuilder().create(), true);
+               log.info("Overriding " + event.getAnnotatedType().getJavaClass() +" annotations based on interface " + i.getType().getName());
             }
          }
       }
