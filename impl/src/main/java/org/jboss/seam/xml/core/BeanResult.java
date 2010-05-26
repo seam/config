@@ -25,11 +25,11 @@ import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 
 public class BeanResult<X>
 {
-   AnnotatedTypeBuilder<X> builder;
-   Class<X> type;
-   BeanResultType beanType = BeanResultType.ADD;
+   final AnnotatedTypeBuilder<X> builder;
+   final Class<X> type;
+   final BeanResultType beanType;
 
-   public BeanResult(Class<X> type, boolean readAnnotations)
+   public BeanResult(Class<X> type, boolean readAnnotations, BeanResultType beanType)
    {
       this.type = type;
       builder = AnnotatedTypeBuilder.newInstance(type);
@@ -37,6 +37,7 @@ public class BeanResult<X>
       {
          builder.readAnnotationsFromUnderlyingType();
       }
+      this.beanType = beanType;
    }
 
    public AnnotatedTypeBuilder<X> getBuilder()
@@ -52,11 +53,6 @@ public class BeanResult<X>
    public BeanResultType getBeanType()
    {
       return beanType;
-   }
-
-   public void setBeanType(BeanResultType beanType)
-   {
-      this.beanType = beanType;
    }
 
 }

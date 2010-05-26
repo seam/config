@@ -305,26 +305,26 @@ public class ModelBuilder
    {
       boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
       boolean extend = !rb.getChildrenOfType(SpecializesXmlItem.class).isEmpty();
-
-      // if it is an extend we want to read the annotations from the underlying
-      // class
-      BeanResult<?> result = new BeanResult(rb.getJavaClass(), extend);
-      AnnotatedTypeBuilder<?> type = result.getBuilder();
-      // list of constructor arguments
-      List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();
-
+      BeanResultType beanType = BeanResultType.ADD;
       if (override && extend)
       {
          throw new XmlConfigurationException("A bean may not both <override> and <extend> an existing bean", rb.getDocument(), rb.getLineno());
       }
       if (override)
       {
-         result.setBeanType(BeanResultType.OVERRIDE);
+         beanType = BeanResultType.OVERRIDE;
       }
       else if (extend)
       {
-         result.setBeanType(BeanResultType.SPECIALISE);
+         beanType = BeanResultType.SPECIALISE;
       }
+
+      // if it is an extend we want to read the annotations from the underlying
+      // class
+      BeanResult<?> result = new BeanResult(rb.getJavaClass(), extend, beanType);
+      AnnotatedTypeBuilder<?> type = result.getBuilder();
+      // list of constructor arguments
+      List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();
 
       for (AnnotationXmlItem item : rb.getChildrenOfType(AnnotationXmlItem.class))
       {
