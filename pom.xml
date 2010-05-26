@@ -28,6 +28,7 @@
                <descriptors>
                   <descriptor>assembly.xml</descriptor>
                </descriptors>
+	       <finalName>seam-xml-config-${pom.version}</finalName>
             </configuration>
          </plugin>
       </plugins>
