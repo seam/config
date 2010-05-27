@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
@@ -27,11 +28,11 @@
                <descriptors>
                   <descriptor>src/main/assembly/assembly.xml</descriptor>
                </descriptors>
-	           <finalName>seam-xml-config-${pom.version}</finalName>
+               <finalName>seam-xml-config-${pom.version}</finalName>
             </configuration>
          </plugin>
       </plugins>
-   </build>   
+   </build>
 
    <dependencyManagement>
       <dependencies>
@@ -60,23 +61,23 @@
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-core</artifactId>
             <version>1.0.1-Final</version>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.weld</groupId>
-          <artifactId>weld-se</artifactId>
-          <version>1.0.1-Final</version>
-        </dependency>        
-        <dependency>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-se</artifactId>
+            <version>1.0.1-Final</version>
+         </dependency>
+         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.5.10</version>
-        </dependency>   
-        <dependency>
-          <groupId>org.testng</groupId>
-          <artifactId>testng</artifactId>
-          <version>5.10</version>
-          <classifier>jdk15</classifier>
-        </dependency>     
+         </dependency>
+         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.10</version>
+            <classifier>jdk15</classifier>
+         </dependency>
       </dependencies>
    </dependencyManagement>
    <scm>
