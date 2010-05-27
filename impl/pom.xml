@@ -1,90 +1,91 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>seam-xml-config-parent</artifactId>
-    <groupId>org.jboss.seam.xml</groupId>
-    <version>3.0.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+   <parent>
+      <artifactId>seam-xml-config-parent</artifactId>
+      <groupId>org.jboss.seam.xml</groupId>
+      <version>3.0.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
+   </parent>
 
-  <groupId>org.jboss.seam.xml</groupId>
-  <artifactId>seam-xml-config</artifactId>
-  <packaging>jar</packaging>
-  <name>Seam XML Config Module</name>
+   <groupId>org.jboss.seam.xml</groupId>
+   <artifactId>seam-xml-config</artifactId>
+   <packaging>jar</packaging>
+   <name>Seam XML Config Module</name>
 
-  <repositories>
-    <repository>
-      <id>oss.sonatype.org/jboss-snapshots</id>
-      <name>JBoss (Nexus) Snapshots Repository</name>
-      <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
+   <repositories>
+      <repository>
+         <id>oss.sonatype.org/jboss-snapshots</id>
+         <name>JBoss (Nexus) Snapshots Repository</name>
+         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+         </snapshots>
+      </repository>
+   </repositories>
 
 
-  <dependencies>
-    <dependency>
-      <groupId>javax.enterprise</groupId>
-      <artifactId>cdi-api</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-core</artifactId>
-      <scope>test</scope>
-   </dependency>
+   <dependencies>
+      <dependency>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
+      </dependency>
 
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-se</artifactId>
-      <scope>test</scope>
-    </dependency>
+      <dependency>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-core</artifactId>
+         <scope>test</scope>
+      </dependency>
 
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-api</artifactId>
-		<scope>provided</scope>
-	</dependency>
-    
-    <dependency>
+      <dependency>
+         <groupId>org.jboss.weld</groupId>
+         <artifactId>weld-se</artifactId>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
          <groupId>org.jboss.weld</groupId>
          <artifactId>weld-extensions</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <scope>test</scope>
-      <version>5.10</version>
-      <classifier>jdk15</classifier>
-    </dependency>
-  </dependencies>
+      </dependency>
 
-  <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/impl</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/impl</developerConnection>
-    <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/impl</url>
-  </scm>
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <scope>test</scope>
+         <version>5.10</version>
+         <classifier>jdk15</classifier>
+      </dependency>
+   </dependencies>
 
-  <build>
+   <scm>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/impl</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/impl</developerConnection>
+      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/impl</url>
+   </scm>
 
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>once</forkMode>
-          <argLine>-Xmx512m</argLine>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+   <build>
+
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <forkMode>once</forkMode>
+               <argLine>-Xmx512m</argLine>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
 </project>
