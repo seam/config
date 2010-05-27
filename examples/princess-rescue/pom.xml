@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
    <parent>
       <artifactId>seam-xml-config-parent</artifactId>
       <groupId>org.jboss.seam.xml</groupId>
       <version>3.0.0-SNAPSHOT</version>
       <relativePath>../../pom.xml</relativePath>
    </parent>
-   
+
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.seam.xml</groupId>
    <artifactId>princess-rescue</artifactId>
@@ -17,8 +18,10 @@
 
    <properties>
       <!--
-         Explicitly declaring the source encoding eliminates the following message:
-         [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+         Explicitly declaring the source encoding eliminates the
+         following message: [WARNING] Using platform encoding (UTF-8
+         actually) to copy filtered resources, i.e. build is platform
+         dependent!
       -->
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <!-- The version of Weld extensions in use -->
@@ -40,7 +43,7 @@
 
    <dependencies>
 
-	  <dependency>
+      <dependency>
          <groupId>org.jboss.seam.xml</groupId>
          <artifactId>seam-xml-config</artifactId>
          <version>3.0.0-SNAPSHOT</version>
@@ -68,7 +71,8 @@
 
       <!-- Optional, but pretty useful. -->
       <!--
-         <dependency> <groupId>javax.servlet</groupId> <artifactId>jstl</artifactId> </dependency>
+         <dependency> <groupId>javax.servlet</groupId>
+         <artifactId>jstl</artifactId> </dependency>
       -->
 
       <dependency>
@@ -88,7 +92,7 @@
          <version>2.0.1-FCS</version>
          <scope>runtime</scope>
       </dependency>
-      
+
       <dependency>
          <groupId>javax.faces</groupId>
          <artifactId>jsf-api</artifactId>
@@ -130,16 +134,23 @@
             <configuration>
                <!-- Delete this block to have Jetty run default port (8080) -->
                <connectors>
-                  <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                  <connector
+                     implementation="org.mortbay.jetty.nio.SelectChannelConnector">
                      <port>9090</port>
                   </connector>
                </connectors>
                <!-- force friendly name instead of artifact name + version -->
                <contextPath>${project.build.finalName}</contextPath>
-               <!-- Where the BeanManager is constructed. This is where you'll declare datasources. -->
+               <!--
+                  Where the BeanManager is constructed. This is where
+                  you'll declare datasources.
+               -->
                <jettyEnvXml>${basedir}/src/test/resources/jetty-env.xml</jettyEnvXml>
                <!-- This parameter will auto-deploy modified classes. -->
-               <!-- You can save changes in a file or class and refresh your browser to view the changes. -->
+               <!--
+                  You can save changes in a file or class and refresh
+                  your browser to view the changes.
+               -->
                <scanIntervalSeconds>3</scanIntervalSeconds>
             </configuration>
          </plugin>
@@ -154,8 +165,10 @@
                <!-- Embedded port -->
                <port>9090</port>
                <!--
-                  The default authentication credentials for remote deployment are username "admin" with no password To
-                  override credentials, define a server in settings.xml and activate it using the <server> element
+                  The default authentication credentials for remote
+                  deployment are username "admin" with no password To
+                  override credentials, define a server in settings.xml
+                  and activate it using the <server> element
                -->
                <url>http://localhost:8080/manager</url>
             </configuration>
