@@ -5,7 +5,7 @@
    <parent>
       <artifactId>weld-parent</artifactId>
       <groupId>org.jboss.weld</groupId>
-      <version>9</version>
+      <version>10</version>
    </parent>
 
    <groupId>org.jboss.seam.xml</groupId>
@@ -21,15 +21,11 @@
    </modules>
 
    <build>
+      <finalName>seam-xml-config-${pom.version}</finalName>
       <plugins>
          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-               <descriptors>
-                  <descriptor>src/main/assembly/assembly.xml</descriptor>
-               </descriptors>
-               <finalName>seam-xml-config-${pom.version}</finalName>
-            </configuration>
          </plugin>
       </plugins>
    </build>
