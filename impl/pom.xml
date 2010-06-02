@@ -15,26 +15,16 @@
    <packaging>jar</packaging>
    <name>Seam XML Config Module</name>
 
-   <repositories>
-      <repository>
-         <id>oss.sonatype.org/jboss-snapshots</id>
-         <name>JBoss (Nexus) Snapshots Repository</name>
-         <url>http://oss.sonatype.org/content/repositories/jboss-snapshots</url>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-         </snapshots>
-      </repository>
-   </repositories>
-
 
    <dependencies>
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.spec.javax.interceptor</groupId>
+         <artifactId>jboss-interceptors-api_1.1_spec</artifactId>
       </dependency>
 
       <dependency>
@@ -64,7 +54,6 @@
          <groupId>org.testng</groupId>
          <artifactId>testng</artifactId>
          <scope>test</scope>
-         <version>5.10</version>
          <classifier>jdk15</classifier>
       </dependency>
    </dependencies>
