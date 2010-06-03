@@ -1,3 +1,0 @@
-To create the Seam XML distribution, run the following Maven command:
-
-mvn clean package javadoc:javadoc assembly:assembly
