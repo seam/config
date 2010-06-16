@@ -179,48 +179,67 @@ public class ProducerBean {
       <programlisting>
         <![CDATA[xmlns:ns="urn:java:com.mydomain.package1:com.mydomain.package2"]]>
      </programlisting>   
-        <para>This maps <literal>ns</literal> to the packages <literal>com.mydomain.package1</literal> and <literal>com.mydomain.package2</literal>. These
-        packages are searched in order to resolve elements in this namespace.</para>   
+        <para>This maps <literal>ns</literal> to the packages <literal>com.mydomain.package1</literal> 
+        and <literal>com.mydomain.package2</literal>. These packages are searched in order to 
+        resolve elements in this namespace.</para> 
+        <para>For example, say you had a class <literal>com.mydomain.package2.Report</literal>. 
+        To configure a <literal>Report</literal> bean you 
+        would use <literal>&lt;ns:Report&gt;</literal>. Methods and fields of a bean come 
+        from the same namespace as the bean iteself.</para>
     </section>
     
     <section>
         <title>Overriding and extending beans</title>
-        <para>The default is to add a new bean, however there may be cases where you want to modify an existing bean rather than
+        <para>By configuring a bean via XML creates a new bean, however there 
+          may be cases where you want to modify an existing bean rather than
           adding a new one. The <literal>&lt;s:overrides&gt;</literal> and 
-          <literal>&lt;s:specializes&gt;</literal> tags allow you to do this. The 
-          <literal>&lt;s:overrides&gt;</literal> tag prevents the existing bean from being 
+          <literal>&lt;s:specializes&gt;</literal> tags allow you to do this.</para>
+          <para>The <literal>&lt;s:overrides&gt;</literal> tag prevents the existing bean from being 
           installed, and registers a new one with the given configuration. The 
-          <literal>&lt;s:specializes&gt;</literal> tag allows you to add extra configuration 
-          to an existing bean.</para>
+          <literal>&lt;s:specializes&gt;</literal> tag does the same, except that it merges
+          the annotations on the bean with the annotations defined in XML. This has the
+          same effect as modifiying an existing bean.</para>
         
-        <programlisting><![CDATA[
-<test:MyBean>
+        <programlisting role="XML"><![CDATA[
+<test:Report>
 	<s:specializes>
 	<test:NewQualifier/>
-</test:MyBean>
+</test:Report>
 
-<test:OtherBean>
+<test:ReportDatasource>
 	<s:overrides>
 	<test:NewQualifier/>
-</test:OtherBean>]]>
+</test:ReportDatasource>]]>
         </programlisting>
-        <para>The first entry above adds a new qualifier to an existing bean definition. The second prevents the existing bean from being installed, and registers a new bean with a single qualifier.</para>
+        <para>The first entry above adds a new bean with an extra qualifier, in addition to the qualifiers already present, 
+        and prevents the existing <literal>Report</literal> bean from being installed.</para> 
+        <para>The second prevents the existing bean from being installed, and registers a new bean with a single qualifier.</para>
     </section>
     
     <section>
         <title>Initial Field Values</title>
-        <para>Inital field values can be set in two different ways, in addition to the <literal>&lt;s:value&gt;</literal> element shown above it can be set as follows:</para>
-        <programlisting>
+        <para>Inital field values can be set three different ways as shown below:</para>
+        <programlisting role="XML">
             <![CDATA[
-<test:someField>hello world</test:someField>
-             ]]>
+<r:MyBean company="Red Hat Inc" />
+
+<r:MyBean>
+  <r:company>Red Hat Inc</r:company>
+</r:MyBean>
+
+<r:MyBean>
+  <r:company>
+  	<s:value>Red Hat Inc<s:value>
+  	<r:SomeQualifier/>
+  </r:company>
+</r:MyBean>]]>
         </programlisting>
 
-        <para>Using this method prevents you from adding any annotations to the field.</para>
+        <para>The third form is the only one that also allows you to add annotations such as qualifiers to the field.</para>
 
         <para>It is possible to set <literal>Map</literal>,<literal>Array</literal> and <literal>Collection</literal> field values. Some examples:</para>
-        <programlisting>
-            <![CDATA[
+        <programlisting role="XML">
+            <![CDATA[	
 <test:ArrayFieldValue>
     <test:iarray>
         <s:value>1</s:value>
@@ -251,13 +270,12 @@ public class ProducerBean {
         <para>Type conversion is done automatically for all primitives and primitive wrappers, <literal>Date</literal>, 
         <literal>Calendar</literal>,<literal>Enum</literal> and <literal>Class</literal> fields. 
         In this instance <literal>ArrayFieldValue.carray</literal> is actually an array of classes, not an array of Strings.</para>
-
     </section>
     <section>
         <title>Configuring methods</title>
     
         <para>It is also possible to configure methods in a similar way to configuring fields:</para>
-        <programlisting>
+        <programlisting role="XML" >
             <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
@@ -265,10 +283,10 @@ public class ProducerBean {
        xmlns:s="urn:java:seam:core" 
        xmlns:test="urn:java:org.jboss.seam.xml.test.method">
     <test:MethodBean>
-        <test:method>
+        <test:doStuff>
             <s:Produces/>
-        </test:method>
-        <test:method>
+        </test:doStuff>
+        <test:doStuff>
             <s:Produces/>
             <test:Qualifier1/>
             <s:parameters>
@@ -276,8 +294,8 @@ public class ProducerBean {
                     <test:Qualifier2/>
                 </test:MethodValueBean>
             </s:parameters>
-        </test:method>
-         <test:method>
+        </test:doStuff>
+        <test:doStuff>
             <s:Produces/>
             <test:Qualifier1/>
             <s:parameters>
@@ -286,62 +304,70 @@ public class ProducerBean {
                     <test:MethodValueBean/>
                 </s:array>
             </s:parameters>
-        </test:method>
+        </test:doStuff>
     </test:MethodBean>
 </beans>
-
+]]>
+</programlisting>
+<programlisting role="java" >
+<![CDATA[
 public class MethodBean {
 
-   public int method() {
+   public int doStuff() {
       return 1;
    }
 
-   public int method(MethodValueBean bean) {
+   public int doStuff(MethodValueBean bean) {
       return bean.value + 1;
    }
    
-   public void method(MethodValueBean[][] beans) {
+   public void doStuff(MethodValueBean[][] beans) {
       //do stuff
    }
 
 }
-
-            ]]>
-        </programlisting>
-
+]]>
+</programlisting>
+            
         <para>In this instance <literal>MethodBean</literal> has three methods, all of them rather 
-        imaginatively named <literal>method</literal>. The first <literal>&lt;test:method&gt;</literal> 
+        imaginatively named <literal>doStuff</literal>.</para>
+        <para> The first <literal>&lt;test:doStuff&gt;</literal> 
         entry in the XML file configures the method that takes no arguments. The 
-        <literal>&lt;s:Produces&gt;</literal> element makes it into a producer method. The next 
-        entry in the file configures the method that takes a <literal>MethodValueBean</literal> 
-        as a parameter. The final entry configures a method that takes a two
-        dimensional array of<literal>MethodValueBean</literal>'s as a parameter.  
-        Method parameters are specified inside the <literal>&lt;s:parameters&gt;</literal>
+        <literal>&lt;s:Produces&gt;</literal> element makes it into a producer method. 
+        </para>
+        <para>The next entry in the file configures the method that takes a 
+        <literal>MethodValueBean</literal> as a parameter and the final entry 
+        configures a method that takes a two dimensional array of<literal>MethodValueBean</literal>'s
+        as a parameter. For both these methods a qualifier was added to the method parameter and
+        they were made into producer methods.</para>
+        <para>Method parameters are specified inside the <literal>&lt;s:parameters&gt;</literal>
         element. If these parameters have annotation children they are taken to be annotations on 
         the parameter. </para> 
         
         <para>The corresponding Java declaration for the XML above would be:</para>
-        <programlisting>
+        <programlisting role="java">
             <![CDATA[
-@Produces
-public int method() {//method body}            
+public class MethodBean {
             
-@Produces
-@Qualifier1
-public int method(@Qualifier2 MethodValueBean param) {//method body}
-
-@Produces
-@Qualifier1
-public int method(@Qualifier2 MethodValueBean[][] param) {//method body}
-           ]]>
+	@Produces
+	public int doStuff() {//method body}            
+	            
+	@Produces
+	@Qualifier1
+	public int doStuff(@Qualifier2 MethodValueBean param) {//method body}
+	
+	@Produces
+	@Qualifier1
+	public int doStuff(@Qualifier2 MethodValueBean[][] param) {//method body}
+}           ]]>
          </programlisting>
          <para>Array parameters can be represented using the <literal>&lt;s:array&gt;</literal> element, 
          with a child element to represent the type of the array. E.g.</para>
-         <programlisting>
+         <programlisting role="java">
 int method(MethodValueBean[] param);
          </programlisting>        
         <para>could be configured via xml using the following:</para>
-        <programlisting>
+        <programlisting role="XML">
             <![CDATA[
 <test:method>
     <s:array>
