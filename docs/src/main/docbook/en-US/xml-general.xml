@@ -2,19 +2,10 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="xml">
-  <title>Seam XML General</title>
-  
-  <para>Seam provides a method for configuring JSR-299 beans using XML. Using XML it is possible to add new beans, override existing beans, and add 
-  extra configuration to existing beans. The default is to add a new bean.
-  </para>
-  
+  <title>Seam XML Reference</title>
+
  <section>
-    <title>Configuration</title>
-    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file and the weld extensions jar in your deployment. </para>
- </section>
- 
- <section>
-    <title>Getting Started</title>
+    <title>OLD Getting Started - To be removed</title>
     <para>By default XML files are discovered from the classpath. The extension looks for an XML file in the following locations:</para>
     <itemizedlist>
     <listitem><literal>/WEB-INF/beans.xml</literal></listitem>
@@ -144,8 +135,9 @@ public class ProducerBean {
     </section>
     
     <section>
-        <title>The main namespace</title>
-        <para>The main namesapce is <literal>urn:java:seam:core</literal> can contain the following elements:</para>
+        <title>XML Namespaces</title>
+        <para>The main namesapce is <literal>urn:java:seam:core</literal> contains builtin tags and types from core packages.
+        The builting tags are:</para>
         
         <itemizedlist>
             <listitem><para><literal>Beans</literal></para></listitem>
@@ -183,15 +175,17 @@ public class ProducerBean {
             <listitem><para><literal>javax.interceptor</literal></para></listitem>
         </itemizedlist>
         
-        <para>So the <literal>&lt;s:Produces&gt;</literal> element above actually resolves 
-        to <literal>java.enterprise.inject.Produces</literal> 
-        and the <literal>&lt;s:Inject&gt;</literal> element resolves to <literal>javax.inject.Inject</literal>.</para>
-        
+        <para>Other namspaces are specified using the following syntax:</para>
+      <programlisting>
+        <![CDATA[xmlns:ns="urn:java:com.mydomain.package1:com.mydomain.package2"]]>
+     </programlisting>   
+        <para>This maps <literal>ns</literal> to the packages <literal>com.mydomain.package1</literal> and <literal>com.mydomain.package2</literal>. These
+        packages are searched in order to resolve elements in this namespace.</para>   
     </section>
     
     <section>
         <title>Overriding and extending beans</title>
-        <para>There may be cases where you want to modify an existing bean rather than
+        <para>The default is to add a new bean, however there may be cases where you want to modify an existing bean rather than
           adding a new one. The <literal>&lt;s:overrides&gt;</literal> and 
           <literal>&lt;s:specializes&gt;</literal> tags allow you to do this. The 
           <literal>&lt;s:overrides&gt;</literal> tag prevents the existing bean from being 
@@ -208,8 +202,7 @@ public class ProducerBean {
 <test:OtherBean>
 	<s:overrides>
 	<test:NewQualifier/>
-</test:OtherBean>
-              ]]>
+</test:OtherBean>]]>
         </programlisting>
         <para>The first entry above adds a new qualifier to an existing bean definition. The second prevents the existing bean from being installed, and registers a new bean with a single qualifier.</para>
     </section>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
 
 <chapter id="introduction">
   <title>Seam XML Introduction</title>
@@ -10,7 +10,7 @@
   
  <section>
     <title>Getting Started</title>
-    <para>No special configuration is required to use seam-xml, all that is required is to include the jar file and the weld extensions jar in your deployment. </para>
+    <para>No special configuration is required, all that is required is to include the jar file and the weld extensions jar in your deployment. </para>
     <para>The first thing we need is some xml files, by default these are discovered from the classpath in the following locations:</para>
     <itemizedlist>
 	    <listitem><literal>/META-INF/beans.xml</literal></listitem>
@@ -25,122 +25,134 @@
     <para>The <literal>beans.xml</literal> file is the preferred way of configuring beans via XML, however it may be possible that some JSR-299 implementations will not allow this, 
     so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
     
-    <para>Let's start with a simple example. Say we have the following classes:</para>
+    <para>Let's start with a simple example. Say we have the following class that represents a report:</para>
 	<programlisting role="JAVA">
-    <![CDATA[public class Robot
+    <![CDATA[
+public class Report
 {
-	@Inject RobotArm leftArm;
+	String filename;
 	
-	@Inject RobotArm rightArm;  
-}
-
-public class RobotArm
-{
-	String attachment = "welder";
+	@Inject
+	Datasource datasource;
 	
-	public void doStuff()
-	{
-		//do robot things...
-	}
+	//getters and setters
 }
-
-@Retention(RUNTIME)
-public @Interface LeftArm{}
-
-@Retention(RUNTIME)
-public @Interface RightArm{}
-    ]]>
+]]>
     </programlisting>
-    <para>So we have a robot class that injects a left arm and a right arm, with both arms having a welder attachment.  At some point in the future we decide that our robot is no longer needed for welding, instead it needs a plasma cutter in it's left hand and a 
-    	  vice in its right hand. Rather than modifying the class files, we decide to configure this up with xml:</para>
-         <programlistingco>
-    <areaspec>
-                            <area id="namepsace-declaration-seam" coords="5"/>
-                            <area id="namepsace-declaration-robots" coords="6"/>
-                            <area id="right-arm-qualifier" coords="9"/>
-                            <area id="robot-right-arm" coords="16"/>
-                            <area id="overrrides" coords="17"/>
-                            <area id="left-arm-applied-qualifier" coords="18"/>
-                            <area id="left-arm-set-length" coords="19"/>
-                            <area id="specializes" coords="29"/>
-                            <area id="left-arm-injected" coords="30"/>
-                        </areaspec>
+    <para>And the following support classes:</para>
+	<programlisting role="JAVA">
+    <![CDATA[
+public interface Datasource
+{
+	public Data getData();
+}
+
+@SalesQualifier
+public class SalesDatasource implements Datasource
+{
+  public Data getData()
+  {
+  	//return sales data
+  }
+}
+
+public class BillingDatasource implements Datasource
+{
+  public Data getData()
+  {
+  	//return billing data
+  }
+}
+
+]]>
+    </programlisting>    
+    
+    <para>Our <literal>Report</literal> bean is fairly simple. It has a filename that tells the report engine where to load the report definition from, and a datasource that provides the data used to 
+    fill the report. We are going to configure up multiple <literal>Report</literal> beans via xml.</para>
+    <programlistingco>
+      <areaspec>
+                   <area id="namepsace-declaration-seam" coords="6"/>
+                   <area id="namepsace-declaration-reports" coords="7"/>
+                   <area id="resport-dec" coords="9"/>
+                   <area id="specializes" coords="10"/>
+                   <area id="filename" coords="11"/>
+                   <area id="datasource-qualifier" coords="13"/>
+                   <area id="filename-short" coords="17"/>
+                   <area id="overrides" coords="18"/>
+                   <area id="inject" coords="20"/>
+                   <area id="datasource-type" coords="21"/>
+       </areaspec>
                         <programlisting role="XML">
-    <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+    <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:s="urn:java:seam:core" 
-       xmlns:r="urn:java:org.example.robots">
-       
- 	<r:RightArm>
- 		<s:Qualifier/>
- 	</r:RightArm>
- 	
- 	<r:LeftArm>
- 		<s:Qualifier/>
- 	</r:LeftArm>
- 	
- 	<r:RobotArm>
+       xmlns:r="urn:java:org.example.reports">
+
+ 	<r:Report>
+ 		<s:specializes/>
+ 		<r:filename>sales.jrxml<r:filename>
+ 		<r:datasource>
+ 			<r:SalesQualifier/>
+ 		</r:datasource>
+  	</r:Report>
+  	
+ 	<r:Report filename="billing.jrxml">
  		<s:overrides/>
- 		<r:LeftArm/>
- 		<r:attachment>Plasma Cutter</r:attachment>
-  	</r:RobotArm>
-  	
-  	<r:RobotArm>
- 		<s:overrides/>
- 		<r:RightArm/>
- 		<r:attachment>Vice</r:attachment>
-  	</r:RobotArm>
-  	
-  	<r:Robot>
-  		<s:specializes/>
-  		<r:leftArm>
-  			<r:LeftArm/>
-  		</r:leftArm>
-  		<r:rightArm>
-  			<r:RightArm/>
-  		</r:rightArm>
-  	</r:Robot>
-  	
+ 		<r:datasource>
+ 			<s:Inject/>
+ 			<s:type>
+ 				<r:BillingDatasource/>
+ 			</s:type>
+ 		</r:datasource>
+  	</r:Report>  	
 </beans>
     ]]>
     </programlisting>
     <calloutlist>
                             <callout arearefs="namepsace-declaration-seam">
-                                <para>The namespace <literal>urn:java:seam:core</literal> is seam-xml's root namespace. More on this later</para>
+                                <para>The namespace <literal>urn:java:seam:core</literal> is seam-xml's root namespace. This is where the builtin tags and CDI annotations live.</para>
                             </callout>
-                            <callout arearefs="namepsace-declaration-robots">
-                                <para>The namespace <literal>urn:java:org.example.robots</literal> corresponds to the package <literal>org.example.robots</literal>, where our robot classes live.</para>
+                            <callout arearefs="namepsace-declaration-reports">
+                                <para>The namespace <literal>urn:java:org.example.reports</literal> corresponds to the package <literal>org.example.reports</literal>, where our reporting classes live.</para>
                             </callout>
-                            <callout arearefs="right-arm-qualifier">
-                                <para>This declares the <literal>@RightArm</literal> annotation to be a qualifier. The <literal>&lt;r:RightArm&gt;</literal> declaration resolves to 
-                                <literal>org.example.robots.RightArm</literal> and the <literal>&lt;s:Qualifier&gt;</literal> declaration tells seam-xml to register this class as a qualifier.</para>
-                            </callout>
-                            <callout arearefs="robot-right-arm">
-                                <para>The <literal>&lt;r:RobotArm&gt;</literal> declaration configures an instance of our <literal>RobotArm</literal> class.</para>
-                            </callout>
-                            <callout arearefs="overrrides">
-                                <para>The <literal>&lt;s:overrides&gt;</literal> tells CDI that this bean overrides the default bean. The existing <literal>RobotArm</literal> definition will not be 
-                                installed, only <literal>RobotArm</literal> beans that are configured via XML.</para>
-                            </callout>
-                            <callout arearefs="left-arm-applied-qualifier">
-                                <para>The <literal>&lt;r:LeftArm&gt;</literal> element applies the <literal>@LeftArm</literal> annotation to the enclosing element, in this case out <literal>RobotArm</literal>
-                                class (remember we declared <literal>@LeftArm</literal> to be a qualifier). In seam-xml an element that resolves to an annotation means 'apply this annotation to the parent element'.</para>
-                            </callout>
-                            <callout arearefs="left-arm-set-length">
-                                <para>This sets the arm's attachment field to the string <literal>Plasma Cutter</literal></para>
+                            <callout arearefs="resport-dec">
+                                <para>The <literal>&lt;Report&gt;</literal> declaration configures an instance of our <literal>Report</literal> class as a bean.</para>
                             </callout>
                             <callout arearefs="specializes">
-                                <para>The <literal>&lt;s:specializes&gt;</literal> is similar to <literal>&lt;s:overrides&gt;</literal>. The difference is that <literal>&lt;s:specializes&gt;</literal>
-                                 beans have the annotated from the java class merged with the annotations in XML.</para>
+                                <para>Beans installed using <literal>&lt;s:specializes&gt;</literal> read annotations from the existing class, and merge them with the annotations defined via xml.
+                                 In addition if a bean is installed with <literal>&lt;s:specializes&gt;</literal> it prevents the original class being installed as a bean.</para>
                             </callout>
-                            <callout arearefs="left-arm-injected">
-                                <para>This configures a qualifier on the injection point. There is no need for an <literal>&lt;s:Inject&gt;</literal> as it is present on the underlying class.</para>
+                            <callout arearefs="filename">
+                                <para>The <literal>&lt;r:filename&gt;</literal> element sets the initial value of the filename field.</para>
                             </callout>
-                             
+                            <callout arearefs="datasource-qualifier">
+                                <para>The <literal>&lt;r:SalesQualifier&gt;</literal> element applies the <literal>@SalesQualifier</literal> to the <literal>datasource</literal> field. 
+                                As the field already has an <literal>@Inject</literal> on the class definition this will cause the <literal>SalesDatasource</literal>
+                                bean to be injected.</para>
+                            </callout>
+                            <callout arearefs="filename-short">
+                                <para>This is the shorthand syntax for setting a field value.</para>
+                            </callout>
+                            <callout arearefs="overrides">
+                                <para>Beans installed using <literal>&lt;s:overrides&gt;</literal> do not read annotations from the existing class. In addition if a bean is installed with 
+                                <literal>&lt;s:overrides&gt;</literal> it prevents the original class being installed as a bean.</para>
+                            </callout>
+                            <callout arearefs="inject">
+                                <para>The <literal>&lt;s:Inject&gt;</literal> element is needed this bean was installed with <literal>&lt;s:overrides&gt;</literal>, so annotations are not read
+                                from the class definition.</para>
+                            </callout>
+                            <callout arearefs="datasource-type">
+                                <para>The <literal>&lt;s:type&gt;</literal> restricts the type of bean that is availible for injection without using qualifiers. In this case 
+                                <literal>BillingDatasource</literal> will be injected.</para>
+                            </callout>
+                            
     </calloutlist>
     </programlistingco>
     
     </section>
-    
+<!--
+vim:et:ts=3:sw=3:tw=120
+-->    
 </chapter>
