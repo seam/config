@@ -18,7 +18,7 @@
     so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
     
     <para>Let's start with a simple example:</para>
-    <programlisting>
+    <programlisting role="XML">
     <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
@@ -69,7 +69,7 @@
       <para>The namespaces are searched in the order they are specified in the xml 
       document.</para>
       
-    <programlisting>
+    <programlisting role="xml">
         <![CDATA[
 <test:ProducerQualifier>
     <s:Qualifier/>
@@ -241,29 +241,36 @@ public class ProducerBean {
         <programlisting role="XML">
             <![CDATA[	
 <test:ArrayFieldValue>
+
     <test:iarray>
         <s:value>1</s:value>
         <s:value>2</s:value>
     </test:iarray>
+    
     <test:carray>
         <s:value>java.lang.Integer</s:value>
         <s:value>java.lang.Long</s:value>
     </test:carray>
+    
     <test:sarray>
         <s:value>hello</s:value>
         <s:value>world</s:value>
     </test:sarray>
+    
 </test:ArrayFieldValue>
 
 <test:MapFieldValue>
+
     <test:map1>
         <s:entry><s:key>1</s:key><s:value>hello</s:value></s:entry>
         <s:entry><s:key>2</s:key><s:value>world</s:value></s:entry>
     </test:map1>
+    
     <test:map2>
         <s:e><s:k>1</s:k><s:v>java.lang.Integer</s:v></s:e>
         <s:e><s:k>2</s:k><s:v>java.lang.Long</s:v></s:e>
     </test:map2>
+    
 </test:MapFieldValue>
           ]]>
           </programlisting>
@@ -283,9 +290,11 @@ public class ProducerBean {
        xmlns:s="urn:java:seam:core" 
        xmlns:test="urn:java:org.jboss.seam.xml.test.method">
     <test:MethodBean>
+    
         <test:doStuff>
             <s:Produces/>
         </test:doStuff>
+        
         <test:doStuff>
             <s:Produces/>
             <test:Qualifier1/>
@@ -295,6 +304,7 @@ public class ProducerBean {
                 </test:MethodValueBean>
             </s:parameters>
         </test:doStuff>
+        
         <test:doStuff>
             <s:Produces/>
             <test:Qualifier1/>
@@ -305,6 +315,7 @@ public class ProducerBean {
                 </s:array>
             </s:parameters>
         </test:doStuff>
+        
     </test:MethodBean>
 </beans>
 ]]>
@@ -382,14 +393,16 @@ int method(MethodValueBean[] param);
         <title>Overriding the type of an injection point</title>
         
         <para>It is possible to limit which bean types are availible to inject int a given injection point:</para>
-             <programlisting>
+             <programlisting role="java">
                   <![CDATA[
-                  
 public class SomeBean
 {
 	public Object someField;
 }                  
-                  
+]]>
+</programlisting>
+<programlisting role="xml">
+<![CDATA[                 
 <test:SomeBean>
         <test:someField>
          	<s:Inject/>
@@ -408,15 +421,17 @@ public class SomeBean
     <section>
         <title>Annotation Members</title>
         <para>It is possible to set the value of annotation members using attributes in xml. For example:</para>
-        <programlisting>
+        <programlisting role="java" >
             <![CDATA[
 public @interface OtherQualifier {
    String value1();
    int value2();
    QualifierEnum value();
 }
-
-
+]]>
+</programlisting>
+<programlisting role="XML" >
+<![CDATA[
 <test:QualifiedBean1>
         <test:OtherQualifier value1="AA" value2="1">A</test:OtherQualifier>
 </test:QualifiedBean1>
@@ -430,6 +445,39 @@ public @interface OtherQualifier {
     </section>
     
     <section>
+    	<title>Configuring Meta Annotations</title>
+    	<para>It is possible to make existing annotations into qualifiers, stereotypes or interceptor bindings.</para>
+    	<para>This configures a stereotype annotation <literal>SomeStereotype</literal> that has a single interceptor 
+    	binding and is named:</para>
+<programlisting role="XML" >
+<![CDATA[
+   <test:SomeStereotype>
+        <s:Stereotype/>
+        <test:InterceptorBinding/>
+        <s:Named/>
+   </test:SomeStereotype>
+]]>
+</programlisting>   
+<para>This configures a qualifier annotation:</para>
+<programlisting role="XML" >
+<![CDATA[
+   <test:SomeQualifier>
+        <s:Qualifier/>
+   </test:SomeQualifier>
+]]>
+</programlisting>    	
+<para>This configures an interceptor binding:</para>
+<programlisting role="XML" >
+<![CDATA[
+   <test:SomeInterceptorBinding>
+        <s:InterceptorBinding/>
+   </test:SomeInterceptorBinding>
+]]>
+</programlisting>  
+    </section>
+    
+    
+    <section>
     	<title>Generic Beans</title>
     	<para>Gereric beans allow for multiple beans to be created from a single bean definition. They are 
     	designed for use by framework writers. From the users perspective there is no
@@ -438,7 +486,7 @@ public @interface OtherQualifier {
     	<para>Generic beans are configured using the syntax described above. For every bean that the user 
     	configures, a corresponding bean from the generic bean declaration is created. For example in the 
     	framework xml configuration:</para>
-<programlisting>
+<programlisting role="XML" >
             <![CDATA[
 <s:genericBean class="org.jboss.seam.xml.test.generic.GenericMain" >
 	<test:GenericDependant>
