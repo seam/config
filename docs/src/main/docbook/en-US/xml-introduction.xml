@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd">
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="introduction">
   <title>Seam XML Introduction</title>
@@ -26,8 +26,7 @@
     so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
     
     <para>Let's start with a simple example. Say we have the following class that represents a report:</para>
-	<programlisting role="JAVA">
-    <![CDATA[
+	<programlisting role="java"><![CDATA[
 public class Report
 {
 	String filename;
@@ -37,10 +36,9 @@ public class Report
 	
 	//getters and setters
 }
-]]>
-    </programlisting>
+]]></programlisting>
     <para>And the following support classes:</para>
-	<programlisting role="JAVA">
+	<programlisting role="java">
     <![CDATA[
 public interface Datasource
 {
