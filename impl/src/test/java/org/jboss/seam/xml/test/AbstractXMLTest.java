@@ -29,8 +29,8 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 
 public abstract class AbstractXMLTest
 {
@@ -40,17 +40,17 @@ public abstract class AbstractXMLTest
 
    protected abstract String getXmlFileName();
 
-   @BeforeClass
+   @Before
    public void setup()
    {
       String fileName = getClass().getPackage().getName().replace('.', '/') + "/" + getXmlFileName();
-      TestXmlProvider.fileName = fileName;
+      SimpleXmlProvider.fileName = fileName;
       weld = new Weld();
       WeldContainer container = weld.initialize();
       manager = container.getBeanManager();
    }
 
-   @AfterClass
+   @After
    public void teardown()
    {
       weld.shutdown();

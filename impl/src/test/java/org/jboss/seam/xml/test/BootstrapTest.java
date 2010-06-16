@@ -25,26 +25,23 @@ import java.util.List;
 
 import org.jboss.seam.xml.bootstrap.XmlDocumentProvider;
 import org.jboss.seam.xml.bootstrap.XmlExtension;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
 public class BootstrapTest extends AbstractXMLTest
 {
-
-   @Override
-   protected String getXmlFileName()
-   {
-      return "single-bean.xml";
-   }
 
    @Test
    public void testDocumentProviders()
    {
-      XmlExtension x = getReference(XmlExtension.class);
-      List<Class<? extends XmlDocumentProvider>> providers = x.getDocumentProviders();
+      XmlExtension extension = getReference(XmlExtension.class);
+      List<Class<? extends XmlDocumentProvider>> providers = extension.getDocumentProviders();
       assert providers.size() == 2;
 
+   }
+
+   @Override
+   protected String getXmlFileName()
+   {
+      return null;
    }
 }

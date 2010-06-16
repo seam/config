@@ -23,7 +23,7 @@ package org.jboss.seam.xml.test.injection;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.jboss.weld.environment.se.util.WeldManagerUtils;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Test that XML configured Qualifiers work as expected

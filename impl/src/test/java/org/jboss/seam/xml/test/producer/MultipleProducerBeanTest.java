@@ -22,7 +22,7 @@
 package org.jboss.seam.xml.test.producer;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class MultipleProducerBeanTest extends AbstractXMLTest
 {
@@ -38,17 +38,16 @@ public class MultipleProducerBeanTest extends AbstractXMLTest
    {
 
       Reciever s = getReference(Reciever.class);
-      assert s.val1==1;
-      assert s.val2==2;
+      assert s.val1 == 1;
+      assert s.val2 == 2;
    }
-   
-   
+
    @Test
    public void testProducerMethod()
    {
 
       Reciever s = getReference(Reciever.class);
-      assert s.meth1==1;
-      assert s.meth2==2;
+      assert s.meth1 == 1;
+      assert s.meth2 == 2;
    }
 }

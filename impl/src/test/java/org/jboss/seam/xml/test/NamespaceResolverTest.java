@@ -33,7 +33,7 @@ import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.PackageNamespaceElementResolver;
 import org.jboss.seam.xml.test.simple.Bean1;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class NamespaceResolverTest
 {

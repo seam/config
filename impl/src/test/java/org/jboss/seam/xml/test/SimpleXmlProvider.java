@@ -25,7 +25,7 @@ import org.jboss.seam.xml.bootstrap.ResourceLoaderXmlDocumentProvider;
 import org.jboss.seam.xml.bootstrap.XmlDocument;
 import org.jboss.seam.xml.bootstrap.XmlDocumentProvider;
 
-public class TestXmlProvider implements XmlDocumentProvider
+public class SimpleXmlProvider implements XmlDocumentProvider
 {
 
    public static String fileName;

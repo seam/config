@@ -24,7 +24,7 @@ package org.jboss.seam.xml.test.method;
 import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class PrimitiveMethodTest extends AbstractXMLTest
 {

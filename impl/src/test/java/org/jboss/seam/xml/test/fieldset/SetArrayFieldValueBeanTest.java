@@ -23,7 +23,7 @@ package org.jboss.seam.xml.test.fieldset;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.jboss.weld.environment.se.util.WeldManagerUtils;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class SetArrayFieldValueBeanTest extends AbstractXMLTest
 {

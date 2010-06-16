@@ -27,7 +27,7 @@ import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.jboss.seam.xml.test.method.QualifierEnum;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class SetFieldValueBeanTest extends AbstractXMLTest
 {

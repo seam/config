@@ -22,7 +22,7 @@
 package org.jboss.seam.xml.test.constructor;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class ConstructorTest extends AbstractXMLTest
 {

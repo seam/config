@@ -27,7 +27,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.util.AnnotationLiteral;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Unit test for simple App.

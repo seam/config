@@ -24,7 +24,7 @@ package org.jboss.seam.xml.test.stereotype;
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.jboss.seam.xml.test.interceptor.InterceptedBean;
 import org.jboss.weld.environment.se.util.WeldManagerUtils;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * this is the same as the interceptor test except the interceptor is applied
@@ -39,7 +39,7 @@ public class StereotypeTest extends AbstractXMLTest
       return "stereotype-beans.xml";
    }
 
-   @Test(enabled = true)
+   @Test
    public void testStereotypes()
    {
 
