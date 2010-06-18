@@ -26,7 +26,7 @@
     so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
     
     <para>Let's start with a simple example. Say we have the following class that represents a report:</para>
-	<programlisting role="java"><![CDATA[
+	<programlisting role="JAVA"><![CDATA[
 public class Report
 {
 	String filename;
@@ -38,7 +38,7 @@ public class Report
 }
 ]]></programlisting>
     <para>And the following support classes:</para>
-	<programlisting role="java">
+	<programlisting role="JAVA">
     <![CDATA[
 public interface Datasource
 {

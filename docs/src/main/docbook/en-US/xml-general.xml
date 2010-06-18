@@ -69,7 +69,7 @@
       <para>The namespaces are searched in the order they are specified in the xml 
       document.</para>
       
-    <programlisting role="xml">
+    <programlisting role="XML">
         <![CDATA[
 <test:ProducerQualifier>
     <s:Qualifier/>
@@ -80,7 +80,7 @@
     <para>The first entry in the file defines a new qualifier. <literal>ProducerQualifier</literal> 
       is an annotation in the package <literal>org.jboss.seam.xml.test.injection</literal>.</para>
     
-    <programlisting>
+    <programlisting role="XML">
         <![CDATA[
 <test:ProducerBean someOtherField="45" >
     <test:someField>
@@ -109,7 +109,7 @@
     <para>Child elements of fields, methods and classes that resolve to Annotation types are considered to be annotations on the corresponding element, 
     so the corresponding Java declaration for the XML above would be:</para>
     
-    <programlisting><![CDATA[
+    <programlisting role="JAVA"><![CDATA[
 public class ProducerBean {
    @Produces
    @ProducerQualifier
@@ -120,7 +120,7 @@ public class ProducerBean {
 }
     ]]></programlisting>
     
-    <programlisting><![CDATA[
+    <programlisting role="JAVA"><![CDATA[
 <test:ReceiverBean>
     <test:value>
          <test:ProducerQualifier/>
@@ -320,7 +320,7 @@ public class ProducerBean {
 </beans>
 ]]>
 </programlisting>
-<programlisting role="java" >
+<programlisting role="JAVA" >
 <![CDATA[
 public class MethodBean {
 
@@ -356,7 +356,7 @@ public class MethodBean {
         the parameter. </para> 
         
         <para>The corresponding Java declaration for the XML above would be:</para>
-        <programlisting role="java">
+        <programlisting role="JAVA">
             <![CDATA[
 public class MethodBean {
             
@@ -374,7 +374,7 @@ public class MethodBean {
          </programlisting>
          <para>Array parameters can be represented using the <literal>&lt;s:array&gt;</literal> element, 
          with a child element to represent the type of the array. E.g.</para>
-         <programlisting role="java">
+         <programlisting role="JAVA">
 int method(MethodValueBean[] param);
          </programlisting>        
         <para>could be configured via xml using the following:</para>
@@ -393,7 +393,7 @@ int method(MethodValueBean[] param);
         <title>Overriding the type of an injection point</title>
         
         <para>It is possible to limit which bean types are availible to inject int a given injection point:</para>
-             <programlisting role="java">
+             <programlisting role="JAVA">
                   <![CDATA[
 public class SomeBean
 {
@@ -401,7 +401,7 @@ public class SomeBean
 }                  
 ]]>
 </programlisting>
-<programlisting role="xml">
+<programlisting role="XML">
 <![CDATA[                 
 <test:SomeBean>
         <test:someField>
@@ -421,7 +421,7 @@ public class SomeBean
     <section>
         <title>Annotation Members</title>
         <para>It is possible to set the value of annotation members using attributes in xml. For example:</para>
-        <programlisting role="java" >
+        <programlisting role="JAVA" >
             <![CDATA[
 public @interface OtherQualifier {
    String value1();
