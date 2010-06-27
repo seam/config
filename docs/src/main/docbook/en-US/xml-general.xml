@@ -141,7 +141,7 @@ public class ProducerBean {
         
         <itemizedlist>
             <listitem><para><literal>Beans</literal></para></listitem>
-            <listitem><para><literal>specializes</literal></para></listitem>
+            <listitem><para><literal>extends</literal></para></listitem>
             <listitem><para><literal>overrides</literal></para></listitem>
             <listitem><para><literal>parameters</literal></para></listitem>
             <listitem><para><literal>value</literal></para></listitem>
@@ -193,16 +193,16 @@ public class ProducerBean {
         <para>By configuring a bean via XML creates a new bean, however there 
           may be cases where you want to modify an existing bean rather than
           adding a new one. The <literal>&lt;s:overrides&gt;</literal> and 
-          <literal>&lt;s:specializes&gt;</literal> tags allow you to do this.</para>
+          <literal>&lt;s:extends&gt;</literal> tags allow you to do this.</para>
           <para>The <literal>&lt;s:overrides&gt;</literal> tag prevents the existing bean from being 
           installed, and registers a new one with the given configuration. The 
-          <literal>&lt;s:specializes&gt;</literal> tag does the same, except that it merges
+          <literal>&lt;s:extends&gt;</literal> tag does the same, except that it merges
           the annotations on the bean with the annotations defined in XML. This has the
           same effect as modifiying an existing bean.</para>
         
         <programlisting role="XML"><![CDATA[
 <test:Report>
-	<s:specializes>
+	<s:extends>
 	<test:NewQualifier/>
 </test:Report>
 
@@ -491,7 +491,7 @@ public @interface OtherQualifier {
 <s:genericBean class="org.jboss.seam.xml.test.generic.GenericMain" >
 	<test:GenericDependant>
 		<s:ApplyQualifiers/>
-		<s:specializes/>
+		<s:extends/>
 		<test:instance>
 			<s:ApplyQualifiers/>
 		</test:instance>

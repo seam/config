@@ -302,7 +302,7 @@ public class ModelBuilder
    BeanResult<?> buildAnnotatedType(ClassXmlItem rb)
    {
       boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
-      boolean extend = !rb.getChildrenOfType(SpecializesXmlItem.class).isEmpty();
+      boolean extend = !rb.getChildrenOfType(ExtendsXmlItem.class).isEmpty();
       BeanResultType beanType = BeanResultType.ADD;
       if (override && extend)
       {

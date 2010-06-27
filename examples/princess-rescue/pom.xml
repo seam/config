@@ -57,13 +57,13 @@
          <artifactId>jsf-impl</artifactId>
          <scope>runtime</scope>
       </dependency>
-
+	<!--
       <dependency>
          <groupId>org.jboss.weld.servlet</groupId>
          <artifactId>weld-servlet</artifactId>
          <scope>runtime</scope>
       </dependency>
-
+	-->
       <dependency>
          <groupId>org.glassfish.web</groupId>
          <artifactId>el-impl</artifactId>

@@ -18,9 +18,9 @@
 	    <listitem><literal>/META-INF/seam-beans.xml</literal></listitem>
 	    <listitem><literal>/seam-beans.xml</literal></listitem>
     </itemizedlist>
-    <important>
+    <warning>
     	<para>It is currently not possible to load beans.xml from WEB-INF. This will be addressed before the final release of seam-xml.</para>
-    </important>
+    </warning>
 
     <para>The <literal>beans.xml</literal> file is the preferred way of configuring beans via XML, however it may be possible that some JSR-299 implementations will not allow this, 
     so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
@@ -148,6 +148,10 @@ public class BillingDatasource implements Datasource
                             
     </calloutlist>
     </programlistingco>
+    
+    </section>
+    <section>
+    	<title>The Princess Rescue Example</title>
     
     </section>
 <!--

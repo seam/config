@@ -29,7 +29,7 @@ import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.OverrideXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.ParametersXmlItem;
-import org.jboss.seam.xml.model.SpecializesXmlItem;
+import org.jboss.seam.xml.model.ExtendsXmlItem;
 import org.jboss.seam.xml.model.TypeXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
@@ -79,9 +79,9 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       {
          return new OverrideXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("specializes"))
+      else if (item.equals("extends"))
       {
-         return new SpecializesXmlItem(parent, node.getDocument(), node.getLineNo());
+         return new ExtendsXmlItem(parent, node.getDocument(), node.getLineNo());
       }
       else if (item.equals("parameters"))
       {

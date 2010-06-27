@@ -29,7 +29,7 @@
     </test:OverriddenBean>
     
     <test:ExtendedBean>
-         <specializes/>
+         <extends/>
          <test:ExtendedQualifier2/>
     </test:ExtendedBean>
           
