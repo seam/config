@@ -23,7 +23,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:s="urn:java:seam:core" 
+       xmlns:s="urn:java:ee" 
        xmlns:test="urn:java:org.jboss.seam.xml.test.injection">
        
     <test:ProducerQualifier>
@@ -50,9 +50,9 @@
     </programlisting>
     
     <para>You will notice that two new namspace declarations have been added to the 
-      <literal>beans.xml</literal> file: <literal>urn:java:seam:core</literal> and 
+      <literal>beans.xml</literal> file: <literal>urn:java:ee</literal> and 
       <literal>urn:java:org.jboss.seam.xml.test.injection</literal>. The 
-      <literal>urn:java:seam:core</literal> namespace is the main one used by the XML 
+      <literal>urn:java:ee</literal> namespace is the main one used by the XML 
       extension, we will cover exactly what lives in this namespace later. The 
       <literal>urn:java:org.jboss.seam.xml.test.injection</literal> namespace is used 
       to resolve classes in the java package <literal>org.jboss.seam.xml.test.injection</literal>, 
@@ -136,7 +136,7 @@ public class ProducerBean {
     
     <section>
         <title>XML Namespaces</title>
-        <para>The main namesapce is <literal>urn:java:seam:core</literal> contains builtin tags and types from core packages.
+        <para>The main namesapce is <literal>urn:java:ee</literal> contains builtin tags and types from core packages.
         The builting tags are:</para>
         
         <itemizedlist>
@@ -287,7 +287,7 @@ public class ProducerBean {
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:s="urn:java:seam:core" 
+       xmlns:s="urn:java:ee" 
        xmlns:test="urn:java:org.jboss.seam.xml.test.method">
     <test:MethodBean>
     

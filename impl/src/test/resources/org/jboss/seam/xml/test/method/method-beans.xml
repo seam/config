@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="urn:java:seam:core" xmlns:test="urn:java:org.jboss.seam.xml.test.method">
+<beans xmlns="urn:java:ee" xmlns:test="urn:java:org.jboss.seam.xml.test.method">
 
 
 

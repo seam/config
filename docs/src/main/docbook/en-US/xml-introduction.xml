@@ -85,7 +85,7 @@ public class BillingDatasource implements Datasource
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:s="urn:java:seam:core" 
+       xmlns:s="urn:java:ee" 
        xmlns:r="urn:java:org.example.reports">
 
  	<r:Report>
@@ -110,7 +110,7 @@ public class BillingDatasource implements Datasource
     </programlisting>
     <calloutlist>
                             <callout arearefs="namepsace-declaration-seam">
-                                <para>The namespace <literal>urn:java:seam:core</literal> is seam-xml's root namespace. This is where the builtin tags and CDI annotations live.</para>
+                                <para>The namespace <literal>urn:java:ee</literal> is seam-xml's root namespace. This is where the builtin tags and CDI annotations live.</para>
                             </callout>
                             <callout arearefs="namepsace-declaration-reports">
                                 <para>The namespace <literal>urn:java:org.example.reports</literal> corresponds to the package <literal>org.example.reports</literal>, where our reporting classes live.</para>

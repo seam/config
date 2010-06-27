@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:s="urn:java:seam:core" 
+   xmlns:s="urn:java:ee" 
    xmlns:p="org.jboss.seam.xml.examples.princess"
    xsi:schemaLocation="
       http://java.sun.com/xml/ns/javaee 

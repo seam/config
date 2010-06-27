@@ -64,7 +64,7 @@ public class ModelBuilder
 
    final AnnotationInstanceProvider ac = new AnnotationInstanceProvider();
 
-   static final String ROOT_NAMESPACE = "urn:java:seam:core";
+   static final String ROOT_NAMESPACE = "urn:java:ee";
 
    static final String BEANS_ROOT_NAMESPACE = "http://java.sun.com/xml/ns/javaee";
 
