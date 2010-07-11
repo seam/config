@@ -5,19 +5,21 @@
 	<genericBean class="org.jboss.seam.xml.test.generic.GenericMain" >
 		<test:GenericDependant>
 			<ApplyQualifiers/>
-			<extends/>
+			<modifies/>
 			<test:instance>
 				<ApplyQualifiers/>
 			</test:instance>
 		</test:GenericDependant>
 	</genericBean>
 	
-	<test:GenericMain><extends/>
+	<test:GenericMain>
+	    <modifies/>
 		<test:HighGenericQualifier/>
 		<test:configuredValue><value>100</value></test:configuredValue>
 	</test:GenericMain>
 	
-	<test:GenericMain><extends/>
+	<test:GenericMain>
+	    <modifies/>
 		<test:LowGenericQualifier/>
 		<test:configuredValue><value>10</value></test:configuredValue>
 	</test:GenericMain>

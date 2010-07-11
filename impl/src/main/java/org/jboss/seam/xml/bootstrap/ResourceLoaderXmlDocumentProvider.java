@@ -97,8 +97,8 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
       {
          Set<URL> e = getResources(i);
          docs.addAll(e);
-         iterator = docs.listIterator();
       }
+      iterator = docs.listIterator();
    }
 
    protected Set<URL> getResources(String resource)
