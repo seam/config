@@ -30,7 +30,6 @@ import org.jboss.seam.xml.model.ModifiesXmlItem;
 import org.jboss.seam.xml.model.OverrideXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.ParametersXmlItem;
-import org.jboss.seam.xml.model.TypeXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
@@ -40,7 +39,7 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
 {
 
    private final CompositeNamespaceElementResolver delegate;
-   static final String[] namspaces = { "java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "org.jboss.seam.xml.annotations.internal" };
+   static final String[] namspaces = { "java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "org.jboss.seam.xml.annotations.internal", "org.jboss.weld.extensions.core" };
 
    public RootNamespaceElementResolver()
    {
@@ -86,10 +85,6 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       else if (item.equals("parameters"))
       {
          return new ParametersXmlItem(parent, node.getDocument(), node.getLineNo());
-      }
-      else if (item.equals("type"))
-      {
-         return new TypeXmlItem(parent, node.getDocument(), node.getLineNo());
       }
       else if (item.equals("genericBean"))
       {

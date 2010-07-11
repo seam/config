@@ -7,17 +7,13 @@
        <overrides/>
        <test:value>
        	<Inject/>
-       	<type>
-       		<test:AllowedType/>
-       	</type>
+       	<Exact>org.jboss.seam.xml.test.types.AllowedType</Exact>
        </test:value>
        <test:create>
        	 <Inject/>
        	 <parameters>
        	 	<test:SomeInterface>
-       	 		<type>
-       	 			<test:RestrictedType/>
-       	 		</type>
+       	 		<Exact>org.jboss.seam.xml.test.types.RestrictedType</Exact>
        	 	</test:SomeInterface>
        	 </parameters>
        </test:create>

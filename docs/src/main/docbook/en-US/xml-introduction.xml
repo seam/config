@@ -100,9 +100,7 @@ public class BillingDatasource implements Datasource
  		<s:overrides/>
  		<r:datasource>
  			<s:Inject/>
- 			<s:type>
- 				<r:BillingDatasource/>
- 			</s:type>
+ 			<s:Exact>org.example.reports.BillingDatasource</s:Exact>
  		</r:datasource>
   	</r:Report>  	
 </beans>
@@ -142,8 +140,8 @@ public class BillingDatasource implements Datasource
                                 from the class definition.</para>
                             </callout>
                             <callout arearefs="datasource-type">
-                                <para>The <literal>&lt;s:type&gt;</literal> restricts the type of bean that is availible for injection without using qualifiers. In this case 
-                                <literal>BillingDatasource</literal> will be injected.</para>
+                                <para>The <literal>&lt;s:Eact&gt;</literal> annotation restricts the type of bean that is availible for injection without using qualifiers. In this case 
+                                <literal>BillingDatasource</literal> will be injected. This is provided as part of weld-extensions.</para>
                             </callout>
                             
     </calloutlist>

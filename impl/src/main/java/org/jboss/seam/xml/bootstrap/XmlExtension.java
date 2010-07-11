@@ -64,6 +64,7 @@ import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.core.Exact;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -427,6 +428,53 @@ public class XmlExtension implements Extension
          }
       }
       return false;
+   }
+
+   /**
+    * temprary hack to support @Exact in seam-xml, remove once WELD-485 is
+    * resolved
+    */
+   <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager beanManager)
+   {
+
+      AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).mergeAnnotations(pat.getAnnotatedType(), true);
+
+      // support for @Exact
+      // fields
+      for (AnnotatedField<? super X> f : pat.getAnnotatedType().getFields())
+      {
+         if (f.isAnnotationPresent(Exact.class))
+         {
+            Class<?> type = f.getAnnotation(Exact.class).value();
+            builder.overrideFieldType(f.getJavaMember(), type);
+         }
+      }
+      // method parameters
+      for (AnnotatedMethod<? super X> m : pat.getAnnotatedType().getMethods())
+      {
+         for (AnnotatedParameter<? super X> p : m.getParameters())
+         {
+            if (p.isAnnotationPresent(Exact.class))
+            {
+               Class<?> type = p.getAnnotation(Exact.class).value();
+               builder.overrideMethodParameterType(m.getJavaMember(), type, p.getPosition());
+            }
+         }
+      }
+      // constructor parameters
+      for (AnnotatedConstructor<X> c : pat.getAnnotatedType().getConstructors())
+      {
+         for (AnnotatedParameter<? super X> p : c.getParameters())
+         {
+            if (p.isAnnotationPresent(Exact.class))
+            {
+               Class<?> type = p.getAnnotation(Exact.class).value();
+               builder.overrideConstructorParameterType(c.getJavaMember(), type, p.getPosition());
+            }
+         }
+      }
+      pat.setAnnotatedType(builder.create());
+
    }
 
    public static class DefaultLiteral extends AnnotationLiteral<Default> implements Default

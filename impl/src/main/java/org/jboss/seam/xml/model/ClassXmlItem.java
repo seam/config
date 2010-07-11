@@ -43,7 +43,6 @@ public class ClassXmlItem extends AbstractXmlItem
       allowed.add(XmlItemType.FIELD);
       allowed.add(XmlItemType.METHOD);
       allowed.add(XmlItemType.PARAMETERS);
-      allowed.add(XmlItemType.TYPE);
    }
 
    public Set<XmlItemType> getAllowedItem()
