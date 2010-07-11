@@ -90,7 +90,7 @@ public class XmlExtension implements Extension
 
    List<Exception> errors = new ArrayList<Exception>();
 
-   Map<Class, GenericBeanResult> genericBeans = new HashMap<Class, GenericBeanResult>();
+   Map<Class<?>, GenericBeanResult> genericBeans = new HashMap<Class<?>, GenericBeanResult>();
 
    /**
     * This is the entry point for the extension
@@ -213,26 +213,6 @@ public class XmlExtension implements Extension
          event.veto();
          return;
       }
-      boolean found = false;
-      AnnotatedTypeBuilder builder = AnnotatedTypeBuilder.newInstance(event.getAnnotatedType());
-      builder.mergeAnnotations(event.getAnnotatedType(), true);
-      for (XmlResult r : results)
-      {
-         for (BeanResult<?> i : r.getInterfaces())
-         {
-            if (i.getType().isAssignableFrom(event.getAnnotatedType().getJavaClass()))
-            {
-               found = true;
-               builder.mergeAnnotations(i.getBuilder().create(), true);
-               log.info("Overriding " + event.getAnnotatedType().getJavaClass() +" annotations based on interface " + i.getType().getName());
-            }
-         }
-      }
-      if (found)
-      {
-         event.setAnnotatedType(builder.create());
-      }
-
    }
 
    public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event)

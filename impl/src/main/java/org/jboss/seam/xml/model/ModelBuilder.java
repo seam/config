@@ -130,14 +130,7 @@ public class ModelBuilder
             ClassXmlItem cxml = (ClassXmlItem) rb;
             // get the AnnotatedType information
             BeanResult<?> tp = buildAnnotatedType(cxml);
-            if (cxml.getJavaClass().isInterface())
-            {
-               ret.addInterface(tp);
-            }
-            else
-            {
-               ret.addBean(tp);
-            }
+            ret.addBean(tp);
             // <override> or <speciailizes> need to veto the bean
             if (tp.getBeanType() != BeanResultType.ADD)
             {

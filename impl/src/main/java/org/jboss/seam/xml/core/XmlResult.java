@@ -50,8 +50,6 @@ public class XmlResult
 
    private final List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
 
-   private final List<BeanResult<?>> interfaces = new ArrayList<BeanResult<?>>();
-
    private final List<GenericBeanResult> genericBeans = new ArrayList<GenericBeanResult>();
 
    private final Map<BeanResult<?>, List<FieldValueObject>> fieldValues = new HashMap<BeanResult<?>, List<FieldValueObject>>();
@@ -126,16 +124,6 @@ public class XmlResult
    public List<Class<?>> getVeto()
    {
       return veto;
-   }
-
-   public void addInterface(BeanResult<?> bean)
-   {
-      interfaces.add(bean);
-   }
-
-   public List<BeanResult<?>> getInterfaces()
-   {
-      return interfaces;
    }
 
    public void addInterfaceFieldValues(Class<?> clazz, List<FieldValueObject> values)
