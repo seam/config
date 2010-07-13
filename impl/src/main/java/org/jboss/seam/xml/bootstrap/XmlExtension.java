@@ -191,7 +191,7 @@ public class XmlExtension implements Extension
             {
             });
             AnnotatedType<?> tp = bb.getBuilder().create();
-            log.info("Adding XML definied bean: " + tp.getJavaClass().getName());
+            log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
             event.addAnnotatedType(tp);
 
          }
