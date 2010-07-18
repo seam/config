@@ -24,6 +24,8 @@ package org.jboss.seam.xml.model;
 import java.util.List;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
+
 public interface XmlItem
 {
 
@@ -47,7 +49,7 @@ public interface XmlItem
     */
    public boolean resolveChildren();
 
-   public Set<XmlItemType> getAllowedItem();
+   public Set<TypeOccuranceInformation> getAllowedItem();
 
    int getLineno();
 

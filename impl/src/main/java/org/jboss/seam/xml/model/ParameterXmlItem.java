@@ -24,6 +24,8 @@ package org.jboss.seam.xml.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
+
 /**
  * represents a parameter of a constructor or method
  * 
@@ -32,15 +34,17 @@ import java.util.Set;
  */
 public class ParameterXmlItem extends AbstractXmlItem
 {
-   HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
+   HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
    public ParameterXmlItem(XmlItem parent, Class<?> c, String document, int lineno)
    {
       super(XmlItemType.PARAMETER, parent, c, null, null, document, lineno);
-      allowed.add(XmlItemType.ANNOTATION);
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.CLASS, null, 1));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ARRAY, null, 1));
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
       return allowed;
    }

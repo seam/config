@@ -38,6 +38,7 @@ import org.jboss.seam.xml.fieldset.FieldValueSetter;
 import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
@@ -46,7 +47,7 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
    FieldValueSetter fieldSetter;
    FieldValueObject fieldValue;
    Field field;
-   HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
+   HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
    public FieldXmlItem(XmlItem parent, Field c, String innerText, String document, int lineno)
    {
@@ -57,8 +58,9 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
       {
          fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, innerText);
       }
-      allowed.add(XmlItemType.ANNOTATION);
-      allowed.add(XmlItemType.VALUE);
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.VALUE, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ENTRY, null, null));
    }
 
    public Field getField()
@@ -138,7 +140,7 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
       return true;
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
       return allowed;
    }

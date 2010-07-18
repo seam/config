@@ -24,6 +24,8 @@ package org.jboss.seam.xml.model;
 import java.util.Collections;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
+
 public class ValueXmlItem extends AbstractXmlItem
 {
 
@@ -32,8 +34,9 @@ public class ValueXmlItem extends AbstractXmlItem
       super(XmlItemType.VALUE, parent, null, innerText, null, document, lineno);
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
-      return Collections.emptySet();
+      return Collections.singleton(TypeOccuranceInformation.of(XmlItemType.CLASS, null, 1));
    }
+
 }

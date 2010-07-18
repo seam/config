@@ -42,6 +42,7 @@ import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.RootNamespaceElementResolver;
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
 /**
@@ -109,7 +110,7 @@ public class ModelBuilder
    @SuppressWarnings("unchecked")
    private void addNodeToResult(XmlResult ret, XmlItem xmlItem)
    {
-
+      validateXmlItem(xmlItem);
       if (xmlItem.getType() == XmlItemType.CLASS || xmlItem.getType() == XmlItemType.ANNOTATION)
       {
          ResultType resultType = getItemType(xmlItem);
@@ -305,15 +306,53 @@ public class ModelBuilder
 
    public void validateXmlItem(XmlItem item)
    {
-      Set<XmlItemType> allowed = item.getAllowedItem();
+      Set<TypeOccuranceInformation> allowed = item.getAllowedItem();
+      Map<XmlItemType, Integer> counts = new HashMap<XmlItemType, Integer>();
       for (XmlItem i : item.getChildren())
       {
-         if (!allowed.contains(item.getType()))
+         boolean found = false;
+         for (TypeOccuranceInformation type : allowed)
+         {
+            if (type.getType() == i.getType())
+            {
+               found = true;
+               if (counts.containsKey(i.getType()))
+               {
+                  counts.put(i.getType(), counts.get(i.getType()) + 1);
+               }
+               else
+               {
+                  counts.put(i.getType(), 1);
+               }
+            }
+         }
+         if (!found)
          {
             throw new XmlConfigurationException("Item " + item.getType() + " is not allowed to contain " + i.getType(), item.getDocument(), item.getLineno());
          }
          validateXmlItem(i);
       }
-   }
+      for (TypeOccuranceInformation type : allowed)
+      {
+         Integer count = counts.get(type.getType());
+         if (type.getMaxOccurances() != null)
+         {
+            if (count != null)
+            {
+               if (count > type.getMaxOccurances())
+               {
+                  throw new XmlConfigurationException("Item " + item.getType() + " has " + count + "children of type " + type.getType() + " when it should have at most " + type.getMaxOccurances(), item.getDocument(), item.getLineno());
+               }
+            }
+         }
+         if (type.getMinOccurances() != null)
+         {
+            if (count == null || count < type.getMinOccurances())
+            {
+               throw new XmlConfigurationException("Item " + item.getType() + " has " + count + "children of type " + type.getType() + " when it should have at least " + type.getMaxOccurances(), item.getDocument(), item.getLineno());
 
+            }
+         }
+      }
+   }
 }

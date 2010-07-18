@@ -25,9 +25,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
+
 public class AnnotationXmlItem extends AbstractXmlItem
 {
-   private final HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
+   private final HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
    public AnnotationXmlItem(XmlItem parent, Class<?> c, String innerText, Map<String, String> attributes, String document, int lineno)
    {
@@ -39,10 +41,10 @@ public class AnnotationXmlItem extends AbstractXmlItem
             attributes.put("value", innerText);
          }
       }
-      allowed.add(XmlItemType.ANNOTATION);
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
       return allowed;
    }

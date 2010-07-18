@@ -24,12 +24,13 @@ package org.jboss.seam.xml.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class EntryXmlItem extends AbstractXmlItem
 {
 
-   final Set<XmlItemType> allowed = new HashSet<XmlItemType>();
+   final Set<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
    XmlItem key;
    XmlItem value;
@@ -37,11 +38,11 @@ public class EntryXmlItem extends AbstractXmlItem
    public EntryXmlItem(XmlItem parent, String document, int lineno)
    {
       super(XmlItemType.ENTRY, parent, null, null, null, document, lineno);
-      allowed.add(XmlItemType.VALUE);
-      allowed.add(XmlItemType.KEY);
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.VALUE, 1, 1));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.KEY, 1, 1));
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
       return allowed;
    }

@@ -24,6 +24,8 @@ package org.jboss.seam.xml.model;
 import java.util.Collections;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
+
 public class ParametersXmlItem extends AbstractXmlItem
 {
 
@@ -33,9 +35,9 @@ public class ParametersXmlItem extends AbstractXmlItem
 
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
-      return Collections.singleton(XmlItemType.PARAMETER);
+      return Collections.singleton(TypeOccuranceInformation.of(XmlItemType.PARAMETER, 1, null));
    }
 
 }

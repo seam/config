@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.BeanResultType;
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.Reflections;
@@ -44,18 +45,20 @@ import org.jboss.weld.extensions.util.Reflections;
 public class ClassXmlItem extends AbstractXmlItem
 {
 
-   HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
+   HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
    public ClassXmlItem(XmlItem parent, Class<?> c, Map<String, String> attributes, String document, int lineno)
    {
       super(XmlItemType.CLASS, parent, c, null, attributes, document, lineno);
-      allowed.add(XmlItemType.ANNOTATION);
-      allowed.add(XmlItemType.FIELD);
-      allowed.add(XmlItemType.METHOD);
-      allowed.add(XmlItemType.PARAMETERS);
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.FIELD, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.METHOD, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.PARAMETERS, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.REPLACE, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.MODIFIES, null, null));
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
       return allowed;
    }

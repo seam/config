@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class GenericBeanXmlItem extends AbstractXmlItem
@@ -45,9 +46,9 @@ public class GenericBeanXmlItem extends AbstractXmlItem
       }
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
-      return Collections.singleton(XmlItemType.CLASS);
+      return Collections.singleton(TypeOccuranceInformation.of(XmlItemType.CLASS, 1, null));
    }
 
    public Class<?> getClass(String className, String document, int lineno)

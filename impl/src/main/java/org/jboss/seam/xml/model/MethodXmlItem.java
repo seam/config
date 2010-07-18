@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class MethodXmlItem extends AbstractXmlItem
@@ -35,14 +36,14 @@ public class MethodXmlItem extends AbstractXmlItem
    private String methodName;
 
    Method method;
-   HashSet<XmlItemType> allowed = new HashSet<XmlItemType>();
+   HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
    public MethodXmlItem(XmlItem parent, String methodName, String document, int lineno)
    {
       super(XmlItemType.METHOD, parent, parent.getJavaClass(), null, null, document, lineno);
 
-      allowed.add(XmlItemType.ANNOTATION);
-      allowed.add(XmlItemType.PARAMETERS);
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.PARAMETERS, null, 1));
 
       // methods are lazily resolved once we know the parameter types
       this.methodName = methodName;
@@ -122,7 +123,7 @@ public class MethodXmlItem extends AbstractXmlItem
       return method;
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
       return allowed;
    }

@@ -24,6 +24,8 @@ package org.jboss.seam.xml.model;
 import java.util.Collections;
 import java.util.Set;
 
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
+
 public class ReplacesXmlItem extends AbstractXmlItem
 {
 
@@ -33,7 +35,7 @@ public class ReplacesXmlItem extends AbstractXmlItem
 
    }
 
-   public Set<XmlItemType> getAllowedItem()
+   public Set<TypeOccuranceInformation> getAllowedItem()
    {
       return Collections.emptySet();
    }

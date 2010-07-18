@@ -37,6 +37,7 @@ import org.jboss.seam.xml.model.PropertyXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.util.Reflections;
 
@@ -101,7 +102,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       if (parent != null)
       {
          // if the item can be a method of a FIELD
-         if (parent.getAllowedItem().contains(XmlItemType.METHOD) || parent.getAllowedItem().contains(XmlItemType.FIELD))
+         if (TypeOccuranceInformation.isTypeInSet(parent.getAllowedItem(), XmlItemType.METHOD) || TypeOccuranceInformation.isTypeInSet(parent.getAllowedItem(), XmlItemType.FIELD))
          {
             return resolveMethodOrField(name, parent, node.getInnerText(), node.getDocument(), node.getLineNo());
          }
