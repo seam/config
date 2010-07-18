@@ -76,7 +76,7 @@ public class BillingDatasource implements Datasource
                    <area id="filename" coords="11"/>
                    <area id="datasource-qualifier" coords="13"/>
                    <area id="filename-short" coords="17"/>
-                   <area id="overrides" coords="18"/>
+                   <area id="replaces" coords="18"/>
                    <area id="inject" coords="20"/>
                    <area id="datasource-type" coords="21"/>
        </areaspec>
@@ -131,12 +131,12 @@ public class BillingDatasource implements Datasource
                             <callout arearefs="filename-short">
                                 <para>This is the shorthand syntax for setting a field value.</para>
                             </callout>
-                            <callout arearefs="overrides">
-                                <para>Beans installed using <literal>&lt;s:overrides&gt;</literal> do not read annotations from the existing class. In addition if a bean is installed with 
-                                <literal>&lt;s:overrides&gt;</literal> it prevents the original class being installed as a bean.</para>
+                            <callout arearefs="replaces">
+                                <para>Beans installed using <literal>&lt;s:replaces&gt;</literal> do not read annotations from the existing class. In addition if a bean is installed with 
+                                <literal>&lt;s:replaces&gt;</literal> it prevents the original class being installed as a bean.</para>
                             </callout>
                             <callout arearefs="inject">
-                                <para>The <literal>&lt;s:Inject&gt;</literal> element is needed this bean was installed with <literal>&lt;s:overrides&gt;</literal>, so annotations are not read
+                                <para>The <literal>&lt;s:Inject&gt;</literal> element is needed this bean was installed with <literal>&lt;s:replaces&gt;</literal>, so annotations are not read
                                 from the class definition.</para>
                             </callout>
                             <callout arearefs="datasource-type">

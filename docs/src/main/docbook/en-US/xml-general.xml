@@ -142,7 +142,7 @@ public class ProducerBean {
         <itemizedlist>
             <listitem><para><literal>Beans</literal></para></listitem>
             <listitem><para><literal>modifies</literal></para></listitem>
-            <listitem><para><literal>overrides</literal></para></listitem>
+            <listitem><para><literal>replaces</literal></para></listitem>
             <listitem><para><literal>parameters</literal></para></listitem>
             <listitem><para><literal>value</literal></para></listitem>
             <listitem><para><literal>key</literal></para></listitem>
@@ -193,9 +193,9 @@ public class ProducerBean {
         <title>Overriding and extending beans</title>
         <para>By configuring a bean via XML creates a new bean, however there 
           may be cases where you want to modify an existing bean rather than
-          adding a new one. The <literal>&lt;s:overrides&gt;</literal> and 
+          adding a new one. The <literal>&lt;s:replaces&gt;</literal> and 
           <literal>&lt;s:modifies&gt;</literal> tags allow you to do this.</para>
-          <para>The <literal>&lt;s:overrides&gt;</literal> tag prevents the existing bean from being 
+          <para>The <literal>&lt;s:replaces&gt;</literal> tag prevents the existing bean from being 
           installed, and registers a new one with the given configuration. The 
           <literal>&lt;s:modifies&gt;</literal> tag does the same, except that it merges
           the annotations on the bean with the annotations defined in XML. This has the
