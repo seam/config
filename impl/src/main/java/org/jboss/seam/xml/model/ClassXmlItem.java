@@ -98,7 +98,7 @@ public class ClassXmlItem extends AbstractXmlItem
 
    public BeanResult<?> createBeanResult()
    {
-      boolean override = !getChildrenOfType(OverrideXmlItem.class).isEmpty();
+      boolean override = !getChildrenOfType(ReplacesXmlItem.class).isEmpty();
       boolean extend = !getChildrenOfType(ModifiesXmlItem.class).isEmpty();
       BeanResultType beanType = BeanResultType.ADD;
       if (override && extend)

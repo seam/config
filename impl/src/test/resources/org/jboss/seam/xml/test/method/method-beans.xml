@@ -49,7 +49,7 @@
     </test:MethodBean>
 
     <test:MethodTarget>
-    	<overrides/>
+    	<replaces/>
         <test:value1>
             <Inject />
         </test:value1>

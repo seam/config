@@ -3,7 +3,7 @@
           xmlns:test="urn:java:org.jboss.seam.xml.test.fieldset">
    
     <test:CollectionFieldValue>
-    	<overrides/>
+    	<replaces/>
         <test:iset>
         	<value>1</value>
         	<value>2</value>

@@ -4,7 +4,7 @@
 
    
     <test:Bean1>
-    	<overrides/>
+    	<replaces/>
         <test:bean2>
             <Inject/>
         </test:bean2>
@@ -17,14 +17,14 @@
     </test:Bean1>
     
     <test:Bean2>
-    	<overrides/>
+    	<replaces/>
         <test:produceBean3>
             <Produces/>
         </test:produceBean3>
     </test:Bean2>
     
     <test:OverriddenBean>
-         <overrides/>
+         <replaces/>
         <Named>someBean</Named>
     </test:OverriddenBean>
     

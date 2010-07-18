@@ -97,7 +97,7 @@ public class BillingDatasource implements Datasource
   	</r:Report>
   	
  	<r:Report filename="billing.jrxml">
- 		<s:overrides/>
+ 		<s:replaces/>
  		<r:datasource>
  			<s:Inject/>
  			<s:Exact>org.example.reports.BillingDatasource</s:Exact>

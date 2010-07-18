@@ -24,12 +24,12 @@ package org.jboss.seam.xml.model;
 import java.util.Collections;
 import java.util.Set;
 
-public class OverrideXmlItem extends AbstractXmlItem
+public class ReplacesXmlItem extends AbstractXmlItem
 {
 
-   public OverrideXmlItem(XmlItem parent, String document, int lineno)
+   public ReplacesXmlItem(XmlItem parent, String document, int lineno)
    {
-      super(XmlItemType.OVERRIDE, parent, null, null, null, document, lineno);
+      super(XmlItemType.REPLACE, parent, null, null, null, document, lineno);
 
    }
 

@@ -208,7 +208,7 @@ public class ProducerBean {
 </test:Report>
 
 <test:ReportDatasource>
-	<s:overrides>
+	<s:replaces>
 	<test:NewQualifier/>
 </test:ReportDatasource>]]>
         </programlisting>

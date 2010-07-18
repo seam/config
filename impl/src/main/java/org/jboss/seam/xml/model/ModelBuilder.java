@@ -107,23 +107,23 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   private void addNodeToResult(XmlResult ret, XmlItem rb)
+   private void addNodeToResult(XmlResult ret, XmlItem xmlItem)
    {
 
-      if (rb.getType() == XmlItemType.CLASS || rb.getType() == XmlItemType.ANNOTATION)
+      if (xmlItem.getType() == XmlItemType.CLASS || xmlItem.getType() == XmlItemType.ANNOTATION)
       {
-         ResultType type = getItemType(rb);
+         ResultType resultType = getItemType(xmlItem);
          // if we are configuring a bean
-         if (type == ResultType.BEAN)
+         if (resultType == ResultType.BEAN)
          {
-            ClassXmlItem cxml = (ClassXmlItem) rb;
+            ClassXmlItem cxml = (ClassXmlItem) xmlItem;
             // get the AnnotatedType information
-            BeanResult<?> tp = cxml.createBeanResult();
-            ret.addBean(tp);
+            BeanResult<?> beanResult = cxml.createBeanResult();
+            ret.addBean(beanResult);
             // <override> or <speciailizes> need to veto the bean
-            if (tp.getBeanType() != BeanResultType.ADD)
+            if (beanResult.getBeanType() != BeanResultType.ADD)
             {
-               ret.addVeto(tp.getType());
+               ret.addVeto(beanResult.getType());
             }
             // get all the field values from the bean
             Set<String> configuredFields = new HashSet<String>();
@@ -149,35 +149,35 @@ public class ModelBuilder
 
             if (!fields.isEmpty())
             {
-               if (rb.getJavaClass().isInterface())
+               if (xmlItem.getJavaClass().isInterface())
                {
-                  ret.addInterfaceFieldValues(tp.getType(), fields);
+                  ret.addInterfaceFieldValues(beanResult.getType(), fields);
                }
                else
                {
-                  ret.addFieldValue(tp, fields);
+                  ret.addFieldValue(beanResult, fields);
                }
             }
          }
-         else if (type == ResultType.QUALIFIER)
+         else if (resultType == ResultType.QUALIFIER)
          {
-            ret.addQualifier((Class) rb.getJavaClass());
+            ret.addQualifier((Class) xmlItem.getJavaClass());
          }
-         else if (type == ResultType.INTERCEPTOR_BINDING)
+         else if (resultType == ResultType.INTERCEPTOR_BINDING)
          {
-            ret.addInterceptorBinding((Class) rb.getJavaClass());
+            ret.addInterceptorBinding((Class) xmlItem.getJavaClass());
          }
-         else if (type == ResultType.STEREOTYPE)
+         else if (resultType == ResultType.STEREOTYPE)
          {
-            addStereotypeToResult(ret, rb);
+            addStereotypeToResult(ret, xmlItem);
          }
       }
-      else if (rb.getType() == XmlItemType.GENERIC_BEAN)
+      else if (xmlItem.getType() == XmlItemType.GENERIC_BEAN)
       {
 
-         GenericBeanXmlItem item = (GenericBeanXmlItem) rb;
+         GenericBeanXmlItem item = (GenericBeanXmlItem) xmlItem;
          Set<BeanResult<?>> classes = new HashSet<BeanResult<?>>();
-         for (ClassXmlItem c : rb.getChildrenOfType(ClassXmlItem.class))
+         for (ClassXmlItem c : xmlItem.getChildrenOfType(ClassXmlItem.class))
          {
             BeanResult<?> br = c.createBeanResult();
             if (br.getBeanType() != BeanResultType.ADD)

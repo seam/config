@@ -3,7 +3,7 @@
           xmlns:test="urn:java:org.jboss.seam.xml.test.interceptor">
    
     <test:InterceptedBean>
-    	<overrides/>
+    	<replaces/>
         <test:method>
             <test:InterceptorBinding/>
         </test:method>

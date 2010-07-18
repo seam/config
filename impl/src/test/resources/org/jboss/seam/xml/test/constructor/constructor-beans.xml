@@ -10,7 +10,7 @@
 	</test:ValueProvider>
    
    	<test:ConstructedBean>
-   		<overrides/>
+   		<replaces/>
    		<parameters><int/></parameters>
    	</test:ConstructedBean>
    

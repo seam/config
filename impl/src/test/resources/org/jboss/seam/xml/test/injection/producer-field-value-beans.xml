@@ -8,7 +8,7 @@
     </test:ProducerQualifier>
     
     <test:ProducerBean>
-    	<overrides/>
+    	<replaces/>
         <test:value>
             <Produces/>
             <test:ProducerQualifier/>
@@ -17,7 +17,7 @@
     </test:ProducerBean>
 
    <test:RecieverBean>
-   		<overrides/>
+   		<replaces/>
    		<test:value>
    			<test:ProducerQualifier/>
    			<Inject/>
