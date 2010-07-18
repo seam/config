@@ -25,6 +25,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -113,7 +114,7 @@ public class XmlExtension implements Extension
                ParserMain parser = new ParserMain();
                ModelBuilder builder = new ModelBuilder();
                SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), errors);
-               results.add(builder.build(parentNode));
+               results.add(builder.build(parentNode, d.getFileUrl()));
             }
          }
          catch (Exception e)
@@ -121,6 +122,8 @@ public class XmlExtension implements Extension
             errors.add(e);
          }
       }
+      // we sort the results so the beans are always installed in the same order
+      Collections.sort(results);
       // build the generic bean data
       for (XmlResult r : results)
       {

@@ -22,19 +22,14 @@
 package org.jboss.seam.xml.model;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.enterprise.inject.Stereotype;
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Inject;
 import javax.inject.Qualifier;
 import javax.interceptor.InterceptorBinding;
 
@@ -48,10 +43,6 @@ import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.RootNamespaceElementResolver;
 import org.jboss.seam.xml.util.XmlConfigurationException;
-import org.jboss.seam.xml.util.XmlObjectConverter;
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
-import org.jboss.weld.extensions.util.Reflections;
 
 /**
  * Builds an XML result from sax nodes
@@ -62,8 +53,6 @@ import org.jboss.weld.extensions.util.Reflections;
 public class ModelBuilder
 {
 
-   final AnnotationInstanceProvider ac = new AnnotationInstanceProvider();
-
    static final String ROOT_NAMESPACE = "urn:java:ee";
 
    static final String BEANS_ROOT_NAMESPACE = "http://java.sun.com/xml/ns/javaee";
@@ -71,12 +60,12 @@ public class ModelBuilder
    /**
     * builds an XML result from a parsed xml document
     */
-   public XmlResult build(SaxNode root)
+   public XmlResult build(SaxNode root, String fileUrl)
    {
 
       Map<String, NamespaceElementResolver> resolvers = new HashMap<String, NamespaceElementResolver>();
 
-      XmlResult ret = new XmlResult();
+      XmlResult ret = new XmlResult(fileUrl);
 
       if (!root.getName().equals("beans"))
       {
@@ -129,7 +118,7 @@ public class ModelBuilder
          {
             ClassXmlItem cxml = (ClassXmlItem) rb;
             // get the AnnotatedType information
-            BeanResult<?> tp = buildAnnotatedType(cxml);
+            BeanResult<?> tp = cxml.createBeanResult();
             ret.addBean(tp);
             // <override> or <speciailizes> need to veto the bean
             if (tp.getBeanType() != BeanResultType.ADD)
@@ -190,7 +179,7 @@ public class ModelBuilder
          Set<BeanResult<?>> classes = new HashSet<BeanResult<?>>();
          for (ClassXmlItem c : rb.getChildrenOfType(ClassXmlItem.class))
          {
-            BeanResult<?> br = buildAnnotatedType(c);
+            BeanResult<?> br = c.createBeanResult();
             if (br.getBeanType() != BeanResultType.ADD)
             {
                ret.addVeto(br.getType());
@@ -292,122 +281,6 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   BeanResult<?> buildAnnotatedType(ClassXmlItem rb)
-   {
-      boolean override = !rb.getChildrenOfType(OverrideXmlItem.class).isEmpty();
-      boolean extend = !rb.getChildrenOfType(ModifiesXmlItem.class).isEmpty();
-      BeanResultType beanType = BeanResultType.ADD;
-      if (override && extend)
-      {
-         throw new XmlConfigurationException("A bean may not both <override> and <extend> an existing bean", rb.getDocument(), rb.getLineno());
-      }
-      if (override)
-      {
-         beanType = BeanResultType.OVERRIDE;
-      }
-      else if (extend)
-      {
-         beanType = BeanResultType.SPECIALISE;
-      }
-
-      // if it is an extend we want to read the annotations from the underlying
-      // class
-      BeanResult<?> result = new BeanResult(rb.getJavaClass(), extend, beanType);
-      AnnotatedTypeBuilder<?> type = result.getBuilder();
-      // list of constructor arguments
-      List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();
-
-      for (AnnotationXmlItem item : rb.getChildrenOfType(AnnotationXmlItem.class))
-      {
-         Annotation a = createAnnotation(item);
-         type.addToClass(a);
-      }
-      List<ParametersXmlItem> constructorParameters = rb.getChildrenOfType(ParametersXmlItem.class);
-      if (constructorParameters.size() > 1)
-      {
-         throw new XmlConfigurationException("A method may only have a single <parameters> element", rb.getDocument(), rb.getLineno());
-      }
-      else if (!constructorParameters.isEmpty())
-      {
-         for (ParameterXmlItem item : constructorParameters.get(0).getChildrenOfType(ParameterXmlItem.class))
-         {
-            constList.add(item);
-         }
-      }
-      for (FieldXmlItem item : rb.getChildrenOfType(FieldXmlItem.class))
-      {
-         for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
-         {
-            Annotation a = createAnnotation(fi);
-            type.addToField(item.getField(), a);
-         }
-      }
-      for (MethodXmlItem item : rb.getChildrenOfType(MethodXmlItem.class))
-      {
-         int paramCount = 0;
-
-         for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
-         {
-            Annotation a = createAnnotation(fi);
-            type.addToMethod(item.getMethod(), a);
-         }
-         List<ParametersXmlItem> parameters = item.getChildrenOfType(ParametersXmlItem.class);
-         if (parameters.size() > 1)
-         {
-            throw new XmlConfigurationException("A method may only have a single <parameters> element", item.getDocument(), item.getLineno());
-         }
-         else if (!parameters.isEmpty())
-         {
-            for (ParameterXmlItem fi : parameters.get(0).getChildrenOfType(ParameterXmlItem.class))
-            {
-               int param = paramCount++;
-               for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
-               {
-                  Annotation a = createAnnotation(pan);
-                  type.addToMethodParameter(item.getMethod(), param, a);
-               }
-            }
-         }
-
-      }
-
-      if (!constList.isEmpty())
-      {
-         int paramCount = 0;
-         Constructor<?> c = resolveConstructor(rb, constList);
-         // we automatically add inject to the constructor
-         type.addToConstructor((Constructor) c, new AnnotationLiteral<Inject>()
-         {
-         });
-         for (ParameterXmlItem fi : constList)
-         {
-            int param = paramCount++;
-            for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
-            {
-               Annotation a = createAnnotation(pan);
-               type.addToConstructorParameter((Constructor) c, param, a);
-            }
-         }
-      }
-      return result;
-   }
-
-   protected static Constructor<?> resolveConstructor(ClassXmlItem bean, List<ParameterXmlItem> constList)
-   {
-      Class<?>[] params = new Class[constList.size()];
-      for (int i = 0; i < constList.size(); ++i)
-      {
-         params[i] = constList.get(i).getJavaClass();
-      }
-      Constructor<?> ret = Reflections.getConstructor(bean.getJavaClass(), params);
-      if (ret == null)
-      {
-         throw new XmlConfigurationException("Could not resolve constructor for " + bean.getJavaClass() + " with arguments " + params, bean.getDocument(), bean.getLineno());
-      }
-      return ret;
-   }
-
-   @SuppressWarnings("unchecked")
    void addStereotypeToResult(XmlResult ret, XmlItem rb)
    {
 
@@ -417,7 +290,7 @@ public class ModelBuilder
       {
          if (item.getType() == XmlItemType.ANNOTATION)
          {
-            Annotation a = createAnnotation((AnnotationXmlItem) item);
+            Annotation a = AnnotationUtils.createAnnotation((AnnotationXmlItem) item);
             values[count] = a;
          }
          else
@@ -428,30 +301,6 @@ public class ModelBuilder
       }
       ret.addStereotype((Class) rb.getJavaClass(), values);
 
-   }
-
-   @SuppressWarnings("unchecked")
-   Annotation createAnnotation(AnnotationXmlItem item)
-   {
-      Map<String, Object> typedVars = new HashMap<String, Object>();
-      Class<?> anClass = item.getJavaClass();
-      for (Entry<String, String> e : item.getAttributes().entrySet())
-      {
-         String mname = e.getKey();
-         Method m;
-         try
-         {
-            m = anClass.getDeclaredMethod(mname);
-         }
-         catch (Exception e1)
-         {
-            throw new XmlConfigurationException("Annotation " + item.getJavaClass().getName() + " does not have a member named " + mname + " ,error in XML", item.getDocument(), item.getLineno());
-         }
-         Class<?> returnType = m.getReturnType();
-         typedVars.put(mname, XmlObjectConverter.convert(returnType, e.getValue()));
-      }
-
-      return ac.get((Class) item.getJavaClass(), typedVars);
    }
 
    public void validateXmlItem(XmlItem item)

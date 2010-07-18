@@ -21,14 +21,24 @@
  */
 package org.jboss.seam.xml.model;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Inject;
+
+import org.jboss.seam.xml.core.BeanResult;
+import org.jboss.seam.xml.core.BeanResultType;
 import org.jboss.seam.xml.util.XmlConfigurationException;
+import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.Reflections;
 
 public class ClassXmlItem extends AbstractXmlItem
@@ -84,6 +94,121 @@ public class ClassXmlItem extends AbstractXmlItem
 
       }
       return values;
+   }
+
+   public BeanResult<?> createBeanResult()
+   {
+      boolean override = !getChildrenOfType(OverrideXmlItem.class).isEmpty();
+      boolean extend = !getChildrenOfType(ModifiesXmlItem.class).isEmpty();
+      BeanResultType beanType = BeanResultType.ADD;
+      if (override && extend)
+      {
+         throw new XmlConfigurationException("A bean may not both <override> and <extend> an existing bean", getDocument(), getLineno());
+      }
+      if (override)
+      {
+         beanType = BeanResultType.OVERRIDE;
+      }
+      else if (extend)
+      {
+         beanType = BeanResultType.SPECIALISE;
+      }
+
+      // if it is an extend we want to read the annotations from the underlying
+      // class
+      BeanResult<?> result = new BeanResult(getJavaClass(), extend, beanType);
+      AnnotatedTypeBuilder<?> type = result.getBuilder();
+      // list of constructor arguments
+      List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();
+
+      for (AnnotationXmlItem item : getChildrenOfType(AnnotationXmlItem.class))
+      {
+         Annotation a = AnnotationUtils.createAnnotation(item);
+         type.addToClass(a);
+      }
+      List<ParametersXmlItem> constructorParameters = getChildrenOfType(ParametersXmlItem.class);
+      if (constructorParameters.size() > 1)
+      {
+         throw new XmlConfigurationException("A method may only have a single <parameters> element", getDocument(), getLineno());
+      }
+      else if (!constructorParameters.isEmpty())
+      {
+         for (ParameterXmlItem item : constructorParameters.get(0).getChildrenOfType(ParameterXmlItem.class))
+         {
+            constList.add(item);
+         }
+      }
+      for (FieldXmlItem item : getChildrenOfType(FieldXmlItem.class))
+      {
+         for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
+         {
+            Annotation a = AnnotationUtils.createAnnotation(fi);
+            type.addToField(item.getField(), a);
+         }
+      }
+      for (MethodXmlItem item : getChildrenOfType(MethodXmlItem.class))
+      {
+         int paramCount = 0;
+
+         for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
+         {
+            Annotation a = AnnotationUtils.createAnnotation(fi);
+            type.addToMethod(item.getMethod(), a);
+         }
+         List<ParametersXmlItem> parameters = item.getChildrenOfType(ParametersXmlItem.class);
+         if (parameters.size() > 1)
+         {
+            throw new XmlConfigurationException("A method may only have a single <parameters> element", item.getDocument(), item.getLineno());
+         }
+         else if (!parameters.isEmpty())
+         {
+            for (ParameterXmlItem fi : parameters.get(0).getChildrenOfType(ParameterXmlItem.class))
+            {
+               int param = paramCount++;
+               for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
+               {
+                  Annotation a = AnnotationUtils.createAnnotation(pan);
+                  type.addToMethodParameter(item.getMethod(), param, a);
+               }
+            }
+         }
+
+      }
+
+      if (!constList.isEmpty())
+      {
+         int paramCount = 0;
+         Constructor<?> c = resolveConstructor(constList);
+         // we automatically add inject to the constructor
+         type.addToConstructor((Constructor) c, new AnnotationLiteral<Inject>()
+         {
+         });
+         for (ParameterXmlItem fi : constList)
+         {
+            int param = paramCount++;
+            for (AnnotationXmlItem pan : fi.getChildrenOfType(AnnotationXmlItem.class))
+            {
+               Annotation a = AnnotationUtils.createAnnotation(pan);
+               type.addToConstructorParameter((Constructor) c, param, a);
+            }
+         }
+      }
+      return result;
+   }
+
+   private Constructor<?> resolveConstructor(List<ParameterXmlItem> constList)
+   {
+      Class<?>[] params = new Class[constList.size()];
+      for (int i = 0; i < constList.size(); ++i)
+      {
+         params[i] = constList.get(i).getJavaClass();
+      }
+      Constructor<?> ret = Reflections.getConstructor(getJavaClass(), params);
+      if (ret == null)
+      {
+         throw new XmlConfigurationException("Could not resolve constructor for " + getJavaClass() + " with arguments " + params, getDocument(), getLineno());
+      }
+      return ret;
    }
 
 }

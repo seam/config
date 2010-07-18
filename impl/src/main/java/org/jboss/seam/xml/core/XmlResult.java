@@ -35,7 +35,7 @@ import org.jboss.seam.xml.fieldset.FieldValueObject;
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  * 
  */
-public class XmlResult
+public class XmlResult implements Comparable<XmlResult>
 {
 
    private final Map<Class<? extends Annotation>, Annotation[]> stereotypes = new HashMap<Class<? extends Annotation>, Annotation[]>();
@@ -55,6 +55,18 @@ public class XmlResult
    private final Map<BeanResult<?>, List<FieldValueObject>> fieldValues = new HashMap<BeanResult<?>, List<FieldValueObject>>();
 
    private final Map<Class<?>, List<FieldValueObject>> interfaceFieldValues = new HashMap<Class<?>, List<FieldValueObject>>();
+
+   private final String sortKey;
+
+   public XmlResult(String fileUrl)
+   {
+      StringBuilder keyBuilder = new StringBuilder(fileUrl.length());
+      for (int i = fileUrl.length() - 1; i >= 0; --i)
+      {
+         keyBuilder.append(fileUrl.charAt(i));
+      }
+      sortKey = keyBuilder.toString();
+   }
 
    public void addStereotype(Class<? extends Annotation> an, Annotation[] values)
    {
@@ -144,6 +156,11 @@ public class XmlResult
    public List<GenericBeanResult> getGenericBeans()
    {
       return genericBeans;
+   }
+
+   public int compareTo(XmlResult o)
+   {
+      return sortKey.compareTo(o.sortKey);
    }
 
 }
