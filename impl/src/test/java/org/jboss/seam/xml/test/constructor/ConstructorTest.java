@@ -21,6 +21,8 @@
  */
 package org.jboss.seam.xml.test.constructor;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
@@ -36,7 +38,7 @@ public class ConstructorTest extends AbstractXMLTest
    public void testBeanConstructorAnnotations()
    {
       ConstructedBean bean = getReference(ConstructedBean.class);
-      assert bean.getValue() == 10;
+      Assert.assertTrue(bean.getValue() == 10);
 
    }
 }

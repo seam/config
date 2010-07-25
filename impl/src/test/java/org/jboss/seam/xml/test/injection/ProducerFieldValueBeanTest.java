@@ -21,6 +21,8 @@
  */
 package org.jboss.seam.xml.test.injection;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
@@ -38,7 +40,7 @@ public class ProducerFieldValueBeanTest extends AbstractXMLTest
    {
 
       RecieverBean s = getReference(RecieverBean.class);
-      assert s.value.equals("hello world");
+      Assert.assertTrue(s.value.equals("hello world"));
    }
 
 }

@@ -23,6 +23,8 @@ package org.jboss.seam.xml.test;
 
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.bootstrap.XmlDocumentProvider;
 import org.jboss.seam.xml.bootstrap.XmlExtension;
 import org.junit.Test;
@@ -35,7 +37,7 @@ public class BootstrapTest extends AbstractXMLTest
    {
       XmlExtension extension = getReference(XmlExtension.class);
       List<Class<? extends XmlDocumentProvider>> providers = extension.getDocumentProviders();
-      assert providers.size() == 2;
+      Assert.assertTrue(providers.size() == 2);
 
    }
 

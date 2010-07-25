@@ -26,6 +26,8 @@ import java.util.Set;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.util.AnnotationLiteral;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
@@ -45,20 +47,20 @@ public class SimpleBeanTest extends AbstractXMLTest
    public void simpleBeanTest()
    {
       Bean1 x = getReference(Bean1.class);
-      assert x != null;
-      assert x.bean2 != null;
+      Assert.assertTrue(x != null);
+      Assert.assertTrue(x.bean2 != null);
 
       Bean3 y = getReference(Bean3.class);
-      assert y != null;
-      assert x.value == 1 : "Post construct method not called";
+      Assert.assertTrue(y != null);
+      Assert.assertTrue("Post construct method not called", x.value == 1);
    }
 
    @Test
    public void testOverride()
    {
       Set<Bean<?>> beans = manager.getBeans(OverriddenBean.class);
-      assert beans.size() == 1;
-      assert beans.iterator().next().getName().equals("someBean");
+      Assert.assertTrue(beans.size() == 1);
+      Assert.assertTrue(beans.iterator().next().getName().equals("someBean"));
 
    }
 
@@ -73,7 +75,7 @@ public class SimpleBeanTest extends AbstractXMLTest
       };
 
       ExtendedBean ext = getReference(ExtendedBean.class, e1, e2);
-      assert ext != null;
+      Assert.assertTrue(ext != null);
 
    }
 }

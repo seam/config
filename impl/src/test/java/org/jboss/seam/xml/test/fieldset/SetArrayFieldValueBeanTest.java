@@ -21,6 +21,8 @@
  */
 package org.jboss.seam.xml.test.fieldset;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.jboss.weld.environment.se.util.WeldManagerUtils;
 import org.junit.Test;
@@ -38,15 +40,15 @@ public class SetArrayFieldValueBeanTest extends AbstractXMLTest
    public void arrayFieldSetterTest()
    {
       ArrayFieldValue x = WeldManagerUtils.getInstanceByType(manager, ArrayFieldValue.class);
-      assert x.carray.length == 2;
-      assert x.iarray.length == 2;
-      assert x.sarray.length == 2;
-      assert x.sarray[0].equals("hello");
-      assert x.sarray[1].equals("world");
-      assert x.iarray[0] == 1;
-      assert x.iarray[1] == 2;
-      assert x.carray[0] == Integer.class;
-      assert x.carray[1] == Long.class;
+      Assert.assertTrue(x.carray.length == 2);
+      Assert.assertTrue(x.iarray.length == 2);
+      Assert.assertTrue(x.sarray.length == 2);
+      Assert.assertTrue(x.sarray[0].equals("hello"));
+      Assert.assertTrue(x.sarray[1].equals("world"));
+      Assert.assertTrue(x.iarray[0] == 1);
+      Assert.assertTrue(x.iarray[1] == 2);
+      Assert.assertTrue(x.carray[0] == Integer.class);
+      Assert.assertTrue(x.carray[1] == Long.class);
 
    }
 

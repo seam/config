@@ -21,6 +21,8 @@
  */
 package org.jboss.seam.xml.test.producer;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
@@ -38,8 +40,8 @@ public class MultipleProducerBeanTest extends AbstractXMLTest
    {
 
       Reciever s = getReference(Reciever.class);
-      assert s.val1 == 1;
-      assert s.val2 == 2;
+      Assert.assertTrue(s.val1 == 1);
+      Assert.assertTrue(s.val2 == 2);
    }
 
    @Test
@@ -47,7 +49,7 @@ public class MultipleProducerBeanTest extends AbstractXMLTest
    {
 
       Reciever s = getReference(Reciever.class);
-      assert s.meth1 == 1;
-      assert s.meth2 == 2;
+      Assert.assertTrue(s.meth1 == 1);
+      Assert.assertTrue(s.meth2 == 2);
    }
 }

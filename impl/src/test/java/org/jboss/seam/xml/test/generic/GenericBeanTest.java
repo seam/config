@@ -23,6 +23,8 @@ package org.jboss.seam.xml.test.generic;
 
 import javax.enterprise.util.AnnotationLiteral;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
@@ -45,7 +47,7 @@ public class GenericBeanTest extends AbstractXMLTest
       dep = getReference(GenericDependant.class, new AnnotationLiteral<LowGenericQualifier>()
       {
       });
-      assert dep.getValue() == 11 : " actual " + dep.getValue();
+      Assert.assertTrue(" actual " + dep.getValue(), dep.getValue() == 11);
    }
 
    @Test
@@ -54,15 +56,15 @@ public class GenericBeanTest extends AbstractXMLTest
       GenericDependant dep = getReference(GenericDependant.class, new AnnotationLiteral<HighGenericQualifier>()
       {
       });
-      assert dep.initCalled;
+      Assert.assertTrue(dep.initCalled);
       dep = getReference(GenericDependant.class, new AnnotationLiteral<LowGenericQualifier>()
       {
       });
-      assert dep.initCalled;
+      Assert.assertTrue(dep.initCalled);
       GenericMain main = getReference(GenericMain.class, new AnnotationLiteral<LowGenericQualifier>()
       {
       });
-      assert main.init;
+      Assert.assertTrue(main.init);
    }
 
 }

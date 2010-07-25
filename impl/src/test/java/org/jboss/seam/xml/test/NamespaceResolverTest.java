@@ -24,6 +24,8 @@ package org.jboss.seam.xml.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.model.FieldXmlItem;
 import org.jboss.seam.xml.model.MethodXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
@@ -60,19 +62,19 @@ public class NamespaceResolverTest
    {
 
       XmlItem item = resolver.getItemForNamespace(new SaxNode("Bean1", null, null, null, null, 0), null);
-      assert item.getJavaClass() == Bean1.class : "Namespace resolver returned wrong class type";
-      assert item.getType() == XmlItemType.CLASS : "Namespace resolver did not return class";
+      Assert.assertTrue("Namespace resolver returned wrong class type", item.getJavaClass() == Bean1.class);
+      Assert.assertTrue("Namespace resolver did not return class", item.getType() == XmlItemType.CLASS);
       XmlItem method = resolver.getItemForNamespace(new SaxNode("method1", null, null, null, null, 0), item);
-      assert method.getType() == XmlItemType.METHOD : "Item returned wrong type";
+      Assert.assertTrue("Item returned wrong type", method.getType() == XmlItemType.METHOD);
 
       method.resolveChildren();
 
-      assert ((MethodXmlItem) method).getMethod() != null : "Could not resolve method";
-      assert ((MethodXmlItem) method).getMethod().getParameterTypes().length == 0 : "Wrong method was resolved";
+      Assert.assertTrue("Could not resolve method", ((MethodXmlItem) method).getMethod() != null);
+      Assert.assertTrue("Wrong method was resolved", ((MethodXmlItem) method).getMethod().getParameterTypes().length == 0);
 
       XmlItem field = resolver.getItemForNamespace(new SaxNode("field1", null, null, null, null, 0), item);
-      assert ((FieldXmlItem) field).getType() == XmlItemType.FIELD : "Element of wrong type returned";
-      assert ((FieldXmlItem) field).getField() != null : "field was not set";
+      Assert.assertTrue("Element of wrong type returned", ((FieldXmlItem) field).getType() == XmlItemType.FIELD);
+      Assert.assertTrue("field was not set", ((FieldXmlItem) field).getField() != null);
 
    }
 

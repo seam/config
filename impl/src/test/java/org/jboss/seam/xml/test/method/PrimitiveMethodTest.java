@@ -23,6 +23,8 @@ package org.jboss.seam.xml.test.method;
 
 import javax.enterprise.util.AnnotationLiteral;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
@@ -39,11 +41,11 @@ public class PrimitiveMethodTest extends AbstractXMLTest
    public void methodTest()
    {
       int x = getReference(int.class, new Qual1Lit());
-      assert x == 1;
+      Assert.assertTrue(x == 1);
       int[] y = getReference(int[].class, new Qual2Lit());
       for (int i = 0; i < y.length; ++i)
       {
-         assert y[i] == i + 2;
+         Assert.assertTrue(y[i] == i + 2);
       }
 
    }

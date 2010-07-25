@@ -21,6 +21,8 @@
  */
 package org.jboss.seam.xml.test.interceptor;
 
+import junit.framework.Assert;
+
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
@@ -39,7 +41,7 @@ public class InterceptorTest extends AbstractXMLTest
 
       InterceptedBean x = getReference(InterceptedBean.class);
       String res = x.method();
-      assert res.equals("hello world");
+      Assert.assertTrue(res.equals("hello world"));
 
    }
 }
