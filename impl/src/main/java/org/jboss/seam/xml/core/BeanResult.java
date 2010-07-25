@@ -40,10 +40,10 @@ public class BeanResult<X>
    public BeanResult(Class<X> type, boolean readAnnotations, BeanResultType beanType, List<FieldValueObject> fieldValues, List<BeanResult<?>> inlineBeans)
    {
       this.type = type;
-      builder = AnnotatedTypeBuilder.newInstance(type);
+      builder = new AnnotatedTypeBuilder().setJavaClass(type);
       if (readAnnotations)
       {
-         builder.readAnnotationsFromUnderlyingType();
+         builder.readFromType(type);
          // we don't want to keep the veto annotation on the class
          builder.removeFromClass(Veto.class);
       }

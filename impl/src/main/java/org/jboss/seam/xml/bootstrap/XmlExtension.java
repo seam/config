@@ -197,7 +197,7 @@ public class XmlExtension implements Extension
             bb.getBuilder().addToClass(new AnnotationLiteral<XmlConfiguredBean>()
             {
             });
-            AnnotatedType<?> tp = bb.getBuilder().create();
+            AnnotatedType<?> tp = fixExactSupport(bb.getBuilder()).create();
             log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
             event.addAnnotatedType(tp);
 
@@ -308,10 +308,10 @@ public class XmlExtension implements Extension
       {
 
          AnnotatedType<?> type = c.getBuilder().create();
-         AnnotatedTypeBuilder<?> gb = AnnotatedTypeBuilder.newInstance(type);
+         AnnotatedTypeBuilder<?> gb = new AnnotatedTypeBuilder().setJavaClass(type.getJavaClass());
          if (c.getBeanType() == BeanResultType.MODIFIES)
          {
-            gb.readAnnotationsFromUnderlyingType();
+            gb.readFromType((Class) type.getJavaClass());
             // we don't want to keep the veto annotation on the class
             gb.removeFromClass(Veto.class);
          }
@@ -406,7 +406,7 @@ public class XmlExtension implements Extension
             }
          }
 
-         ret.add(gb.create());
+         ret.add(fixExactSupport(gb).create());
       }
       return ret;
    }
@@ -431,14 +431,13 @@ public class XmlExtension implements Extension
     * temprary hack to support @Exact in seam-xml, remove once WELD-485 is
     * resolved
     */
-   <X> void processAnnotatedType(@Observes final ProcessAnnotatedType<X> pat, BeanManager beanManager)
+   public <X> AnnotatedTypeBuilder<X> fixExactSupport(AnnotatedTypeBuilder<X> old)
    {
-
-      AnnotatedTypeBuilder<X> builder = AnnotatedTypeBuilder.newInstance(pat.getAnnotatedType()).mergeAnnotations(pat.getAnnotatedType(), true);
-
+      AnnotatedType<X> pat = old.create();
+      AnnotatedTypeBuilder<X> builder = new AnnotatedTypeBuilder<X>().readFromType(pat);
       // support for @Exact
       // fields
-      for (AnnotatedField<? super X> f : pat.getAnnotatedType().getFields())
+      for (AnnotatedField<? super X> f : pat.getFields())
       {
          if (f.isAnnotationPresent(Exact.class))
          {
@@ -447,31 +446,30 @@ public class XmlExtension implements Extension
          }
       }
       // method parameters
-      for (AnnotatedMethod<? super X> m : pat.getAnnotatedType().getMethods())
+      for (AnnotatedMethod<? super X> m : pat.getMethods())
       {
          for (AnnotatedParameter<? super X> p : m.getParameters())
          {
             if (p.isAnnotationPresent(Exact.class))
             {
                Class<?> type = p.getAnnotation(Exact.class).value();
-               builder.overrideMethodParameterType(m.getJavaMember(), type, p.getPosition());
+               builder.overrideMethodParameterType(m.getJavaMember(), p.getPosition(), type);
             }
          }
       }
       // constructor parameters
-      for (AnnotatedConstructor<X> c : pat.getAnnotatedType().getConstructors())
+      for (AnnotatedConstructor<X> c : pat.getConstructors())
       {
          for (AnnotatedParameter<? super X> p : c.getParameters())
          {
             if (p.isAnnotationPresent(Exact.class))
             {
                Class<?> type = p.getAnnotation(Exact.class).value();
-               builder.overrideConstructorParameterType(c.getJavaMember(), type, p.getPosition());
+               builder.overrideConstructorParameterType(c.getJavaMember(), p.getPosition(), type);
             }
          }
       }
-      pat.setAnnotatedType(builder.create());
-
+      return builder;
    }
 
    public static class DefaultLiteral extends AnnotationLiteral<Default> implements Default

@@ -81,7 +81,7 @@ public class ClassXmlItem extends AbstractXmlItem
             String methodName = "set" + Character.toUpperCase(e.getKey().charAt(0)) + e.getKey().substring(1);
             if (Reflections.methodExists(getJavaClass(), methodName))
             {
-               Set<Method> methods = Reflections.getMethods(getJavaClass());
+               Set<Method> methods = Reflections.getAllMethods(getJavaClass());
                for (Method m : methods)
                {
                   if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)

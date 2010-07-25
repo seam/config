@@ -141,7 +141,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       String methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
       if (Reflections.methodExists(p, methodName))
       {
-         Set<Method> methods = Reflections.getMethods(p);
+         Set<Method> methods = Reflections.getAllMethods(p);
          for (Method m : methods)
          {
             if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)
