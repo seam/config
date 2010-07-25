@@ -35,7 +35,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.AnnotatedConstructor;
@@ -67,6 +66,7 @@ import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.core.Exact;
 import org.jboss.weld.extensions.core.Veto;
+import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,7 +200,6 @@ public class XmlExtension implements Extension
             AnnotatedType<?> tp = fixExactSupport(bb.getBuilder()).create();
             log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
             event.addAnnotatedType(tp);
-
          }
 
          veto.addAll(r.getVeto());
@@ -318,7 +317,7 @@ public class XmlExtension implements Extension
          // if the original type was qualified @Default we add that as well
          if (!isQualifierPresent(type, beanManager))
          {
-            gb.addToClass(new DefaultLiteral());
+            gb.addToClass(DefaultLiteral.INSTANCE);
          }
          // we always apply qualifiers to the actual type
          for (Annotation q : qualifiers)
@@ -336,7 +335,7 @@ public class XmlExtension implements Extension
                // bother, as it should not be qualified @Default
                if (!isQualifierPresent(f, beanManager) && f.getJavaMember().getType() != rootType.getJavaClass())
                {
-                  gb.addToField(f.getJavaMember(), new DefaultLiteral());
+                  gb.addToField(f.getJavaMember(), DefaultLiteral.INSTANCE);
                }
                for (Annotation q : qualifiers)
                {
@@ -351,7 +350,7 @@ public class XmlExtension implements Extension
             {
                if (!isQualifierPresent(m, beanManager))
                {
-                  gb.addToMethod(m.getJavaMember(), new DefaultLiteral());
+                  gb.addToMethod(m.getJavaMember(), DefaultLiteral.INSTANCE);
                }
                for (Annotation q : qualifiers)
                {
@@ -366,7 +365,7 @@ public class XmlExtension implements Extension
                {
                   if (!isQualifierPresent(p, beanManager) && p.getBaseType() != rootType.getJavaClass())
                   {
-                     gb.addToMethodParameter(m.getJavaMember(), p.getPosition(), new DefaultLiteral());
+                     gb.addToMethodParameter(m.getJavaMember(), p.getPosition(), DefaultLiteral.INSTANCE);
                   }
                   for (Annotation q : qualifiers)
                   {
@@ -382,7 +381,7 @@ public class XmlExtension implements Extension
             {
                if (!isQualifierPresent(con, beanManager))
                {
-                  gb.addToConstructor((Constructor) con.getJavaMember(), new DefaultLiteral());
+                  gb.addToConstructor((Constructor) con.getJavaMember(), DefaultLiteral.INSTANCE);
                }
                for (Annotation q : qualifiers)
                {
@@ -396,7 +395,7 @@ public class XmlExtension implements Extension
                {
                   if (!isQualifierPresent(p, beanManager))
                   {
-                     gb.addToConstructorParameter((Constructor) con.getJavaMember(), p.getPosition(), new DefaultLiteral());
+                     gb.addToConstructorParameter((Constructor) con.getJavaMember(), p.getPosition(), DefaultLiteral.INSTANCE);
                   }
                   for (Annotation q : qualifiers)
                   {
@@ -471,8 +470,4 @@ public class XmlExtension implements Extension
       }
       return builder;
    }
-
-   public static class DefaultLiteral extends AnnotationLiteral<Default> implements Default
-   {
-   };
 }
