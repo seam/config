@@ -19,18 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.test.fieldset;
 
-import java.util.Collection;
+import junit.framework.Assert;
 
-import org.jboss.seam.xml.core.BeanResult;
-import org.jboss.seam.xml.fieldset.FieldValueObject;
+import org.jboss.seam.xml.test.AbstractXMLTest;
+import org.junit.Test;
 
-public interface FieldValueXmlItem
+public class InlineBeanFieldValueBeanTest extends AbstractXMLTest
 {
-   public FieldValueObject getFieldValue();
 
-   public String getFieldName();
+   @Override
+   protected String getXmlFileName()
+   {
+      return "inline-bean-field-value-beans.xml";
+   }
 
-   public Collection<? extends BeanResult> getInlineBeans();
+   @Test
+   public void simpleInlineBeanTest()
+   {
+      Knight knight = getReference(Knight.class, org.jboss.weld.literal.DefaultLiteral.INSTANCE);
+      Assert.assertTrue(knight.getSword().getType().equals("sharp"));
+      Assert.assertTrue(knight.getHorse().getShoe() != null);
+      Assert.assertTrue(knight.getHorse().getName().equals("billy"));
+   }
+
 }

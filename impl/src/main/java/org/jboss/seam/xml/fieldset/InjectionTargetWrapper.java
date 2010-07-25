@@ -43,7 +43,7 @@ public class InjectionTargetWrapper<T> implements InjectionTarget<T>
    {
       for (FieldValueObject f : fieldValues)
       {
-         f.setValue(instance);
+         f.setValue(instance, ctx);
       }
       target.inject(instance, ctx);
    }

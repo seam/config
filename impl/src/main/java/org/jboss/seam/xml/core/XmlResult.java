@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.seam.xml.fieldset.FieldValueObject;
-
 /**
  * Stores the result of parsing an XML document
  * 
@@ -51,10 +49,6 @@ public class XmlResult implements Comparable<XmlResult>
    private final List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
 
    private final List<GenericBeanResult> genericBeans = new ArrayList<GenericBeanResult>();
-
-   private final Map<BeanResult<?>, List<FieldValueObject>> fieldValues = new HashMap<BeanResult<?>, List<FieldValueObject>>();
-
-   private final Map<Class<?>, List<FieldValueObject>> interfaceFieldValues = new HashMap<Class<?>, List<FieldValueObject>>();
 
    private final String sortKey;
 
@@ -108,6 +102,30 @@ public class XmlResult implements Comparable<XmlResult>
       return beans;
    }
 
+   /**
+    * Gets all beans from the result, including inline beans
+    * 
+    * @return
+    */
+   public List<BeanResult<?>> getFlattenedBeans()
+   {
+      List<BeanResult<?>> results = new ArrayList<BeanResult<?>>();
+      for (BeanResult<?> a : beans)
+      {
+         getFlattenedBeans(a, results);
+      }
+      return results;
+   }
+
+   private void getFlattenedBeans(BeanResult<?> r, List<BeanResult<?>> results)
+   {
+      results.add(r);
+      for (BeanResult<?> a : r.getInlineBeans())
+      {
+         getFlattenedBeans(a, results);
+      }
+   }
+
    public List<String> getProblems()
    {
       return problems;
@@ -118,16 +136,6 @@ public class XmlResult implements Comparable<XmlResult>
       problems.add(p);
    }
 
-   public void addFieldValue(BeanResult<?> res, List<FieldValueObject> list)
-   {
-      fieldValues.put(res, list);
-   }
-
-   public Map<BeanResult<?>, List<FieldValueObject>> getFieldValues()
-   {
-      return fieldValues;
-   }
-
    public void addVeto(Class<?> clazz)
    {
       veto.add(clazz);
@@ -136,16 +144,6 @@ public class XmlResult implements Comparable<XmlResult>
    public List<Class<?>> getVeto()
    {
       return veto;
-   }
-
-   public void addInterfaceFieldValues(Class<?> clazz, List<FieldValueObject> values)
-   {
-      interfaceFieldValues.put(clazz, values);
-   }
-
-   public Map<Class<?>, List<FieldValueObject>> getInterfaceFieldValues()
-   {
-      return interfaceFieldValues;
    }
 
    public void addGenericBean(GenericBeanResult result)

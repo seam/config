@@ -25,6 +25,8 @@ import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.inject.spi.BeanManager;
+
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class ArrayXmlItem extends ParameterXmlItem
@@ -50,7 +52,7 @@ public class ArrayXmlItem extends ParameterXmlItem
       }
    }
 
-   public boolean resolveChildren()
+   public boolean resolveChildren(BeanManager manager)
    {
       List<ClassXmlItem> classXmlItems = getChildrenOfType(ClassXmlItem.class);
       if (classXmlItems.isEmpty())

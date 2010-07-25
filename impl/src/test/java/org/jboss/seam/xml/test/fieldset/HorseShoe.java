@@ -19,18 +19,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.test.fieldset;
 
-import java.util.Collection;
-
-import org.jboss.seam.xml.core.BeanResult;
-import org.jboss.seam.xml.fieldset.FieldValueObject;
-
-public interface FieldValueXmlItem
+public class HorseShoe
 {
-   public FieldValueObject getFieldValue();
 
-   public String getFieldName();
-
-   public Collection<? extends BeanResult> getInlineBeans();
 }

@@ -24,6 +24,8 @@ package org.jboss.seam.xml.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.enterprise.inject.spi.BeanManager;
+
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
@@ -48,7 +50,7 @@ public class EntryXmlItem extends AbstractXmlItem
    }
 
    @Override
-   public boolean resolveChildren()
+   public boolean resolveChildren(BeanManager manager)
    {
       if (children.size() != 2)
       {

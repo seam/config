@@ -19,18 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.test.fieldset;
 
-import java.util.Collection;
+import org.jboss.weld.extensions.core.Veto;
 
-import org.jboss.seam.xml.core.BeanResult;
-import org.jboss.seam.xml.fieldset.FieldValueObject;
-
-public interface FieldValueXmlItem
+@Veto
+public class Knight
 {
-   public FieldValueObject getFieldValue();
+   Sword sword;
 
-   public String getFieldName();
+   Horse horse;
 
-   public Collection<? extends BeanResult> getInlineBeans();
+   public Sword getSword()
+   {
+      return sword;
+   }
+
+   public void setSword(Sword sword)
+   {
+      this.sword = sword;
+   }
+
+   public Horse getHorse()
+   {
+      return horse;
+   }
+
+   public void setHorse(Horse horse)
+   {
+      this.horse = horse;
+   }
 }

@@ -33,6 +33,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.enterprise.context.spi.CreationalContext;
+
+import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.util.TypeReader;
 import org.jboss.seam.xml.util.XmlObjectConverter;
@@ -53,7 +56,7 @@ public class CollectionFieldSet implements FieldValueObject
    private final Class<?> elementType;
    private final Class<? extends Collection> collectionType;
 
-   public CollectionFieldSet(FieldValueSetter field, List<XmlItem> items)
+   public CollectionFieldSet(FieldValueSetter field, List<ValueXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<CFS>();
@@ -128,7 +131,7 @@ public class CollectionFieldSet implements FieldValueObject
 
    }
 
-   public void setValue(Object instance)
+   public void setValue(Object instance, CreationalContext<?> ctx)
    {
       try
       {

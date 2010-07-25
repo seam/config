@@ -22,7 +22,6 @@
 package org.jboss.seam.xml.model;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.inject.Stereotype;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Qualifier;
 import javax.interceptor.InterceptorBinding;
 
@@ -37,7 +37,6 @@ import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.BeanResultType;
 import org.jboss.seam.xml.core.GenericBeanResult;
 import org.jboss.seam.xml.core.XmlResult;
-import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
@@ -58,15 +57,19 @@ public class ModelBuilder
 
    static final String BEANS_ROOT_NAMESPACE = "http://java.sun.com/xml/ns/javaee";
 
+   private final XmlResult ret;
+
+   public ModelBuilder(String fileUrl)
+   {
+      ret = new XmlResult(fileUrl);
+   }
+
    /**
     * builds an XML result from a parsed xml document
     */
-   public XmlResult build(SaxNode root, String fileUrl)
+   public XmlResult build(SaxNode root, BeanManager manager)
    {
-
       Map<String, NamespaceElementResolver> resolvers = new HashMap<String, NamespaceElementResolver>();
-
-      XmlResult ret = new XmlResult(fileUrl);
 
       if (!root.getName().equals("beans"))
       {
@@ -92,9 +95,12 @@ public class ModelBuilder
                {
                   continue;
                }
-               XmlItem rb = resolveNode(node, null, resolvers);
+               XmlItem rb = resolveNode(node, null, resolvers, manager);
                // validateXmlItem(rb);
-               addNodeToResult(ret, rb);
+               if (rb != null)
+               {
+                  addNodeToResult(rb, manager);
+               }
             }
          }
          catch (Exception e)
@@ -108,7 +114,7 @@ public class ModelBuilder
    }
 
    @SuppressWarnings("unchecked")
-   private void addNodeToResult(XmlResult ret, XmlItem xmlItem)
+   public void addNodeToResult(XmlItem xmlItem, BeanManager manager)
    {
       validateXmlItem(xmlItem);
       if (xmlItem.getType() == XmlItemType.CLASS || xmlItem.getType() == XmlItemType.ANNOTATION)
@@ -119,46 +125,14 @@ public class ModelBuilder
          {
             ClassXmlItem cxml = (ClassXmlItem) xmlItem;
             // get the AnnotatedType information
-            BeanResult<?> beanResult = cxml.createBeanResult();
+            BeanResult<?> beanResult = cxml.createBeanResult(manager);
             ret.addBean(beanResult);
             // <override> or <speciailizes> need to veto the bean
             if (beanResult.getBeanType() != BeanResultType.ADD)
             {
                ret.addVeto(beanResult.getType());
             }
-            // get all the field values from the bean
-            Set<String> configuredFields = new HashSet<String>();
-            List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
-            for (FieldValueXmlItem xi : cxml.getChildrenOfType(FieldValueXmlItem.class))
-            {
-               FieldValueObject f = xi.getFieldValue();
-               if (f != null)
-               {
-                  fields.add(f);
-                  configuredFields.add(xi.getFieldName());
-               }
-            }
 
-            for (FieldValueXmlItem f : cxml.getShorthandFieldValues())
-            {
-               if (configuredFields.contains(f.getFieldName()))
-               {
-                  throw new XmlConfigurationException("Field configured in two places: " + cxml.getJavaClass().getName() + "." + f.getFieldName(), cxml.getDocument(), cxml.getLineno());
-               }
-               fields.add(f.getFieldValue());
-            }
-
-            if (!fields.isEmpty())
-            {
-               if (xmlItem.getJavaClass().isInterface())
-               {
-                  ret.addInterfaceFieldValues(beanResult.getType(), fields);
-               }
-               else
-               {
-                  ret.addFieldValue(beanResult, fields);
-               }
-            }
          }
          else if (resultType == ResultType.QUALIFIER)
          {
@@ -180,7 +154,7 @@ public class ModelBuilder
          Set<BeanResult<?>> classes = new HashSet<BeanResult<?>>();
          for (ClassXmlItem c : xmlItem.getChildrenOfType(ClassXmlItem.class))
          {
-            BeanResult<?> br = c.createBeanResult();
+            BeanResult<?> br = c.createBeanResult(manager);
             if (br.getBeanType() != BeanResultType.ADD)
             {
                ret.addVeto(br.getType());
@@ -194,10 +168,13 @@ public class ModelBuilder
    /**
     * resolves the appropriate java elements from the xml
     */
-   protected XmlItem resolveNode(SaxNode node, XmlItem parent, Map<String, NamespaceElementResolver> resolvers)
+   protected XmlItem resolveNode(SaxNode node, XmlItem parent, Map<String, NamespaceElementResolver> resolvers, BeanManager manager)
    {
       NamespaceElementResolver resolver = resolveNamepsace(node.getNamespaceUri(), resolvers);
-
+      if (resolver == null)
+      {
+         return null;
+      }
       XmlItem ret = resolver.getItemForNamespace(node, parent);
 
       if (ret == null)
@@ -209,11 +186,11 @@ public class ModelBuilder
       {
          if (n.getNamespaceUri() != null)
          {
-            XmlItem rb = resolveNode(n, ret, resolvers);
+            XmlItem rb = resolveNode(n, ret, resolvers, manager);
             ret.addChild(rb);
          }
       }
-      ret.resolveChildren();
+      ret.resolveChildren(manager);
       return ret;
 
    }
@@ -223,6 +200,10 @@ public class ModelBuilder
       if (resolvers.containsKey(namespaceURI))
       {
          return resolvers.get(namespaceURI);
+      }
+      if (!namespaceURI.startsWith("urn:java:"))
+      {
+         return null;
       }
       String ns = namespaceURI.replaceFirst("urn:java:", "");
       CompositeNamespaceElementResolver res = new CompositeNamespaceElementResolver(ns.split(":"));

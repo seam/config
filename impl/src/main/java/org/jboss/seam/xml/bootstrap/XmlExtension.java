@@ -66,6 +66,7 @@ import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.core.Exact;
+import org.jboss.weld.extensions.core.Veto;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,9 +113,9 @@ public class XmlExtension implements Extension
             {
                log.info("Reading XML file: " + d.getFileUrl());
                ParserMain parser = new ParserMain();
-               ModelBuilder builder = new ModelBuilder();
+               ModelBuilder builder = new ModelBuilder(d.getFileUrl());
                SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), errors);
-               results.add(builder.build(parentNode, d.getFileUrl()));
+               results.add(builder.build(parentNode, beanManager));
             }
          }
          catch (Exception e)
@@ -150,14 +151,17 @@ public class XmlExtension implements Extension
                errors.add(new RuntimeException(i));
             }
          }
-         for (BeanResult<?> b : r.getFieldValues().keySet())
+         for (BeanResult<?> b : r.getFlattenedBeans())
          {
-            int val = count++;
-            fieldValues.put(val, r.getFieldValues().get(b));
-            Map<String, Object> am = new HashMap<String, Object>();
-            am.put("value", val);
-            Annotation a = ac.get(XmlId.class, am);
-            b.getBuilder().addToClass(a);
+            if (!b.getFieldValues().isEmpty())
+            {
+               int val = count++;
+               fieldValues.put(val, b.getFieldValues());
+               Map<String, Object> am = new HashMap<String, Object>();
+               am.put("value", val);
+               Annotation a = ac.get(XmlId.class, am);
+               b.getBuilder().addToClass(a);
+            }
          }
 
          for (Class<? extends Annotation> b : r.getInterceptorBindings())
@@ -170,7 +174,7 @@ public class XmlExtension implements Extension
             log.info("Adding XML Defined Stereotype: " + b.getKey().getName());
             event.addStereotype(b.getKey(), b.getValue());
          }
-         for (BeanResult<?> bb : r.getBeans())
+         for (BeanResult<?> bb : r.getFlattenedBeans())
          {
             GenericBeanResult found = null;
             for (Class<?> g : genericBeans.keySet())
@@ -229,18 +233,6 @@ public class XmlExtension implements Extension
          log.info("Wrapping InjectionTarget to set field values: " + event.getAnnotatedType().getJavaClass().getName());
          List<FieldValueObject> fvs = fieldValues.get(xid.value());
          event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs));
-      }
-      for (XmlResult r : results)
-      {
-         for (Entry<Class<?>, List<FieldValueObject>> e : r.getInterfaceFieldValues().entrySet())
-         {
-            if (e.getKey().isAssignableFrom(event.getAnnotatedType().getJavaClass()))
-            {
-               log.info("Wrapping InjectionTarget to set field values based on interface " + e.getKey().getName() + ": " + event.getAnnotatedType().getJavaClass().getName());
-               List<FieldValueObject> fvs = e.getValue();
-               event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs));
-            }
-         }
       }
    }
 
@@ -317,9 +309,11 @@ public class XmlExtension implements Extension
 
          AnnotatedType<?> type = c.getBuilder().create();
          AnnotatedTypeBuilder<?> gb = AnnotatedTypeBuilder.newInstance(type);
-         if (c.getBeanType() == BeanResultType.SPECIALISE)
+         if (c.getBeanType() == BeanResultType.MODIFIES)
          {
             gb.readAnnotationsFromUnderlyingType();
+            // we don't want to keep the veto annotation on the class
+            gb.removeFromClass(Veto.class);
          }
          // if the original type was qualified @Default we add that as well
          if (!isQualifierPresent(type, beanManager))

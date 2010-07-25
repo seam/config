@@ -24,6 +24,8 @@ package org.jboss.seam.xml.model;
 import java.util.List;
 import java.util.Set;
 
+import javax.enterprise.inject.spi.BeanManager;
+
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 
 public interface XmlItem
@@ -47,7 +49,7 @@ public interface XmlItem
     * @param childeren
     * @return
     */
-   public boolean resolveChildren();
+   public boolean resolveChildren(BeanManager manager);
 
    public Set<TypeOccuranceInformation> getAllowedItem();
 

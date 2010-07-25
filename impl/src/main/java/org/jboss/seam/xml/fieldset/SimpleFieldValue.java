@@ -23,6 +23,10 @@ package org.jboss.seam.xml.fieldset;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.BeanManager;
+
+import org.jboss.seam.xml.model.ModelBuilder;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 
 public class SimpleFieldValue implements FieldValueObject
@@ -144,7 +148,7 @@ public class SimpleFieldValue implements FieldValueObject
       void set(Object o) throws IllegalAccessException, InvocationTargetException;
    }
 
-   public void setValue(Object instance)
+   public void setValue(Object instance, CreationalContext<?> ctx)
    {
       try
       {
@@ -154,6 +158,12 @@ public class SimpleFieldValue implements FieldValueObject
       {
          throw new RuntimeException(e);
       }
+   }
+
+   public void initalize(ModelBuilder modelBuilder, BeanManager manager)
+   {
+      // TODO Auto-generated method stub
+
    }
 
 }

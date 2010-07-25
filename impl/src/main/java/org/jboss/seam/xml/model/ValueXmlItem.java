@@ -22,12 +22,20 @@
 package org.jboss.seam.xml.model;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
+import javax.enterprise.inject.spi.BeanManager;
+
+import org.jboss.seam.xml.core.BeanResult;
+import org.jboss.seam.xml.fieldset.InlineBeanIdCreator;
+import org.jboss.seam.xml.fieldset.InlineBeanQualifier;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
+import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class ValueXmlItem extends AbstractXmlItem
 {
+   int syntheticQualifierId;
 
    public ValueXmlItem(XmlItem parent, String innerText, String document, int lineno)
    {
@@ -39,4 +47,29 @@ public class ValueXmlItem extends AbstractXmlItem
       return Collections.singleton(TypeOccuranceInformation.of(XmlItemType.CLASS, null, 1));
    }
 
+   public BeanResult<?> getBeanResult(BeanManager manager)
+   {
+      List<ClassXmlItem> inlineBeans = getChildrenOfType(ClassXmlItem.class);
+      if (!inlineBeans.isEmpty())
+      {
+         ClassXmlItem inline = inlineBeans.get(0);
+         for (AnnotationXmlItem i : inline.getChildrenOfType(AnnotationXmlItem.class))
+         {
+            if (manager.isQualifier((Class) i.getJavaClass()))
+            {
+               throw new XmlConfigurationException("Cannot define qualifiers on inline beans", i.getDocument(), i.getLineno());
+            }
+         }
+         syntheticQualifierId = InlineBeanIdCreator.getId();
+         AnnotationXmlItem syntheticQualifier = new AnnotationXmlItem(this, InlineBeanQualifier.class, "" + syntheticQualifierId, Collections.EMPTY_MAP, getDocument(), getLineno());
+         inline.addChild(syntheticQualifier);
+         return inline.createBeanResult(manager);
+      }
+      return null;
+   }
+
+   public int getSyntheticQualifierId()
+   {
+      return syntheticQualifierId;
+   }
 }

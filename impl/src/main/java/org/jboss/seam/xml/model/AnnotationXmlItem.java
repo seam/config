@@ -38,7 +38,7 @@ public class AnnotationXmlItem extends AbstractXmlItem
       {
          if (!innerText.trim().equals(""))
          {
-            attributes.put("value", innerText);
+            this.attributes.put("value", innerText);
          }
       }
       allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));

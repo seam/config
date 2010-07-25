@@ -32,11 +32,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.BeanResultType;
+import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
@@ -99,7 +101,7 @@ public class ClassXmlItem extends AbstractXmlItem
       return values;
    }
 
-   public BeanResult<?> createBeanResult()
+   public BeanResult<?> createBeanResult(BeanManager manager)
    {
       boolean override = !getChildrenOfType(ReplacesXmlItem.class).isEmpty();
       boolean extend = !getChildrenOfType(ModifiesXmlItem.class).isEmpty();
@@ -110,16 +112,39 @@ public class ClassXmlItem extends AbstractXmlItem
       }
       if (override)
       {
-         beanType = BeanResultType.OVERRIDE;
+         beanType = BeanResultType.REPLACES;
       }
       else if (extend)
       {
-         beanType = BeanResultType.SPECIALISE;
+         beanType = BeanResultType.MODIFIES;
+      }
+      List<BeanResult> inlineBeans = new ArrayList<BeanResult>();
+      // get all the field values from the bean
+      Set<String> configuredFields = new HashSet<String>();
+      List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
+      for (FieldValueXmlItem xi : getChildrenOfType(FieldValueXmlItem.class))
+      {
+         inlineBeans.addAll(xi.getInlineBeans());
+         FieldValueObject f = xi.getFieldValue();
+         if (f != null)
+         {
+            fields.add(f);
+            configuredFields.add(xi.getFieldName());
+         }
+      }
+
+      for (FieldValueXmlItem f : getShorthandFieldValues())
+      {
+         if (configuredFields.contains(f.getFieldName()))
+         {
+            throw new XmlConfigurationException("Field configured in two places: " + getJavaClass().getName() + "." + f.getFieldName(), getDocument(), getLineno());
+         }
+         fields.add(f.getFieldValue());
       }
 
       // if it is an extend we want to read the annotations from the underlying
       // class
-      BeanResult<?> result = new BeanResult(getJavaClass(), extend, beanType);
+      BeanResult<?> result = new BeanResult(getJavaClass(), extend, beanType, fields, inlineBeans);
       AnnotatedTypeBuilder<?> type = result.getBuilder();
       // list of constructor arguments
       List<ParameterXmlItem> constList = new ArrayList<ParameterXmlItem>();

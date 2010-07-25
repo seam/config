@@ -67,7 +67,7 @@ public class NamespaceResolverTest
       XmlItem method = resolver.getItemForNamespace(new SaxNode("method1", null, null, null, null, 0), item);
       Assert.assertTrue("Item returned wrong type", method.getType() == XmlItemType.METHOD);
 
-      method.resolveChildren();
+      method.resolveChildren(null);
 
       Assert.assertTrue("Could not resolve method", ((MethodXmlItem) method).getMethod() != null);
       Assert.assertTrue("Wrong method was resolved", ((MethodXmlItem) method).getMethod().getParameterTypes().length == 0);

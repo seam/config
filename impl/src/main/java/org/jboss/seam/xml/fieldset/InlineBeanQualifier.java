@@ -19,18 +19,43 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.fieldset;
 
-import java.util.Collection;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jboss.seam.xml.core.BeanResult;
-import org.jboss.seam.xml.fieldset.FieldValueObject;
+import javax.enterprise.util.AnnotationLiteral;
+import javax.inject.Qualifier;
 
-public interface FieldValueXmlItem
+/**
+ * Internal qualifier used for inline beans
+ * 
+ * @author Stuart Douglas
+ * 
+ */
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
+public @interface InlineBeanQualifier
 {
-   public FieldValueObject getFieldValue();
+   int value();
 
-   public String getFieldName();
+   static class InlineBeanQualifierLiteral extends AnnotationLiteral<InlineBeanQualifier> implements InlineBeanQualifier
+   {
+      private final int value;
 
-   public Collection<? extends BeanResult> getInlineBeans();
+      public InlineBeanQualifierLiteral(int value)
+      {
+         this.value = value;
+      }
+
+      public int value()
+      {
+         return value;
+      }
+
+   }
+
 }

@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javax.enterprise.context.spi.CreationalContext;
+
 import org.jboss.seam.xml.model.EntryXmlItem;
 import org.jboss.seam.xml.util.TypeReader;
 import org.jboss.seam.xml.util.XmlObjectConverter;
@@ -117,7 +119,7 @@ public class MapFieldSet implements FieldValueObject
 
    }
 
-   public void setValue(Object instance)
+   public void setValue(Object instance, CreationalContext<?> ctx)
    {
       try
       {

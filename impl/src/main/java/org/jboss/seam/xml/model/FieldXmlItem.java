@@ -30,11 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.enterprise.inject.spi.BeanManager;
+
+import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.fieldset.ArrayFieldSet;
 import org.jboss.seam.xml.fieldset.CollectionFieldSet;
 import org.jboss.seam.xml.fieldset.DirectFieldSetter;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.fieldset.FieldValueSetter;
+import org.jboss.seam.xml.fieldset.InlineBeanFieldValue;
 import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
@@ -48,6 +52,7 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
    FieldValueObject fieldValue;
    Field field;
    HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
+   List<BeanResult<?>> inlineBeans = new ArrayList<BeanResult<?>>();
 
    public FieldXmlItem(XmlItem parent, Field c, String innerText, String document, int lineno)
    {
@@ -74,17 +79,17 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
    }
 
    @Override
-   public boolean resolveChildren()
+   public boolean resolveChildren(BeanManager manager)
    {
       List<EntryXmlItem> mapEntries = new ArrayList<EntryXmlItem>();
-      List<XmlItem> valueEntries = new ArrayList<XmlItem>();
+      List<ValueXmlItem> valueEntries = new ArrayList<ValueXmlItem>();
       if (fieldValue == null)
       {
          for (XmlItem i : children)
          {
             if (i.getType() == XmlItemType.VALUE)
             {
-               valueEntries.add(i);
+               valueEntries.add((ValueXmlItem) i);
             }
             else if (i.getType() == XmlItemType.ENTRY)
             {
@@ -134,7 +139,17 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
             {
                throw new XmlConfigurationException("Non collection fields can only have a single <value> element Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
             }
-            fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, valueEntries.get(0).getInnerText());
+            ValueXmlItem value = valueEntries.get(0);
+            BeanResult<?> result = value.getBeanResult(manager);
+            if (result == null)
+            {
+               fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, valueEntries.get(0).getInnerText());
+            }
+            else
+            {
+               inlineBeans.add(result);
+               fieldValue = new InlineBeanFieldValue(field.getType(), value.getSyntheticQualifierId(), fieldSetter, manager);
+            }
          }
       }
       return true;
@@ -172,5 +187,10 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
    public String getFieldName()
    {
       return field.getName();
+   }
+
+   public Collection<? extends BeanResult> getInlineBeans()
+   {
+      return inlineBeans;
    }
 }

@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.inject.spi.BeanManager;
+
 public abstract class AbstractXmlItem implements XmlItem
 {
    protected final XmlItemType type;
@@ -57,7 +59,7 @@ public abstract class AbstractXmlItem implements XmlItem
       }
       else
       {
-         this.attributes = attributes;
+         this.attributes = new HashMap<String, String>(attributes);
       }
       this.lineno = lineno;
       this.document = document;
@@ -100,7 +102,7 @@ public abstract class AbstractXmlItem implements XmlItem
       return javaClass;
    }
 
-   public boolean resolveChildren()
+   public boolean resolveChildren(BeanManager manager)
    {
       return true;
    }

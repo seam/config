@@ -25,6 +25,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.spi.CreationalContext;
+
+import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 
@@ -40,7 +43,7 @@ public class ArrayFieldSet implements FieldValueObject
    final private List<AFS> values;
    final private Class arrayType;
 
-   public ArrayFieldSet(FieldValueSetter field, List<XmlItem> items)
+   public ArrayFieldSet(FieldValueSetter field, List<ValueXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<AFS>();
@@ -144,7 +147,7 @@ public class ArrayFieldSet implements FieldValueObject
 
    }
 
-   public void setValue(Object instance)
+   public void setValue(Object instance, CreationalContext<?> ctx)
    {
       try
       {

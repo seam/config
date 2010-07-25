@@ -21,6 +21,8 @@
  */
 package org.jboss.seam.xml.fieldset;
 
+import javax.enterprise.context.spi.CreationalContext;
+
 /**
  * FieldValueObjects set field values for a given instance
  * 
@@ -29,7 +31,6 @@ package org.jboss.seam.xml.fieldset;
  */
 public interface FieldValueObject
 {
-
-   public void setValue(Object instance);
+   public void setValue(Object instance, CreationalContext<?> ctx);
 
 }

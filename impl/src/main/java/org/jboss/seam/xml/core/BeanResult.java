@@ -21,23 +21,40 @@
  */
 package org.jboss.seam.xml.core;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
+import org.jboss.weld.extensions.core.Veto;
 
 public class BeanResult<X>
 {
-   final AnnotatedTypeBuilder<X> builder;
-   final Class<X> type;
-   final BeanResultType beanType;
+   private final AnnotatedTypeBuilder<X> builder;
+   private final Class<X> type;
+   private final BeanResultType beanType;
+   private final List<FieldValueObject> fieldValues;
+   private final List<BeanResult<?>> inlineBeans;
 
-   public BeanResult(Class<X> type, boolean readAnnotations, BeanResultType beanType)
+   public BeanResult(Class<X> type, boolean readAnnotations, BeanResultType beanType, List<FieldValueObject> fieldValues, List<BeanResult<?>> inlineBeans)
    {
       this.type = type;
       builder = AnnotatedTypeBuilder.newInstance(type);
       if (readAnnotations)
       {
          builder.readAnnotationsFromUnderlyingType();
+         // we don't want to keep the veto annotation on the class
+         builder.removeFromClass(Veto.class);
       }
       this.beanType = beanType;
+      this.fieldValues = new ArrayList<FieldValueObject>(fieldValues);
+      this.inlineBeans = new ArrayList<BeanResult<?>>(inlineBeans);
+   }
+
+   public List<BeanResult<?>> getInlineBeans()
+   {
+      return inlineBeans;
    }
 
    public AnnotatedTypeBuilder<X> getBuilder()
@@ -53,6 +70,11 @@ public class BeanResult<X>
    public BeanResultType getBeanType()
    {
       return beanType;
+   }
+
+   public List<FieldValueObject> getFieldValues()
+   {
+      return Collections.unmodifiableList(fieldValues);
    }
 
 }
