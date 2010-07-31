@@ -23,36 +23,17 @@ package org.jboss.seam.xml.model;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import javax.enterprise.inject.spi.BeanManager;
-
-import org.jboss.seam.xml.core.BeanResult;
-import org.jboss.seam.xml.fieldset.ArrayFieldSet;
-import org.jboss.seam.xml.fieldset.CollectionFieldSet;
 import org.jboss.seam.xml.fieldset.DirectFieldSetter;
-import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.fieldset.FieldValueSetter;
-import org.jboss.seam.xml.fieldset.InlineBeanFieldValue;
-import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
-import org.jboss.seam.xml.util.XmlConfigurationException;
 
-public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
+public class FieldXmlItem extends AbstractFieldXmlItem
 {
 
-   FieldValueSetter fieldSetter;
-   FieldValueObject fieldValue;
-   Field field;
-   HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
-   List<BeanResult<?>> inlineBeans = new ArrayList<BeanResult<?>>();
+   private final Field field;
 
    public FieldXmlItem(XmlItem parent, Field c, String innerText, String document, int lineno)
    {
@@ -73,94 +54,7 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
       return field;
    }
 
-   public FieldValueObject getFieldValue()
-   {
-      return fieldValue;
-   }
-
-   @Override
-   public boolean resolveChildren(BeanManager manager)
-   {
-      List<EntryXmlItem> mapEntries = new ArrayList<EntryXmlItem>();
-      List<ValueXmlItem> valueEntries = new ArrayList<ValueXmlItem>();
-      if (fieldValue == null)
-      {
-         for (XmlItem i : children)
-         {
-            if (i.getType() == XmlItemType.VALUE)
-            {
-               valueEntries.add((ValueXmlItem) i);
-            }
-            else if (i.getType() == XmlItemType.ENTRY)
-            {
-               mapEntries.add((EntryXmlItem) i);
-            }
-
-         }
-      }
-      if (!mapEntries.isEmpty() || !valueEntries.isEmpty())
-      {
-         if (Map.class.isAssignableFrom(field.getType()))
-         {
-            if (!valueEntries.isEmpty())
-            {
-               throw new XmlConfigurationException("Map fields cannot have <value> elements as children,only <entry> elements Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
-            }
-            if (!mapEntries.isEmpty())
-            {
-               fieldValue = new MapFieldSet(fieldSetter, mapEntries);
-            }
-         }
-         else if (Collection.class.isAssignableFrom(field.getType()) || field.getType().isArray())
-         {
-            if (!mapEntries.isEmpty())
-            {
-               throw new XmlConfigurationException("Collection fields must be set using <value> not <entry> Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
-            }
-            if (!valueEntries.isEmpty())
-            {
-               if (field.getType().isArray())
-               {
-                  fieldValue = new ArrayFieldSet(fieldSetter, valueEntries);
-               }
-               else
-               {
-                  fieldValue = new CollectionFieldSet(fieldSetter, valueEntries);
-               }
-            }
-         }
-         else
-         {
-            if (!mapEntries.isEmpty())
-            {
-               throw new XmlConfigurationException("Only Map fields can be set using <entry> Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
-            }
-            if (valueEntries.size() != 1)
-            {
-               throw new XmlConfigurationException("Non collection fields can only have a single <value> element Field:" + field.getDeclaringClass().getName() + '.' + field.getName(), getDocument(), getLineno());
-            }
-            ValueXmlItem value = valueEntries.get(0);
-            BeanResult<?> result = value.getBeanResult(manager);
-            if (result == null)
-            {
-               fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, valueEntries.get(0).getInnerText());
-            }
-            else
-            {
-               inlineBeans.add(result);
-               fieldValue = new InlineBeanFieldValue(field.getType(), value.getSyntheticQualifierId(), fieldSetter, manager);
-            }
-         }
-      }
-      return true;
-   }
-
-   public Set<TypeOccuranceInformation> getAllowedItem()
-   {
-      return allowed;
-   }
-
-   FieldValueSetter getFieldValueSetter(Field field)
+   private FieldValueSetter getFieldValueSetter(Field field)
    {
       String fieldName = field.getName();
       String methodName = "set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
@@ -184,13 +78,21 @@ public class FieldXmlItem extends AbstractXmlItem implements FieldValueXmlItem
       return new DirectFieldSetter(field);
    }
 
+   @Override
+   public Class<?> getDeclaringClass()
+   {
+      return field.getDeclaringClass();
+   }
+
+   @Override
    public String getFieldName()
    {
       return field.getName();
    }
 
-   public Collection<? extends BeanResult> getInlineBeans()
+   @Override
+   public Class<?> getFieldType()
    {
-      return inlineBeans;
+      return field.getType();
    }
 }

@@ -24,7 +24,6 @@ package org.jboss.seam.xml.test.types;
 import junit.framework.Assert;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.jboss.weld.environment.se.util.WeldManagerUtils;
 import org.junit.Test;
 
 /**
@@ -43,7 +42,7 @@ public class TypesTest extends AbstractXMLTest
    public void testTypeRestriction()
    {
 
-      TypeInjectedClass x = WeldManagerUtils.getInstanceByType(manager, TypeInjectedClass.class);
+      TypeInjectedClass x = getReference(TypeInjectedClass.class);
       Assert.assertTrue(x.value instanceof AllowedType);
       Assert.assertTrue(x.createValue instanceof RestrictedType);
 

@@ -25,7 +25,6 @@ import junit.framework.Assert;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
 import org.jboss.seam.xml.test.interceptor.InterceptedBean;
-import org.jboss.weld.environment.se.util.WeldManagerUtils;
 import org.junit.Test;
 
 /**
@@ -45,7 +44,7 @@ public class StereotypeTest extends AbstractXMLTest
    public void testStereotypes()
    {
 
-      InterceptedBean x = WeldManagerUtils.getInstanceByType(manager, InterceptedBean.class);
+      InterceptedBean x = getReference(InterceptedBean.class);
       String res = x.method();
       Assert.assertTrue(res.equals("hello world"));
 

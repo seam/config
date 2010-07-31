@@ -26,6 +26,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.jboss.seam.xml.model.AbstractFieldXmlItem;
 import org.jboss.seam.xml.model.FieldXmlItem;
 import org.jboss.seam.xml.model.MethodXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
@@ -73,7 +74,7 @@ public class NamespaceResolverTest
       Assert.assertTrue("Wrong method was resolved", ((MethodXmlItem) method).getMethod().getParameterTypes().length == 0);
 
       XmlItem field = resolver.getItemForNamespace(new SaxNode("field1", null, null, null, null, 0), item);
-      Assert.assertTrue("Element of wrong type returned", ((FieldXmlItem) field).getType() == XmlItemType.FIELD);
+      Assert.assertTrue("Element of wrong type returned", ((AbstractFieldXmlItem) field).getType() == XmlItemType.FIELD);
       Assert.assertTrue("field was not set", ((FieldXmlItem) field).getField() != null);
 
    }

@@ -24,7 +24,6 @@ package org.jboss.seam.xml.test.fieldset;
 import junit.framework.Assert;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.jboss.weld.environment.se.util.WeldManagerUtils;
 import org.junit.Test;
 
 public class SetMapFieldValueBeanTest extends AbstractXMLTest
@@ -39,7 +38,7 @@ public class SetMapFieldValueBeanTest extends AbstractXMLTest
    @Test
    public void mapSetFieldValue()
    {
-      MapFieldValue x = WeldManagerUtils.getInstanceByType(manager, MapFieldValue.class);
+      MapFieldValue x = getReference(MapFieldValue.class);
       Assert.assertTrue(x.map1.size() == 2);
       Assert.assertTrue(x.map2.size() == 2);
 

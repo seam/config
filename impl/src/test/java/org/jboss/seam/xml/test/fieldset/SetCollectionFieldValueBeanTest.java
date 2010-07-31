@@ -24,7 +24,6 @@ package org.jboss.seam.xml.test.fieldset;
 import junit.framework.Assert;
 
 import org.jboss.seam.xml.test.AbstractXMLTest;
-import org.jboss.weld.environment.se.util.WeldManagerUtils;
 import org.junit.Test;
 
 public class SetCollectionFieldValueBeanTest extends AbstractXMLTest
@@ -39,7 +38,7 @@ public class SetCollectionFieldValueBeanTest extends AbstractXMLTest
    @Test
    public void collectionSetFieldValue()
    {
-      CollectionFieldValue x = WeldManagerUtils.getInstanceByType(manager, CollectionFieldValue.class);
+      CollectionFieldValue x = getReference(CollectionFieldValue.class);
       Assert.assertTrue(x.iset.size() == 2);
       Assert.assertTrue(x.clist.size() == 2);
       Assert.assertTrue(x.sset.size() == 2);

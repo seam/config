@@ -65,9 +65,9 @@ public class ClassXmlItem extends AbstractXmlItem
       return allowed;
    }
 
-   public Set<FieldValueXmlItem> getShorthandFieldValues()
+   public Set<AbstractFieldXmlItem> getShorthandFieldValues()
    {
-      Set<FieldValueXmlItem> values = new HashSet<FieldValueXmlItem>();
+      Set<AbstractFieldXmlItem> values = new HashSet<AbstractFieldXmlItem>();
       for (Entry<String, String> e : attributes.entrySet())
       {
 
@@ -122,7 +122,7 @@ public class ClassXmlItem extends AbstractXmlItem
       // get all the field values from the bean
       Set<String> configuredFields = new HashSet<String>();
       List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
-      for (FieldValueXmlItem xi : getChildrenOfType(FieldValueXmlItem.class))
+      for (AbstractFieldXmlItem xi : getChildrenOfType(AbstractFieldXmlItem.class))
       {
          inlineBeans.addAll(xi.getInlineBeans());
          FieldValueObject f = xi.getFieldValue();
@@ -133,7 +133,7 @@ public class ClassXmlItem extends AbstractXmlItem
          }
       }
 
-      for (FieldValueXmlItem f : getShorthandFieldValues())
+      for (AbstractFieldXmlItem f : getShorthandFieldValues())
       {
          if (configuredFields.contains(f.getFieldName()))
          {

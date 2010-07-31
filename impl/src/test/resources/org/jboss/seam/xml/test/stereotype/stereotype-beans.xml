@@ -9,6 +9,7 @@
    </test:Stereotype1>
    
     <int:InterceptedBean>
+         <modifies/>
         <test:Stereotype1/>
     </int:InterceptedBean>
           
