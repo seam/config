@@ -25,6 +25,8 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
+import org.jboss.weld.extensions.util.properties.Property;
+
 /**
  * Field value object for an inline bean definition
  * 
@@ -34,7 +36,7 @@ import javax.enterprise.inject.spi.BeanManager;
 public class InlineBeanFieldValue implements FieldValueObject
 {
 
-   private final FieldValueSetter field;
+   private final Property field;
 
    private final int beanId;
 
@@ -46,7 +48,7 @@ public class InlineBeanFieldValue implements FieldValueObject
 
    private Bean<?> bean;
 
-   public InlineBeanFieldValue(Class<?> type, int syntheticBeanQualifierNo, FieldValueSetter setter, BeanManager manager)
+   public InlineBeanFieldValue(Class<?> type, int syntheticBeanQualifierNo, Property setter, BeanManager manager)
    {
       this.beanId = syntheticBeanQualifierNo;
       this.field = setter;
@@ -64,7 +66,7 @@ public class InlineBeanFieldValue implements FieldValueObject
       Object obj = manager.getReference(bean, type, ctx);
       try
       {
-         field.set(instance, obj);
+         field.setValue(instance, obj);
       }
       catch (Exception e)
       {

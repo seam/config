@@ -39,6 +39,7 @@ import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.util.TypeReader;
 import org.jboss.seam.xml.util.XmlObjectConverter;
+import org.jboss.weld.extensions.util.properties.Property;
 
 /**
  * class responsible for setting the value of collection properties.
@@ -51,17 +52,17 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class CollectionFieldSet implements FieldValueObject
 {
-   private final FieldValueSetter field;
+   private final Property field;
    private final List<CFS> values;
    private final Class<?> elementType;
    private final Class<? extends Collection> collectionType;
 
-   public CollectionFieldSet(FieldValueSetter field, List<ValueXmlItem> items)
+   public CollectionFieldSet(Property field, List<ValueXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<CFS>();
 
-      Type type = field.getGenericType();
+      Type type = field.getBaseType();
       if (type instanceof ParameterizedType)
       {
          ParameterizedType parameterizedType = (ParameterizedType) type;
@@ -136,7 +137,7 @@ public class CollectionFieldSet implements FieldValueObject
       try
       {
          Collection<Object> res = collectionType.newInstance();
-         field.set(instance, res);
+         field.setValue(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
             values.get(i).add(res);

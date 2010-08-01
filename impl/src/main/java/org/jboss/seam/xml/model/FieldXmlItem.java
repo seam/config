@@ -24,11 +24,10 @@ package org.jboss.seam.xml.model;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.jboss.seam.xml.fieldset.DirectFieldSetter;
-import org.jboss.seam.xml.fieldset.FieldValueSetter;
-import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
+import org.jboss.weld.extensions.util.properties.Properties;
+import org.jboss.weld.extensions.util.properties.Property;
 
 public class FieldXmlItem extends AbstractFieldXmlItem
 {
@@ -39,10 +38,10 @@ public class FieldXmlItem extends AbstractFieldXmlItem
    {
       super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, document, lineno);
       this.field = c;
-      this.fieldSetter = getFieldValueSetter(c);
+      this.property = getFieldValueSetter(c);
       if (innerText != null && innerText.length() > 0)
       {
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, innerText);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, innerText);
       }
       allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
       allowed.add(TypeOccuranceInformation.of(XmlItemType.VALUE, null, null));
@@ -54,7 +53,7 @@ public class FieldXmlItem extends AbstractFieldXmlItem
       return field;
    }
 
-   private FieldValueSetter getFieldValueSetter(Field field)
+   private Property getFieldValueSetter(Field field)
    {
       String fieldName = field.getName();
       String methodName = "set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
@@ -73,9 +72,9 @@ public class FieldXmlItem extends AbstractFieldXmlItem
       }
       if (setter != null)
       {
-         return new MethodFieldSetter(setter);
+         return Properties.createProperty(setter);
       }
-      return new DirectFieldSetter(field);
+      return Properties.createProperty(field);
    }
 
    @Override

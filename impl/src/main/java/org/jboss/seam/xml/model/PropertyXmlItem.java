@@ -24,8 +24,8 @@ package org.jboss.seam.xml.model;
 import java.lang.reflect.Method;
 
 import org.jboss.seam.xml.fieldset.FieldValueObject;
-import org.jboss.seam.xml.fieldset.MethodFieldSetter;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
+import org.jboss.weld.extensions.util.properties.Properties;
 
 public class PropertyXmlItem extends AbstractFieldXmlItem
 {
@@ -40,10 +40,10 @@ public class PropertyXmlItem extends AbstractFieldXmlItem
       this.name = name;
       this.type = setter.getParameterTypes()[0];
       this.declaringClass = setter.getDeclaringClass();
-      this.fieldSetter = new MethodFieldSetter(setter);
+      this.property = Properties.createProperty(setter);
       if (innerText != null && innerText.length() > 0)
       {
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, innerText);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, innerText);
       }
    }
 

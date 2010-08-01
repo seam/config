@@ -34,12 +34,12 @@ import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.fieldset.ArrayFieldSet;
 import org.jboss.seam.xml.fieldset.CollectionFieldSet;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
-import org.jboss.seam.xml.fieldset.FieldValueSetter;
 import org.jboss.seam.xml.fieldset.InlineBeanFieldValue;
 import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
+import org.jboss.weld.extensions.util.properties.Property;
 
 /**
  * represents either a field or a property of a bean
@@ -50,7 +50,7 @@ import org.jboss.seam.xml.util.XmlConfigurationException;
 public abstract class AbstractFieldXmlItem extends AbstractXmlItem
 {
 
-   protected FieldValueSetter fieldSetter;
+   protected Property property;
    protected FieldValueObject fieldValue;
    protected HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
    List<BeanResult<?>> inlineBeans = new ArrayList<BeanResult<?>>();
@@ -95,7 +95,7 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             }
             if (!mapEntries.isEmpty())
             {
-               fieldValue = new MapFieldSet(fieldSetter, mapEntries);
+               fieldValue = new MapFieldSet(property, mapEntries);
             }
          }
          else if (Collection.class.isAssignableFrom(getFieldType()) || getFieldType().isArray())
@@ -108,11 +108,11 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             {
                if (getFieldType().isArray())
                {
-                  fieldValue = new ArrayFieldSet(fieldSetter, valueEntries);
+                  fieldValue = new ArrayFieldSet(property, valueEntries);
                }
                else
                {
-                  fieldValue = new CollectionFieldSet(fieldSetter, valueEntries);
+                  fieldValue = new CollectionFieldSet(property, valueEntries);
                }
             }
          }
@@ -130,12 +130,12 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             BeanResult<?> result = value.getBeanResult(manager);
             if (result == null)
             {
-               fieldValue = new SimpleFieldValue(parent.getJavaClass(), fieldSetter, valueEntries.get(0).getInnerText());
+               fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, valueEntries.get(0).getInnerText());
             }
             else
             {
                inlineBeans.add(result);
-               fieldValue = new InlineBeanFieldValue(getFieldType(), value.getSyntheticQualifierId(), fieldSetter, manager);
+               fieldValue = new InlineBeanFieldValue(getFieldType(), value.getSyntheticQualifierId(), property, manager);
             }
          }
       }

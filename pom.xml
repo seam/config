@@ -16,6 +16,7 @@
 
    <properties>
       <seam.version>3.0.0.b01</seam.version>
+      <weld-extensions.version>1.0.0-SNAPSHOT</weld-extensions.version>
    </properties>
    
    <prerequisites>
@@ -42,6 +43,12 @@
             <groupId>org.jboss.seam.xml</groupId>
             <artifactId>seam-xml-config</artifactId>
             <version>${project.version}</version>
+         </dependency>
+         
+         <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-extensions</artifactId>
+            <version>${weld-extensions.version}</version>
          </dependency>
          
       </dependencies>

@@ -36,6 +36,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import org.jboss.seam.xml.model.EntryXmlItem;
 import org.jboss.seam.xml.util.TypeReader;
 import org.jboss.seam.xml.util.XmlObjectConverter;
+import org.jboss.weld.extensions.util.properties.Property;
 
 /**
  * class responsible for setting the value of map properties.
@@ -46,18 +47,18 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class MapFieldSet implements FieldValueObject
 {
-   private final FieldValueSetter field;
+   private final Property field;
    private final List<MFS> values;
    private final Class<?> keyType;
    private final Class<?> valueType;
    private final Class<? extends Map> collectionType;
 
-   public MapFieldSet(FieldValueSetter field, List<EntryXmlItem> items)
+   public MapFieldSet(Property field, List<EntryXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<MFS>();
       // figure out the collection type
-      Type type = field.getGenericType();
+      Type type = field.getBaseType();
       if (type instanceof ParameterizedType)
       {
          ParameterizedType parameterizedType = (ParameterizedType) type;
@@ -124,7 +125,7 @@ public class MapFieldSet implements FieldValueObject
       try
       {
          Map res = collectionType.newInstance();
-         field.set(instance, res);
+         field.setValue(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
             values.get(i).add(res);

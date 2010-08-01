@@ -30,6 +30,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.util.XmlObjectConverter;
+import org.jboss.weld.extensions.util.properties.Property;
 
 /**
  * class responsible for setting the value of array properties.
@@ -39,109 +40,28 @@ import org.jboss.seam.xml.util.XmlObjectConverter;
  */
 public class ArrayFieldSet implements FieldValueObject
 {
-   final private FieldValueSetter field;
+   final private Property field;
    final private List<AFS> values;
-   final private Class arrayType;
+   final private Class<?> arrayType;
 
-   public ArrayFieldSet(FieldValueSetter field, List<ValueXmlItem> items)
+   public ArrayFieldSet(Property<?> field, List<ValueXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<AFS>();
 
-      arrayType = field.getType().getComponentType();
+      arrayType = field.getJavaClass().getComponentType();
       AFS setter;
       for (XmlItem i : items)
       {
          final Object fv = XmlObjectConverter.convert(arrayType, i.getInnerText());
-         if (field.getType() == char.class)
+         final Object val = fv;
+         setter = new AFS()
          {
-
-            final char val = (Character) fv;
-            setter = new AFS()
+            public void set(Object o, int i) throws IllegalAccessException
             {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.setChar(o, i, val);
-               }
-            };
-         }
-         else if (field.getType() == int.class)
-         {
-            final int val = (Integer) fv;
-            setter = new AFS()
-            {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.setInt(o, i, val);
-               }
-            };
-         }
-         else if (field.getType() == short.class)
-         {
-            final short val = (Short) fv;
-            setter = new AFS()
-            {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.setShort(o, i, val);
-               }
-            };
-         }
-         else if (field.getType() == long.class)
-         {
-            final long val = (Long) fv;
-            setter = new AFS()
-            {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.setLong(o, i, val);
-               }
-            };
-         }
-         else if (field.getType() == byte.class)
-         {
-            final byte val = (Byte) fv;
-            setter = new AFS()
-            {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.setByte(o, i, val);
-               }
-            };
-         }
-         else if (field.getType() == double.class)
-         {
-            final double val = (Double) fv;
-            setter = new AFS()
-            {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.setDouble(o, i, val);
-               }
-            };
-         }
-         else if (field.getType() == float.class)
-         {
-            final float val = (Float) fv;
-            setter = new AFS()
-            {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.setFloat(o, i, val);
-               }
-            };
-         }
-         else
-         {
-            final Object val = fv;
-            setter = new AFS()
-            {
-               public void set(Object o, int i) throws IllegalAccessException
-               {
-                  Array.set(o, i, val);
-               }
-            };
-         }
+               Array.set(o, i, val);
+            }
+         };
          values.add(setter);
       }
 
@@ -152,7 +72,7 @@ public class ArrayFieldSet implements FieldValueObject
       try
       {
          Object array = Array.newInstance(arrayType, values.size());
-         field.set(instance, array);
+         field.setValue(instance, array);
          for (int i = 0; i < values.size(); ++i)
          {
             values.get(i).set(array, i);

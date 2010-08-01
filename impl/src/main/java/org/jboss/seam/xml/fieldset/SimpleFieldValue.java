@@ -28,119 +28,30 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.ModelBuilder;
 import org.jboss.seam.xml.util.XmlObjectConverter;
+import org.jboss.weld.extensions.util.properties.Property;
 
 public class SimpleFieldValue implements FieldValueObject
 {
 
-   private final FieldValueSetter field;
+   private final Property field;
 
    private final FS setter;
 
-   public SimpleFieldValue(Class<?> javaObject, final FieldValueSetter f, final String value)
+   public SimpleFieldValue(Class<?> javaObject, final Property f, final String value)
    {
       this.field = f;
 
-      Object fv = XmlObjectConverter.convert(f.getType(), value);
-      if (field.getType() == char.class)
-      {
+      Object fv = XmlObjectConverter.convert(f.getJavaClass(), value);
 
-         final char val = (Character) fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setChar(o, val);
-            }
-         };
-      }
-      else if (field.getType() == int.class)
+      final Object val = fv;
+      setter = new FS()
       {
-         final int val = (Integer) fv;
-         setter = new FS()
+         public void set(Object o) throws IllegalAccessException, InvocationTargetException
          {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setInt(o, val);
-            }
-         };
-      }
-      else if (field.getType() == short.class)
-      {
-         final short val = (Short) fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setShort(o, val);
-            }
-         };
-      }
-      else if (field.getType() == long.class)
-      {
-         final long val = (Long) fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setLong(o, val);
-            }
-         };
-      }
-      else if (field.getType() == byte.class)
-      {
-         final byte val = (Byte) fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setByte(o, val);
-            }
-         };
-      }
-      else if (field.getType() == double.class)
-      {
-         final double val = (Double) fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setDouble(o, val);
-            }
-         };
-      }
-      else if (field.getType() == float.class)
-      {
-         final float val = (Float) fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setFloat(o, val);
-            }
-         };
-      }
-      else if (field.getType() == boolean.class)
-      {
-         final boolean val = (Boolean) fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.setBoolean(o, val);
-            }
-         };
-      }
-      else
-      {
-         final Object val = fv;
-         setter = new FS()
-         {
-            public void set(Object o) throws IllegalAccessException, InvocationTargetException
-            {
-               field.set(o, val);
-            }
-         };
-      }
+            field.setValue(o, val);
+         }
+      };
+
    }
 
    interface FS
