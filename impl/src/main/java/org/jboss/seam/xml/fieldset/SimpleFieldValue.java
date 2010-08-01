@@ -21,12 +21,8 @@
  */
 package org.jboss.seam.xml.fieldset;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.seam.xml.model.ModelBuilder;
 import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.properties.Property;
 
@@ -35,46 +31,23 @@ public class SimpleFieldValue implements FieldValueObject
 
    private final Property field;
 
-   private final FS setter;
+   private final Object value;
 
    public SimpleFieldValue(Class<?> javaObject, final Property f, final String value)
    {
       this.field = f;
-
-      Object fv = XmlObjectConverter.convert(f.getJavaClass(), value);
-
-      final Object val = fv;
-      setter = new FS()
-      {
-         public void set(Object o) throws IllegalAccessException, InvocationTargetException
-         {
-            field.setValue(o, val);
-         }
-      };
-
-   }
-
-   interface FS
-   {
-      void set(Object o) throws IllegalAccessException, InvocationTargetException;
+      this.value = XmlObjectConverter.convert(f.getJavaClass(), value);
    }
 
    public void setValue(Object instance, CreationalContext<?> ctx)
    {
       try
       {
-         setter.set(instance);
+         field.setValue(instance, value);
       }
       catch (Exception e)
       {
          throw new RuntimeException(e);
       }
    }
-
-   public void initalize(ModelBuilder modelBuilder, BeanManager manager)
-   {
-      // TODO Auto-generated method stub
-
-   }
-
 }

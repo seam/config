@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.enterprise.context.spi.CreationalContext;
 
@@ -48,7 +49,7 @@ import org.jboss.weld.extensions.util.properties.Property;
 public class MapFieldSet implements FieldValueObject
 {
    private final Property field;
-   private final List<MFS> values;
+   private final List<Entry<Object, Object>> values;
    private final Class<?> keyType;
    private final Class<?> valueType;
    private final Class<? extends Map> collectionType;
@@ -56,7 +57,7 @@ public class MapFieldSet implements FieldValueObject
    public MapFieldSet(Property field, List<EntryXmlItem> items)
    {
       this.field = field;
-      this.values = new ArrayList<MFS>();
+      this.values = new ArrayList<Entry<Object, Object>>();
       // figure out the collection type
       Type type = field.getBaseType();
       if (type instanceof ParameterizedType)
@@ -98,26 +99,10 @@ public class MapFieldSet implements FieldValueObject
 
       for (EntryXmlItem i : items)
       {
-         MFS setter;
          final Object key = XmlObjectConverter.convert(keyType, i.getKey().getInnerText());
          final Object value = XmlObjectConverter.convert(valueType, i.getValue().getInnerText());
-         setter = new MFS()
-         {
-            @SuppressWarnings("unchecked")
-            public void add(Map m) throws IllegalAccessException
-            {
-               m.put(key, value);
-            }
-         };
-
-         values.add(setter);
+         values.add(new EntryImpl(key, value));
       }
-
-   }
-
-   public void discoverElementType()
-   {
-
    }
 
    public void setValue(Object instance, CreationalContext<?> ctx)
@@ -128,7 +113,8 @@ public class MapFieldSet implements FieldValueObject
          field.setValue(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
-            values.get(i).add(res);
+            Entry<Object, Object> e = values.get(i);
+            res.put(e.getKey(), e.getValue());
          }
       }
       catch (Exception e)
@@ -137,9 +123,34 @@ public class MapFieldSet implements FieldValueObject
       }
    }
 
-   interface MFS
+   private final class EntryImpl implements Entry<Object, Object>
    {
-      void add(Map<?, ?> o) throws IllegalAccessException;
-   }
+      private Object key, value;
 
+      public EntryImpl(Object key, Object value)
+      {
+         this.key = key;
+         this.value = value;
+      }
+
+      public Object getKey()
+      {
+         return key;
+      }
+
+      public Object getValue()
+      {
+         return value;
+      }
+
+      public Object setValue(Object value)
+      {
+         return this.value = value;
+      }
+
+      public void setKey(Object key)
+      {
+         this.key = key;
+      }
+   }
 }

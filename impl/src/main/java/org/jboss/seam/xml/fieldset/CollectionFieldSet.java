@@ -53,14 +53,14 @@ import org.jboss.weld.extensions.util.properties.Property;
 public class CollectionFieldSet implements FieldValueObject
 {
    private final Property field;
-   private final List<CFS> values;
+   private final List<Object> values;
    private final Class<?> elementType;
    private final Class<? extends Collection> collectionType;
 
    public CollectionFieldSet(Property field, List<ValueXmlItem> items)
    {
       this.field = field;
-      this.values = new ArrayList<CFS>();
+      this.values = new ArrayList<Object>();
 
       Type type = field.getBaseType();
       if (type instanceof ParameterizedType)
@@ -114,22 +114,11 @@ public class CollectionFieldSet implements FieldValueObject
          throw new RuntimeException("Could not determine element type for " + field.getDeclaringClass().getName() + "." + field.getName());
       }
 
-      CFS setter;
       for (XmlItem i : items)
       {
          final Object fv = XmlObjectConverter.convert(elementType, i.getInnerText());
-
-         setter = new CFS()
-         {
-            public void add(Collection<Object> o) throws IllegalAccessException
-            {
-               o.add(fv);
-            }
-         };
-
-         values.add(setter);
+         values.add(fv);
       }
-
    }
 
    public void setValue(Object instance, CreationalContext<?> ctx)
@@ -140,18 +129,13 @@ public class CollectionFieldSet implements FieldValueObject
          field.setValue(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
-            values.get(i).add(res);
+            res.add(values.get(i));
          }
       }
       catch (Exception e)
       {
          throw new RuntimeException(e);
       }
-   }
-
-   interface CFS
-   {
-      void add(Collection<Object> o) throws IllegalAccessException;
    }
 
 }

@@ -41,28 +41,18 @@ import org.jboss.weld.extensions.util.properties.Property;
 public class ArrayFieldSet implements FieldValueObject
 {
    final private Property field;
-   final private List<AFS> values;
+   final private List<Object> values;
    final private Class<?> arrayType;
 
    public ArrayFieldSet(Property<?> field, List<ValueXmlItem> items)
    {
       this.field = field;
-      this.values = new ArrayList<AFS>();
-
+      this.values = new ArrayList<Object>();
       arrayType = field.getJavaClass().getComponentType();
-      AFS setter;
       for (XmlItem i : items)
       {
-         final Object fv = XmlObjectConverter.convert(arrayType, i.getInnerText());
-         final Object val = fv;
-         setter = new AFS()
-         {
-            public void set(Object o, int i) throws IllegalAccessException
-            {
-               Array.set(o, i, val);
-            }
-         };
-         values.add(setter);
+         Object fv = XmlObjectConverter.convert(arrayType, i.getInnerText());
+         values.add(fv);
       }
 
    }
@@ -75,7 +65,7 @@ public class ArrayFieldSet implements FieldValueObject
          field.setValue(instance, array);
          for (int i = 0; i < values.size(); ++i)
          {
-            values.get(i).set(array, i);
+            Array.set(array, i, values.get(i));
          }
       }
       catch (Exception e)
@@ -83,10 +73,4 @@ public class ArrayFieldSet implements FieldValueObject
          throw new RuntimeException(e);
       }
    }
-
-   interface AFS
-   {
-      void set(Object o, int i) throws IllegalAccessException;
-   }
-
 }
