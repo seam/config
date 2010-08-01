@@ -17,6 +17,7 @@
    <properties>
       <seam.version>3.0.0.b01</seam.version>
       <weld-extensions.version>1.0.0-SNAPSHOT</weld-extensions.version>
+      <el-impl.version>1.0</el-impl.version>
    </properties>
    
    <prerequisites>
@@ -50,7 +51,11 @@
             <artifactId>weld-extensions</artifactId>
             <version>${weld-extensions.version}</version>
          </dependency>
-         
+         <dependency>
+            <groupId>el-impl</groupId>
+            <artifactId>el-impl</artifactId>
+            <version>${el-impl.version}</version>
+      </dependency>
       </dependencies>
    </dependencyManagement>
    
