@@ -53,7 +53,8 @@ public class SetFieldValueBeanTest extends AbstractXMLTest
       Assert.assertTrue(x.lvalue == 23);
       Assert.assertTrue(x.svalue == 4);
       Assert.assertTrue(x.noFieldValue == 7);
-
+      Assert.assertEquals(ELValueProducer.EL_VALUE_STRING, x.elValue);
+      Assert.assertEquals(ELValueProducer.EL_VALUE_STRING, x.elInnerTextValue);
    }
 
    @Test

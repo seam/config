@@ -38,18 +38,15 @@ public class InlineBeanFieldValue implements FieldValue
 
    private final InlineBeanQualifier.InlineBeanQualifierLiteral literal;
 
-   private final BeanManager manager;
-
    private Bean<?> bean;
 
-   public InlineBeanFieldValue(int syntheticBeanQualifierNo, BeanManager manager)
+   public InlineBeanFieldValue(int syntheticBeanQualifierNo)
    {
       this.beanId = syntheticBeanQualifierNo;
       this.literal = new InlineBeanQualifier.InlineBeanQualifierLiteral(beanId);
-      this.manager = manager;
    }
 
-   public Object value(Class<?> type, CreationalContext<?> ctx)
+   public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager)
    {
       if (bean == null)
       {

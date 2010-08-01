@@ -34,6 +34,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.util.TypeReader;
@@ -118,7 +119,7 @@ public class CollectionFieldSet implements FieldValueObject
       }
    }
 
-   public void setValue(Object instance, CreationalContext<?> ctx)
+   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
    {
       try
       {
@@ -126,7 +127,7 @@ public class CollectionFieldSet implements FieldValueObject
          field.setValue(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
-            res.add(values.get(i).value(elementType, ctx));
+            res.add(values.get(i).value(elementType, ctx, manager));
          }
       }
       catch (Exception e)

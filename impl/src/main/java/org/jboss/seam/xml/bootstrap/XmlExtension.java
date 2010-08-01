@@ -222,7 +222,7 @@ public class XmlExtension implements Extension
       }
    }
 
-   public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event)
+   public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager manager)
    {
 
       AnnotatedType<T> at = event.getAnnotatedType();
@@ -231,7 +231,7 @@ public class XmlExtension implements Extension
       {
          log.info("Wrapping InjectionTarget to set field values: " + event.getAnnotatedType().getJavaClass().getName());
          List<FieldValueObject> fvs = fieldValues.get(xid.value());
-         event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs));
+         event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs, manager));
       }
    }
 

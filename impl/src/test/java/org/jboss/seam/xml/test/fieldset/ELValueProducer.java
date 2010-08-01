@@ -19,30 +19,21 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.fieldset;
+package org.jboss.seam.xml.test.fieldset;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.Produces;
+import javax.inject.Named;
 
-import org.jboss.seam.xml.util.XmlObjectConverter;
-
-/**
- * Represents a simple field value in an XML document
- * 
- * @author Stuart Douglas
- * 
- */
-public class ConstantFieldValue implements FieldValue
+public class ELValueProducer
 {
-   private final String stringValue;
 
-   public ConstantFieldValue(String stringValue)
+   public static final String EL_VALUE_STRING = "EL Value String";
+
+   @Produces
+   @Named("elValue")
+   public String getElValue()
    {
-      this.stringValue = stringValue;
+      return EL_VALUE_STRING;
    }
 
-   public Object value(Class<?> type, CreationalContext<?> cyx, BeanManager manager)
-   {
-      return XmlObjectConverter.convert(type, stringValue);
-   }
 }

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.weld.extensions.util.properties.Property;
@@ -54,7 +55,7 @@ public class ArrayFieldSet implements FieldValueObject
 
    }
 
-   public void setValue(Object instance, CreationalContext<?> ctx)
+   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
    {
       try
       {
@@ -62,7 +63,7 @@ public class ArrayFieldSet implements FieldValueObject
          field.setValue(instance, array);
          for (int i = 0; i < values.size(); ++i)
          {
-            Array.set(array, i, values.get(i).value(arrayType, ctx));
+            Array.set(array, i, values.get(i).value(arrayType, ctx, manager));
          }
       }
       catch (Exception e)

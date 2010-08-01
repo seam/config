@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 
@@ -32,18 +33,20 @@ public class InjectionTargetWrapper<T> implements InjectionTarget<T>
 {
    private final InjectionTarget<T> target;
    private final List<FieldValueObject> fieldValues;
+   private final BeanManager manager;
 
-   public InjectionTargetWrapper(InjectionTarget<T> target, List<FieldValueObject> fieldValues)
+   public InjectionTargetWrapper(InjectionTarget<T> target, List<FieldValueObject> fieldValues, BeanManager manager)
    {
       this.fieldValues = fieldValues;
       this.target = target;
+      this.manager = manager;
    }
 
    public void inject(T instance, CreationalContext<T> ctx)
    {
       for (FieldValueObject f : fieldValues)
       {
-         f.setValue(instance, ctx);
+         f.setValue(instance, ctx, manager);
       }
       target.inject(instance, ctx);
    }

@@ -22,6 +22,7 @@
 package org.jboss.seam.xml.fieldset;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.weld.extensions.util.properties.Property;
 
@@ -44,11 +45,11 @@ public class SimpleFieldValue implements FieldValueObject
       this.value = value;
    }
 
-   public void setValue(Object instance, CreationalContext<?> ctx)
+   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
    {
       try
       {
-         field.setValue(instance, value.value(field.getJavaClass(), ctx));
+         field.setValue(instance, value.value(field.getJavaClass(), ctx, manager));
       }
       catch (Exception e)
       {

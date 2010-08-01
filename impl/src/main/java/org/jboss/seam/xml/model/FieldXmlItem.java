@@ -25,6 +25,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.jboss.seam.xml.fieldset.ConstantFieldValue;
+import org.jboss.seam.xml.fieldset.ELFieldValue;
+import org.jboss.seam.xml.fieldset.FieldValue;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.weld.extensions.util.properties.Properties;
@@ -40,9 +42,19 @@ public class FieldXmlItem extends AbstractFieldXmlItem
       super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, document, lineno);
       this.field = c;
       this.property = getFieldValueSetter(c);
+
       if (innerText != null && innerText.length() > 0)
       {
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, new ConstantFieldValue(innerText));
+         FieldValue fv;
+         if (innerText.matches("^#\\{.*\\}$"))
+         {
+            fv = new ELFieldValue(innerText);
+         }
+         else
+         {
+            fv = new ConstantFieldValue(innerText);
+         }
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, fv);
       }
       allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
       allowed.add(TypeOccuranceInformation.of(XmlItemType.VALUE, null, null));

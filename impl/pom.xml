@@ -68,7 +68,13 @@
          <artifactId>junit</artifactId>
          <scope>test</scope>
       </dependency>
-  
+   
+   
+      <dependency>
+         <groupId>el-impl</groupId>
+         <artifactId>el-impl</artifactId>
+         <scope>test</scope>
+      </dependency>
       
    </dependencies>
 

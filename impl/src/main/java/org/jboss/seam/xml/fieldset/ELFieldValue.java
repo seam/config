@@ -22,27 +22,36 @@
 package org.jboss.seam.xml.fieldset;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.seam.xml.util.XmlObjectConverter;
+import org.jboss.weld.extensions.el.Expressions;
+import org.jboss.weld.extensions.literal.DefaultLiteral;
 
 /**
- * Represents a simple field value in an XML document
+ * Field value impl for EL expressions
  * 
  * @author Stuart Douglas
  * 
  */
-public class ConstantFieldValue implements FieldValue
+public class ELFieldValue implements FieldValue
 {
-   private final String stringValue;
+   private final String expression;
+   private Expressions expressions;
 
-   public ConstantFieldValue(String stringValue)
+   public ELFieldValue(String expression)
    {
-      this.stringValue = stringValue;
+      this.expression = expression;
    }
 
-   public Object value(Class<?> type, CreationalContext<?> cyx, BeanManager manager)
+   public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager)
    {
-      return XmlObjectConverter.convert(type, stringValue);
+      if (expressions == null)
+      {
+         Bean<Expressions> expressionsBean = (Bean) manager.resolve(manager.getBeans(Expressions.class, DefaultLiteral.INSTANCE));
+         CreationalContext<Expressions> bc = manager.createCreationalContext(expressionsBean);
+         expressions = (Expressions) manager.getReference(expressionsBean, Expressions.class, bc);
+      }
+      return expressions.evaluateValueExpression(expression);
    }
 }

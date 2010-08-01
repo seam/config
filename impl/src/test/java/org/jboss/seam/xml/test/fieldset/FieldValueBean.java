@@ -51,6 +51,10 @@ public class FieldValueBean
 
    public long lvalue;
 
+   public String elValue;
+
+   public String elInnerTextValue;
+
    int noFieldValue;
 
    public void setIvalue(int value)

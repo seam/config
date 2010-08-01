@@ -33,6 +33,7 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.EntryXmlItem;
 import org.jboss.seam.xml.util.TypeReader;
@@ -104,7 +105,7 @@ public class MapFieldSet implements FieldValueObject
       }
    }
 
-   public void setValue(Object instance, CreationalContext<?> ctx)
+   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
    {
       try
       {
@@ -113,7 +114,7 @@ public class MapFieldSet implements FieldValueObject
          for (int i = 0; i < values.size(); ++i)
          {
             Entry<Object, FieldValue> e = values.get(i);
-            res.put(e.getKey(), e.getValue().value(valueType, ctx));
+            res.put(e.getKey(), e.getValue().value(valueType, ctx, manager));
          }
       }
       catch (Exception e)

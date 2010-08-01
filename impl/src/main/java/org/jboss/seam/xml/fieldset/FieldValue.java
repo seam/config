@@ -22,6 +22,7 @@
 package org.jboss.seam.xml.fieldset;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.BeanManager;
 
 /**
  * represents an initial field value. This may just be a wrapper around a
@@ -32,5 +33,5 @@ import javax.enterprise.context.spi.CreationalContext;
  */
 public interface FieldValue
 {
-   public Object value(Class<?> type, CreationalContext<?> ctx);
+   public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager);
 }

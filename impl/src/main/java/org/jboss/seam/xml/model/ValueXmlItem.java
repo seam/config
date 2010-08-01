@@ -29,6 +29,7 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.fieldset.ConstantFieldValue;
+import org.jboss.seam.xml.fieldset.ELFieldValue;
 import org.jboss.seam.xml.fieldset.FieldValue;
 import org.jboss.seam.xml.fieldset.InlineBeanFieldValue;
 import org.jboss.seam.xml.fieldset.InlineBeanIdCreator;
@@ -85,11 +86,15 @@ public class ValueXmlItem extends AbstractXmlItem
    {
       if (inlineBean == null)
       {
+         if (innerText.matches("^#\\{.*\\}$"))
+         {
+            return new ELFieldValue(innerText);
+         }
          return new ConstantFieldValue(innerText);
       }
       else
       {
-         return new InlineBeanFieldValue(syntheticQualifierId, manager);
+         return new InlineBeanFieldValue(syntheticQualifierId);
       }
    }
 }
