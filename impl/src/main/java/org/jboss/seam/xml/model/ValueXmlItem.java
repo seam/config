@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.core.BeanResult;
@@ -62,9 +63,14 @@ public class ValueXmlItem extends AbstractXmlItem
          ClassXmlItem inline = inlineBeans.get(0);
          for (AnnotationXmlItem i : inline.getChildrenOfType(AnnotationXmlItem.class))
          {
-            if (manager.isQualifier((Class) i.getJavaClass()))
+            Class annotation = (Class) i.getJavaClass();
+            if (manager.isQualifier(annotation))
             {
-               throw new XmlConfigurationException("Cannot define qualifiers on inline beans", i.getDocument(), i.getLineno());
+               throw new XmlConfigurationException("Cannot define qualifiers on inline beans, Qualifier: " + annotation.getName(), i.getDocument(), i.getLineno());
+            }
+            else if (manager.isScope(annotation) && annotation != Dependent.class)
+            {
+               throw new XmlConfigurationException("Inline beans must have @Dependent scope, Scope: " + annotation.getName(), i.getDocument(), i.getLineno());
             }
          }
          syntheticQualifierId = InlineBeanIdCreator.getId();
