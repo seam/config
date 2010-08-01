@@ -22,40 +22,15 @@
 package org.jboss.seam.xml.fieldset;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
 
 /**
- * Field value object for an inline bean definition
+ * represents an initial field value. This may just be a wrapper around a
+ * constant value, or it could be an inline bean declaration or EL expression
  * 
  * @author Stuart Douglas
  * 
  */
-public class InlineBeanFieldValue implements FieldValue
+public interface FieldValue
 {
-
-   private final int beanId;
-
-   private final InlineBeanQualifier.InlineBeanQualifierLiteral literal;
-
-   private final BeanManager manager;
-
-   private Bean<?> bean;
-
-   public InlineBeanFieldValue(int syntheticBeanQualifierNo, BeanManager manager)
-   {
-      this.beanId = syntheticBeanQualifierNo;
-      this.literal = new InlineBeanQualifier.InlineBeanQualifierLiteral(beanId);
-      this.manager = manager;
-   }
-
-   public Object value(Class<?> type, CreationalContext<?> ctx)
-   {
-      if (bean == null)
-      {
-         bean = manager.resolve(manager.getBeans(type, literal));
-      }
-      return manager.getReference(bean, type, ctx);
-   }
-
+   public Object value(Class<?> type, CreationalContext<?> ctx);
 }

@@ -36,9 +36,7 @@ import java.util.TreeSet;
 import javax.enterprise.context.spi.CreationalContext;
 
 import org.jboss.seam.xml.model.ValueXmlItem;
-import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.util.TypeReader;
-import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.properties.Property;
 
 /**
@@ -53,14 +51,14 @@ import org.jboss.weld.extensions.util.properties.Property;
 public class CollectionFieldSet implements FieldValueObject
 {
    private final Property field;
-   private final List<Object> values;
+   private final List<FieldValue> values;
    private final Class<?> elementType;
    private final Class<? extends Collection> collectionType;
 
    public CollectionFieldSet(Property field, List<ValueXmlItem> items)
    {
       this.field = field;
-      this.values = new ArrayList<Object>();
+      this.values = new ArrayList<FieldValue>();
 
       Type type = field.getBaseType();
       if (type instanceof ParameterizedType)
@@ -114,10 +112,9 @@ public class CollectionFieldSet implements FieldValueObject
          throw new RuntimeException("Could not determine element type for " + field.getDeclaringClass().getName() + "." + field.getName());
       }
 
-      for (XmlItem i : items)
+      for (ValueXmlItem i : items)
       {
-         final Object fv = XmlObjectConverter.convert(elementType, i.getInnerText());
-         values.add(fv);
+         values.add(i.getValue());
       }
    }
 
@@ -129,7 +126,7 @@ public class CollectionFieldSet implements FieldValueObject
          field.setValue(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
-            res.add(values.get(i));
+            res.add(values.get(i).value(elementType, ctx));
          }
       }
       catch (Exception e)

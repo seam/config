@@ -34,7 +34,6 @@ import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.fieldset.ArrayFieldSet;
 import org.jboss.seam.xml.fieldset.CollectionFieldSet;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
-import org.jboss.seam.xml.fieldset.InlineBeanFieldValue;
 import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
@@ -128,14 +127,10 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             }
             ValueXmlItem value = valueEntries.get(0);
             BeanResult<?> result = value.getBeanResult(manager);
-            if (result == null)
-            {
-               fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, valueEntries.get(0).getInnerText());
-            }
-            else
+            fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, valueEntries.get(0).getValue());
+            if (result != null)
             {
                inlineBeans.add(result);
-               fieldValue = new InlineBeanFieldValue(getFieldType(), value.getSyntheticQualifierId(), property, manager);
             }
          }
       }

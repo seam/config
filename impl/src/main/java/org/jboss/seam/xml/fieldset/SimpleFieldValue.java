@@ -23,27 +23,32 @@ package org.jboss.seam.xml.fieldset;
 
 import javax.enterprise.context.spi.CreationalContext;
 
-import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.properties.Property;
 
+/**
+ * Field value object for a simple field
+ * 
+ * @author Stuart Douglas
+ * 
+ */
 public class SimpleFieldValue implements FieldValueObject
 {
 
    private final Property field;
 
-   private final Object value;
+   private final FieldValue value;
 
-   public SimpleFieldValue(Class<?> javaObject, final Property f, final String value)
+   public SimpleFieldValue(Class<?> javaObject, final Property f, FieldValue value)
    {
       this.field = f;
-      this.value = XmlObjectConverter.convert(f.getJavaClass(), value);
+      this.value = value;
    }
 
    public void setValue(Object instance, CreationalContext<?> ctx)
    {
       try
       {
-         field.setValue(instance, value);
+         field.setValue(instance, value.value(field.getJavaClass(), ctx));
       }
       catch (Exception e)
       {

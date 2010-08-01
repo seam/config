@@ -28,8 +28,6 @@ import java.util.List;
 import javax.enterprise.context.spi.CreationalContext;
 
 import org.jboss.seam.xml.model.ValueXmlItem;
-import org.jboss.seam.xml.model.XmlItem;
-import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.properties.Property;
 
 /**
@@ -41,18 +39,17 @@ import org.jboss.weld.extensions.util.properties.Property;
 public class ArrayFieldSet implements FieldValueObject
 {
    final private Property field;
-   final private List<Object> values;
+   final private List<FieldValue> values;
    final private Class<?> arrayType;
 
    public ArrayFieldSet(Property<?> field, List<ValueXmlItem> items)
    {
       this.field = field;
-      this.values = new ArrayList<Object>();
+      this.values = new ArrayList<FieldValue>();
       arrayType = field.getJavaClass().getComponentType();
-      for (XmlItem i : items)
+      for (ValueXmlItem i : items)
       {
-         Object fv = XmlObjectConverter.convert(arrayType, i.getInnerText());
-         values.add(fv);
+         values.add(i.getValue());
       }
 
    }
@@ -65,7 +62,7 @@ public class ArrayFieldSet implements FieldValueObject
          field.setValue(instance, array);
          for (int i = 0; i < values.size(); ++i)
          {
-            Array.set(array, i, values.get(i));
+            Array.set(array, i, values.get(i).value(arrayType, ctx));
          }
       }
       catch (Exception e)

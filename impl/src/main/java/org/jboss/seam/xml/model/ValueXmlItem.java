@@ -28,6 +28,9 @@ import java.util.Set;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.core.BeanResult;
+import org.jboss.seam.xml.fieldset.ConstantFieldValue;
+import org.jboss.seam.xml.fieldset.FieldValue;
+import org.jboss.seam.xml.fieldset.InlineBeanFieldValue;
 import org.jboss.seam.xml.fieldset.InlineBeanIdCreator;
 import org.jboss.seam.xml.fieldset.InlineBeanQualifier;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
@@ -35,7 +38,9 @@ import org.jboss.seam.xml.util.XmlConfigurationException;
 
 public class ValueXmlItem extends AbstractXmlItem
 {
-   int syntheticQualifierId;
+   private int syntheticQualifierId;
+   private BeanResult<?> inlineBean;
+   private BeanManager manager;
 
    public ValueXmlItem(XmlItem parent, String innerText, String document, int lineno)
    {
@@ -49,6 +54,7 @@ public class ValueXmlItem extends AbstractXmlItem
 
    public BeanResult<?> getBeanResult(BeanManager manager)
    {
+      this.manager = manager;
       List<ClassXmlItem> inlineBeans = getChildrenOfType(ClassXmlItem.class);
       if (!inlineBeans.isEmpty())
       {
@@ -63,13 +69,27 @@ public class ValueXmlItem extends AbstractXmlItem
          syntheticQualifierId = InlineBeanIdCreator.getId();
          AnnotationXmlItem syntheticQualifier = new AnnotationXmlItem(this, InlineBeanQualifier.class, "" + syntheticQualifierId, Collections.EMPTY_MAP, getDocument(), getLineno());
          inline.addChild(syntheticQualifier);
-         return inline.createBeanResult(manager);
+         inlineBean = inline.createBeanResult(manager);
+         return inlineBean;
       }
+      inlineBean = null;
       return null;
    }
 
    public int getSyntheticQualifierId()
    {
       return syntheticQualifierId;
+   }
+
+   public FieldValue getValue()
+   {
+      if (inlineBean == null)
+      {
+         return new ConstantFieldValue(innerText);
+      }
+      else
+      {
+         return new InlineBeanFieldValue(syntheticQualifierId, manager);
+      }
    }
 }

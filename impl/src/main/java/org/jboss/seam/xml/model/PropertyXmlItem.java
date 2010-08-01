@@ -23,6 +23,7 @@ package org.jboss.seam.xml.model;
 
 import java.lang.reflect.Method;
 
+import org.jboss.seam.xml.fieldset.ConstantFieldValue;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.weld.extensions.util.properties.Properties;
@@ -43,7 +44,7 @@ public class PropertyXmlItem extends AbstractFieldXmlItem
       this.property = Properties.createProperty(setter);
       if (innerText != null && innerText.length() > 0)
       {
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, innerText);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, new ConstantFieldValue(innerText));
       }
    }
 

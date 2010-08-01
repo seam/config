@@ -24,6 +24,7 @@ package org.jboss.seam.xml.model;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.jboss.seam.xml.fieldset.ConstantFieldValue;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.weld.extensions.util.properties.Properties;
@@ -41,7 +42,7 @@ public class FieldXmlItem extends AbstractFieldXmlItem
       this.property = getFieldValueSetter(c);
       if (innerText != null && innerText.length() > 0)
       {
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, innerText);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, new ConstantFieldValue(innerText));
       }
       allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
       allowed.add(TypeOccuranceInformation.of(XmlItemType.VALUE, null, null));

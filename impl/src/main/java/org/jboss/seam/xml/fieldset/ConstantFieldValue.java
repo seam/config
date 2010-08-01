@@ -22,40 +22,26 @@
 package org.jboss.seam.xml.fieldset;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
+
+import org.jboss.seam.xml.util.XmlObjectConverter;
 
 /**
- * Field value object for an inline bean definition
+ * Represents a simple field value in an XML document
  * 
  * @author Stuart Douglas
  * 
  */
-public class InlineBeanFieldValue implements FieldValue
+public class ConstantFieldValue implements FieldValue
 {
+   private final String stringValue;
 
-   private final int beanId;
-
-   private final InlineBeanQualifier.InlineBeanQualifierLiteral literal;
-
-   private final BeanManager manager;
-
-   private Bean<?> bean;
-
-   public InlineBeanFieldValue(int syntheticBeanQualifierNo, BeanManager manager)
+   public ConstantFieldValue(String stringValue)
    {
-      this.beanId = syntheticBeanQualifierNo;
-      this.literal = new InlineBeanQualifier.InlineBeanQualifierLiteral(beanId);
-      this.manager = manager;
+      this.stringValue = stringValue;
    }
 
-   public Object value(Class<?> type, CreationalContext<?> ctx)
+   public Object value(Class<?> type, CreationalContext<?> cyx)
    {
-      if (bean == null)
-      {
-         bean = manager.resolve(manager.getBeans(type, literal));
-      }
-      return manager.getReference(bean, type, ctx);
+      return XmlObjectConverter.convert(type, stringValue);
    }
-
 }

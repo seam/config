@@ -83,9 +83,9 @@ public class EntryXmlItem extends AbstractXmlItem
       return key;
    }
 
-   public XmlItem getValue()
+   public ValueXmlItem getValue()
    {
-      return value;
+      return (ValueXmlItem) value;
    }
 
 }
