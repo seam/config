@@ -278,6 +278,51 @@ public class ProducerBean {
         <para>Type conversion is done automatically for all primitives and primitive wrappers, <literal>Date</literal>, 
         <literal>Calendar</literal>,<literal>Enum</literal> and <literal>Class</literal> fields. 
         In this instance <literal>ArrayFieldValue.carray</literal> is actually an array of classes, not an array of Strings.</para>
+        <para>The use of EL to set field values is also supported:</para>
+        <programlisting role="XML">
+            <![CDATA[   
+<m:Report>
+   <m:name>#{reportName}</m:name>
+   <m:parameters>
+      <s:key>#{paramName}</s:key>
+      <s:value>#{paramValue}</s:key>
+   </m:parameters>
+</m:Report>
+]]>
+</programlisting>
+    </section>
+    <section>
+      <title>Inline Bean Declarations</title>
+      <para>Inline beans allow you to set field values to another bean that is declared inline inside the field declaration.
+      This allows for the configuration of complex types with nestled classes. Inline beans can be declared inside both
+      <literal>&lt;s:value&gt;</literal> and <literal>&lt;s:key&gt;</literal> elements, and may be used in both collections 
+      and simple field values. Inline beans must not have any qualifier annotations declared on the bean, instead seam-xml assigns 
+      them an artificial qualifier. Inline beans may have any scope, however the default <literal>Dependent</literal> scope is 
+      recomended.
+      </para>
+<programlisting role="XML">
+<![CDATA[         
+<test:Knight>
+  <test:sword>
+     <value>
+        <test:Sword type="sharp"/>
+     </value>
+  </test:sword>
+  <test:horse>
+     <value>
+        <test:Horse>
+           <test:name>
+              <value>billy</value>
+           </test:name>
+           <test:shoe>
+              <Inject/>
+           </test:shoe>
+        </test:Horse>
+     </value>
+  </test:horse>
+</test:Knight>      
+]]>
+</programlisting>      
     </section>
     <section>
         <title>Configuring methods</title>
