@@ -36,7 +36,13 @@
       <dependency>
          <groupId>org.jboss.weld</groupId>
          <artifactId>weld-se</artifactId>
-         <version>1.0.2-SNAPSHOT</version>
+         <version>1.0.1-Final</version>
+         <scope>test</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>servlet-api</artifactId>
          <scope>test</scope>
       </dependency>
 
