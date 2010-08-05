@@ -43,6 +43,8 @@ import org.jboss.seam.xml.parser.namespace.NamespaceElementResolver;
 import org.jboss.seam.xml.parser.namespace.RootNamespaceElementResolver;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Builds an XML result from sax nodes
@@ -56,6 +58,8 @@ public class ModelBuilder
    static final String ROOT_NAMESPACE = "urn:java:ee";
 
    static final String BEANS_ROOT_NAMESPACE = "http://java.sun.com/xml/ns/javaee";
+
+   static final Logger log = LoggerFactory.getLogger(ModelBuilder.class);
 
    private final XmlResult ret;
 
@@ -96,7 +100,6 @@ public class ModelBuilder
                   continue;
                }
                XmlItem rb = resolveNode(node, null, resolvers, manager);
-               // validateXmlItem(rb);
                if (rb != null)
                {
                   addNodeToResult(rb, manager);
@@ -173,6 +176,7 @@ public class ModelBuilder
       NamespaceElementResolver resolver = resolveNamepsace(node.getNamespaceUri(), resolvers);
       if (resolver == null)
       {
+         log.warn("Could not resolve namspace for seam-xml: {}", node.getNamespaceUri());
          return null;
       }
       XmlItem ret = resolver.getItemForNamespace(node, parent);
