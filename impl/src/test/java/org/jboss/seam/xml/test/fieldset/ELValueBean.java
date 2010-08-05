@@ -19,15 +19,20 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.test.fieldset;
 
+import java.util.List;
+import java.util.Map;
 
-
-
-public class ValueXmlItem extends AbstractValueXmlItem
+/**
+ * Bean that test values set via el in arrays, lists and maps
+ * 
+ * @author stuart
+ * 
+ */
+public class ELValueBean
 {
-   public ValueXmlItem(XmlItem parent, String innerText, String document, int lineno)
-   {
-      super(XmlItemType.VALUE, parent, null, innerText, null, document, lineno);
-   }
+   public List<String> list;
+   public Map<String, String> map;
+   public String[] array;
 }

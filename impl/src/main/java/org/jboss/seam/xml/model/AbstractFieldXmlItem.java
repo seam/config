@@ -94,6 +94,13 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             }
             if (!mapEntries.isEmpty())
             {
+               for (EntryXmlItem entry : mapEntries)
+               {
+                  // resolve inline beans if nessesary
+                  Set<BeanResult<?>> beans = entry.getBeanResults(manager);
+                  inlineBeans.addAll(beans);
+
+               }
                fieldValue = new MapFieldSet(property, mapEntries);
             }
          }
@@ -105,6 +112,15 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             }
             if (!valueEntries.isEmpty())
             {
+               for (ValueXmlItem value : valueEntries)
+               {
+                  // resolve inline beans if nessesary
+                  BeanResult<?> result = value.getBeanResult(manager);
+                  if (result != null)
+                  {
+                     inlineBeans.add(result);
+                  }
+               }
                if (getFieldType().isArray())
                {
                   fieldValue = new ArrayFieldSet(property, valueEntries);
@@ -127,7 +143,7 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             }
             ValueXmlItem value = valueEntries.get(0);
             BeanResult<?> result = value.getBeanResult(manager);
-            fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, valueEntries.get(0).getValue());
+            fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, value.getValue());
             if (result != null)
             {
                inlineBeans.add(result);

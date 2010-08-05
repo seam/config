@@ -37,7 +37,6 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.EntryXmlItem;
 import org.jboss.seam.xml.util.TypeReader;
-import org.jboss.seam.xml.util.XmlObjectConverter;
 import org.jboss.weld.extensions.util.properties.Property;
 
 /**
@@ -50,7 +49,7 @@ import org.jboss.weld.extensions.util.properties.Property;
 public class MapFieldSet implements FieldValueObject
 {
    private final Property field;
-   private final List<Entry<Object, FieldValue>> values;
+   private final List<Entry<FieldValue, FieldValue>> values;
    private final Class<?> keyType;
    private final Class<?> valueType;
    private final Class<? extends Map> collectionType;
@@ -58,7 +57,7 @@ public class MapFieldSet implements FieldValueObject
    public MapFieldSet(Property field, List<EntryXmlItem> items)
    {
       this.field = field;
-      this.values = new ArrayList<Entry<Object, FieldValue>>();
+      this.values = new ArrayList<Entry<FieldValue, FieldValue>>();
       // figure out the collection type
       Type type = field.getBaseType();
       if (type instanceof ParameterizedType)
@@ -100,8 +99,7 @@ public class MapFieldSet implements FieldValueObject
 
       for (EntryXmlItem i : items)
       {
-         final Object key = XmlObjectConverter.convert(keyType, i.getKey().getInnerText());
-         values.add(new EntryImpl(key, i.getValue().getValue()));
+         values.add(new EntryImpl(i.getKey().getValue(), i.getValue().getValue()));
       }
    }
 
@@ -113,8 +111,8 @@ public class MapFieldSet implements FieldValueObject
          field.setValue(instance, res);
          for (int i = 0; i < values.size(); ++i)
          {
-            Entry<Object, FieldValue> e = values.get(i);
-            res.put(e.getKey(), e.getValue().value(valueType, ctx, manager));
+            Entry<FieldValue, FieldValue> e = values.get(i);
+            res.put(e.getKey().value(keyType, ctx, manager), e.getValue().value(valueType, ctx, manager));
          }
       }
       catch (Exception e)
@@ -123,18 +121,18 @@ public class MapFieldSet implements FieldValueObject
       }
    }
 
-   private final class EntryImpl implements Entry<Object, FieldValue>
+   private final class EntryImpl implements Entry<FieldValue, FieldValue>
    {
-      private Object key;
+      private FieldValue key;
       private FieldValue value;
 
-      public EntryImpl(Object key, FieldValue value)
+      public EntryImpl(FieldValue key, FieldValue value)
       {
          this.key = key;
          this.value = value;
       }
 
-      public Object getKey()
+      public FieldValue getKey()
       {
          return key;
       }
@@ -149,7 +147,7 @@ public class MapFieldSet implements FieldValueObject
          return this.value = value;
       }
 
-      public void setKey(Object key)
+      public void setKey(FieldValue key)
       {
          this.key = key;
       }

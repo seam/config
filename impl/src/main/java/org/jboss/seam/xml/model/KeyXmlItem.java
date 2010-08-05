@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 
-public class KeyXmlItem extends AbstractXmlItem
+public class KeyXmlItem extends AbstractValueXmlItem
 {
 
    public KeyXmlItem(XmlItem parent, String innerText, String document, int lineno)

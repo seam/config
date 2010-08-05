@@ -19,15 +19,35 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.test.fieldset;
 
+import java.util.Map.Entry;
 
+import junit.framework.Assert;
 
+import org.jboss.seam.xml.test.AbstractXMLTest;
+import org.junit.Test;
 
-public class ValueXmlItem extends AbstractValueXmlItem
+public class ELFieldValueBeanTest extends AbstractXMLTest
 {
-   public ValueXmlItem(XmlItem parent, String innerText, String document, int lineno)
+
+   @Override
+   protected String getXmlFileName()
    {
-      super(XmlItemType.VALUE, parent, null, innerText, null, document, lineno);
+      return "el-set-field-value-beans.xml";
+   }
+
+   @Test
+   public void mapSetFieldValue()
+   {
+      ELValueBean bean = getReference(ELValueBean.class);
+      Assert.assertTrue(bean.array.length == 1);
+      Assert.assertEquals(bean.array[0], ELValueProducer.EL_VALUE_STRING);
+      Assert.assertTrue(bean.list.size() == 1);
+      Assert.assertEquals(bean.list.get(0), ELValueProducer.EL_VALUE_STRING);
+      Assert.assertTrue(bean.map.size() == 1);
+      Entry<String, String> entry = bean.map.entrySet().iterator().next();
+      Assert.assertEquals(entry.getKey(), ELValueProducer.EL_VALUE_STRING);
+      Assert.assertEquals(entry.getValue(), ELValueProducer.EL_VALUE_STRING);
    }
 }

@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.enterprise.inject.spi.BeanManager;
 
+import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 
@@ -34,8 +35,8 @@ public class EntryXmlItem extends AbstractXmlItem
 
    final Set<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
-   XmlItem key;
-   XmlItem value;
+   KeyXmlItem key;
+   ValueXmlItem value;
 
    public EntryXmlItem(XmlItem parent, String document, int lineno)
    {
@@ -64,7 +65,7 @@ public class EntryXmlItem extends AbstractXmlItem
             {
                throw new XmlConfigurationException("<entry> tags must have two children, a <key> and a <value>", getDocument(), getLineno());
             }
-            value = i;
+            value = (ValueXmlItem) i;
          }
          else if (i.getType() == XmlItemType.KEY)
          {
@@ -72,13 +73,13 @@ public class EntryXmlItem extends AbstractXmlItem
             {
                throw new XmlConfigurationException("<entry> tags must have two children, a <key> and a <value>", getDocument(), getLineno());
             }
-            key = i;
+            key = (KeyXmlItem) i;
          }
       }
       return true;
    }
 
-   public XmlItem getKey()
+   public KeyXmlItem getKey()
    {
       return key;
    }
@@ -86,6 +87,28 @@ public class EntryXmlItem extends AbstractXmlItem
    public ValueXmlItem getValue()
    {
       return (ValueXmlItem) value;
+   }
+
+   /**
+    * get the inline beans for the value and the key
+    * 
+    * @param manager
+    * @return
+    */
+   public Set<BeanResult<?>> getBeanResults(BeanManager manager)
+   {
+      Set<BeanResult<?>> ret = new HashSet<BeanResult<?>>();
+      BeanResult<?> r = value.getBeanResult(manager);
+      if (r != null)
+      {
+         ret.add(r);
+      }
+      r = key.getBeanResult(manager);
+      if (r != null)
+      {
+         ret.add(r);
+      }
+      return ret;
    }
 
 }
