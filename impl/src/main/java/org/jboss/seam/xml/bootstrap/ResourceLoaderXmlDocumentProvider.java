@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -34,8 +33,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jboss.weld.extensions.resourceLoader.ResourceLoader;
-import org.jboss.weld.extensions.util.service.ServiceLoader;
+import org.jboss.weld.extensions.resourceLoader.ResourceLoaderManager;
 import org.xml.sax.InputSource;
 
 /**
@@ -47,7 +45,7 @@ import org.xml.sax.InputSource;
 public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
 {
 
-   private final List<ResourceLoader> resourceLoaders;
+   private final ResourceLoaderManager manager = new ResourceLoaderManager();
 
    static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "META-INF/beans.xml", "WEB-INF/beans.xml" };
 
@@ -63,11 +61,6 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
    public ResourceLoaderXmlDocumentProvider(String[] resources)
    {
       this.resources = resources;
-      resourceLoaders = new ArrayList<ResourceLoader>();
-      for (ResourceLoader resourceLoader : ServiceLoader.load(ResourceLoader.class))
-      {
-         resourceLoaders.add(resourceLoader);
-      }
    }
 
    List<URL> docs;
@@ -95,20 +88,10 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
 
       for (String i : resources)
       {
-         Set<URL> e = getResources(i);
+         Set<URL> e = manager.getResources(i);
          docs.addAll(e);
       }
       iterator = docs.listIterator();
-   }
-
-   protected Set<URL> getResources(String resource)
-   {
-      Set<URL> ret = new HashSet<URL>();
-      for (ResourceLoader r : resourceLoaders)
-      {
-         ret.addAll(r.getResources(resource));
-      }
-      return ret;
    }
 
    public void close()
