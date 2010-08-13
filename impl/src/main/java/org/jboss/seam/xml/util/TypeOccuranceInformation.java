@@ -55,7 +55,7 @@ public class TypeOccuranceInformation
 
    public static TypeOccuranceInformation of(XmlItemType type, Integer min, Integer max)
    {
-      return new TypeOccuranceInformation(type, min, min);
+      return new TypeOccuranceInformation(type, min, max);
    }
 
    public static boolean isTypeInSet(Set<TypeOccuranceInformation> set, XmlItemType type)
