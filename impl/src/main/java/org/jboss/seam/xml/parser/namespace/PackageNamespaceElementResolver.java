@@ -123,7 +123,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       Class<?> p = parent.getJavaClass();
       Field f = null;
       boolean methodFound = Reflections.methodExists(p, name);
-      f = Reflections.getField(p, name);
+      f = Reflections.findDeclaredField(p, name);
 
       if (methodFound && f != null)
       {
@@ -141,7 +141,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       String methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
       if (Reflections.methodExists(p, methodName))
       {
-         Set<Method> methods = Reflections.getAllMethods(p);
+         Set<Method> methods = Reflections.getAllDeclaredMethods(p);
          for (Method m : methods)
          {
             if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)

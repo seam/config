@@ -71,7 +71,7 @@ public class ClassXmlItem extends AbstractXmlItem
       for (Entry<String, String> e : attributes.entrySet())
       {
 
-         Field field = Reflections.getField(getJavaClass(), e.getKey());
+         Field field = Reflections.findDeclaredField(getJavaClass(), e.getKey());
          if (field != null)
          {
             values.add(new FieldXmlItem(this, field, e.getValue(), document, lineno));
@@ -81,7 +81,7 @@ public class ClassXmlItem extends AbstractXmlItem
             String methodName = "set" + Character.toUpperCase(e.getKey().charAt(0)) + e.getKey().substring(1);
             if (Reflections.methodExists(getJavaClass(), methodName))
             {
-               Set<Method> methods = Reflections.getAllMethods(getJavaClass());
+               Set<Method> methods = Reflections.getAllDeclaredMethods(getJavaClass());
                for (Method m : methods)
                {
                   if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)
@@ -231,7 +231,7 @@ public class ClassXmlItem extends AbstractXmlItem
       {
          params[i] = constList.get(i).getJavaClass();
       }
-      Constructor<?> ret = Reflections.getConstructor(getJavaClass(), params);
+      Constructor<?> ret = Reflections.findDeclaredConstructor(getJavaClass(), params);
       if (ret == null)
       {
          throw new XmlConfigurationException("Could not resolve constructor for " + getJavaClass() + " with arguments " + params, getDocument(), getLineno());
