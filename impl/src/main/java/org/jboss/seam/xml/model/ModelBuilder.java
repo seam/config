@@ -326,7 +326,7 @@ public class ModelBuilder
             {
                if (count > type.getMaxOccurances())
                {
-                  throw new XmlConfigurationException("Item " + item.getType() + " has " + count + "children of type " + type.getType() + " when it should have at most " + type.getMaxOccurances(), item.getDocument(), item.getLineno());
+                  throw new XmlConfigurationException("Item " + item.getType() + " has " + count + " children of type " + type.getType() + " when it should have at most " + type.getMaxOccurances(), item.getDocument(), item.getLineno());
                }
             }
          }
@@ -334,7 +334,7 @@ public class ModelBuilder
          {
             if (count == null || count < type.getMinOccurances())
             {
-               throw new XmlConfigurationException("Item " + item.getType() + " has " + count + "children of type " + type.getType() + " when it should have at least " + type.getMaxOccurances(), item.getDocument(), item.getLineno());
+               throw new XmlConfigurationException("Item " + item.getType() + " has " + count + " children of type " + type.getType() + " when it should have at least " + type.getMinOccurances(), item.getDocument(), item.getLineno());
 
             }
          }
