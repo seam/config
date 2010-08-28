@@ -36,10 +36,6 @@ import java.util.Map.Entry;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.Annotated;
-import javax.enterprise.inject.spi.AnnotatedConstructor;
-import javax.enterprise.inject.spi.AnnotatedField;
-import javax.enterprise.inject.spi.AnnotatedMethod;
-import javax.enterprise.inject.spi.AnnotatedParameter;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.BeforeBeanDiscovery;
@@ -59,8 +55,6 @@ import org.jboss.seam.xml.model.ModelBuilder;
 import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.core.Exact;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,7 +160,7 @@ public class XmlExtension implements Extension
             bb.getBuilder().addToClass(new AnnotationLiteral<XmlConfiguredBean>()
             {
             });
-            AnnotatedType<?> tp = fixExactSupport(bb.getBuilder()).create();
+            AnnotatedType<?> tp = bb.getBuilder().create();
             log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
             event.addAnnotatedType(tp);
          }
@@ -267,48 +261,4 @@ public class XmlExtension implements Extension
       return false;
    }
 
-   /**
-    * temprary hack to support @Exact in seam-xml, remove once WELD-485 is
-    * resolved
-    */
-   public <X> AnnotatedTypeBuilder<X> fixExactSupport(AnnotatedTypeBuilder<X> old)
-   {
-      AnnotatedType<X> pat = old.create();
-      AnnotatedTypeBuilder<X> builder = new AnnotatedTypeBuilder<X>().readFromType(pat);
-      // support for @Exact
-      // fields
-      for (AnnotatedField<? super X> f : pat.getFields())
-      {
-         if (f.isAnnotationPresent(Exact.class))
-         {
-            Class<?> type = f.getAnnotation(Exact.class).value();
-            builder.overrideFieldType(f.getJavaMember(), type);
-         }
-      }
-      // method parameters
-      for (AnnotatedMethod<? super X> m : pat.getMethods())
-      {
-         for (AnnotatedParameter<? super X> p : m.getParameters())
-         {
-            if (p.isAnnotationPresent(Exact.class))
-            {
-               Class<?> type = p.getAnnotation(Exact.class).value();
-               builder.overrideMethodParameterType(m.getJavaMember(), p.getPosition(), type);
-            }
-         }
-      }
-      // constructor parameters
-      for (AnnotatedConstructor<X> c : pat.getConstructors())
-      {
-         for (AnnotatedParameter<? super X> p : c.getParameters())
-         {
-            if (p.isAnnotationPresent(Exact.class))
-            {
-               Class<?> type = p.getAnnotation(Exact.class).value();
-               builder.overrideConstructorParameterType(c.getJavaMember(), p.getPosition(), type);
-            }
-         }
-      }
-      return builder;
-   }
 }

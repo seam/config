@@ -39,17 +39,20 @@ public class SimpleFieldValue implements FieldValueObject
 
    private final FieldValue value;
 
-   public SimpleFieldValue(Class<?> javaObject, final Property f, FieldValue value)
+   private final Class<?> type;
+
+   public SimpleFieldValue(Class<?> javaObject, final Property<?> f, FieldValue value, Class<?> type)
    {
       this.field = f;
       this.value = value;
+      this.type = type == null ? field.getJavaClass() : type;
    }
 
    public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
    {
       try
       {
-         field.setValue(instance, value.value(field.getJavaClass(), ctx, manager));
+         field.setValue(instance, value.value(type, ctx, manager));
       }
       catch (Exception e)
       {

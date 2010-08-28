@@ -39,7 +39,7 @@ public class PropertyXmlItem extends AbstractFieldXmlItem
 
    public PropertyXmlItem(XmlItem parent, String name, Method setter, String innerText, String document, int lineno)
    {
-      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, document, lineno);
+      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, null, document, lineno);
       this.name = name;
       this.type = setter.getParameterTypes()[0];
       this.declaringClass = setter.getDeclaringClass();
@@ -55,7 +55,7 @@ public class PropertyXmlItem extends AbstractFieldXmlItem
          {
             fv = new ConstantFieldValue(innerText);
          }
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, fv);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, fv, null);
       }
    }
 

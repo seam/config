@@ -49,14 +49,16 @@ import org.jboss.weld.extensions.util.properties.Property;
 public abstract class AbstractFieldXmlItem extends AbstractXmlItem
 {
 
-   protected Property property;
+   protected Property<?> property;
    protected FieldValueObject fieldValue;
    protected HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
+   private final Class<?> overridenFieldType;
    List<BeanResult<?>> inlineBeans = new ArrayList<BeanResult<?>>();
 
-   public AbstractFieldXmlItem(XmlItemType type, XmlItem parent, Class<?> javaClass, String innerText, Map<String, String> attributes, String document, int lineno)
+   public AbstractFieldXmlItem(XmlItemType type, XmlItem parent, Class<?> javaClass, String innerText, Map<String, String> attributes, Class<?> overridenFieldType, String document, int lineno)
    {
       super(type, parent, javaClass, innerText, attributes, document, lineno);
+      this.overridenFieldType = overridenFieldType;
    }
 
    public FieldValueObject getFieldValue()
@@ -143,7 +145,7 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
             }
             ValueXmlItem value = valueEntries.get(0);
             BeanResult<?> result = value.getBeanResult(manager);
-            fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, value.getValue());
+            fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, value.getValue(), overridenFieldType);
             if (result != null)
             {
                inlineBeans.add(result);
@@ -167,6 +169,11 @@ public abstract class AbstractFieldXmlItem extends AbstractXmlItem
    public Collection<? extends BeanResult> getInlineBeans()
    {
       return inlineBeans;
+   }
+
+   public Class<?> getOverridenFieldType()
+   {
+      return overridenFieldType;
    }
 
 }

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.Stereotype;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Qualifier;
@@ -133,7 +134,18 @@ public class ModelBuilder
             {
                ret.addVeto(beanResult.getType());
             }
-
+         }
+         else if (resultType == ResultType.VIRTUAL_PRODUCER)
+         {
+            ClassXmlItem cxml = (ClassXmlItem) xmlItem;
+            // get the AnnotatedType information
+            BeanResult<?> beanResult = cxml.createVirtualFieldBeanResult(manager);
+            ret.addBean(beanResult);
+            // <override> or <speciailizes> need to veto the bean
+            if (beanResult.getBeanType() != BeanResultType.ADD)
+            {
+               ret.addVeto(beanResult.getType());
+            }
          }
          else if (resultType == ResultType.QUALIFIER)
          {
@@ -226,6 +238,17 @@ public class ModelBuilder
             else
             {
                ret = ResultType.QUALIFIER;
+            }
+         }
+         else if (it.getJavaClass() == Produces.class)
+         {
+            if (ret != null)
+            {
+               throw new XmlConfigurationException("Element cannot be both an virtual producer field and a " + ret.toString(), item.getDocument(), item.getLineno());
+            }
+            else
+            {
+               ret = ResultType.VIRTUAL_PRODUCER;
             }
          }
          else if (it.getJavaClass() == Stereotype.class)

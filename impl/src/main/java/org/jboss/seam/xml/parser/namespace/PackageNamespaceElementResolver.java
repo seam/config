@@ -135,7 +135,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       }
       else if (f != null)
       {
-         return new FieldXmlItem(parent, f, innerText, document, lineno);
+         return new FieldXmlItem(parent, f, innerText, null, document, lineno);
       }
 
       String methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);

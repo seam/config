@@ -37,9 +37,9 @@ public class FieldXmlItem extends AbstractFieldXmlItem
 
    private final Field field;
 
-   public FieldXmlItem(XmlItem parent, Field c, String innerText, String document, int lineno)
+   public FieldXmlItem(XmlItem parent, Field c, String innerText, Class<?> overridenFieldType, String document, int lineno)
    {
-      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, document, lineno);
+      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, overridenFieldType, document, lineno);
       this.field = c;
       this.property = getFieldValueSetter(c);
 
@@ -54,7 +54,7 @@ public class FieldXmlItem extends AbstractFieldXmlItem
          {
             fv = new ConstantFieldValue(innerText);
          }
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, fv);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, fv, overridenFieldType);
       }
       allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
       allowed.add(TypeOccuranceInformation.of(XmlItemType.VALUE, null, null));

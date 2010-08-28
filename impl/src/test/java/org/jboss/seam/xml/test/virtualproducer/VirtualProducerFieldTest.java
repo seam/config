@@ -19,9 +19,31 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.test.virtualproducer;
 
-public enum ResultType
+import javax.enterprise.util.AnnotationLiteral;
+
+import junit.framework.Assert;
+
+import org.jboss.seam.xml.test.AbstractXMLTest;
+import org.junit.Test;
+
+public class VirtualProducerFieldTest extends AbstractXMLTest
 {
-   BEAN, INTERCEPTOR_BINDING, STEREOTYPE, QUALIFIER, VIRTUAL_PRODUCER;
+
+   @Override
+   protected String getXmlFileName()
+   {
+      return "virtualproducer.xml";
+   }
+
+   @Test
+   public void testSimpleVirtualProducerField()
+   {
+      String value = getReference(String.class, new AnnotationLiteral<VirtualProducerQualifier>()
+      {
+      });
+      Assert.assertEquals("Hello World", value);
+
+   }
 }

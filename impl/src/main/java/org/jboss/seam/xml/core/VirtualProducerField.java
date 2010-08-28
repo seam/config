@@ -19,9 +19,15 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.model;
+package org.jboss.seam.xml.core;
 
-public enum ResultType
+/**
+ * This class used to reigister virtual producer fields
+ * 
+ * @author stuart
+ * 
+ */
+public class VirtualProducerField
 {
-   BEAN, INTERCEPTOR_BINDING, STEREOTYPE, QUALIFIER, VIRTUAL_PRODUCER;
+   public Object field;
 }

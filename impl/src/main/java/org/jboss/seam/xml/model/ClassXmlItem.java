@@ -26,6 +26,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import javax.inject.Inject;
 
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.BeanResultType;
+import org.jboss.seam.xml.core.VirtualProducerField;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
@@ -58,6 +60,8 @@ public class ClassXmlItem extends AbstractXmlItem
       allowed.add(TypeOccuranceInformation.of(XmlItemType.PARAMETERS, null, null));
       allowed.add(TypeOccuranceInformation.of(XmlItemType.REPLACE, null, null));
       allowed.add(TypeOccuranceInformation.of(XmlItemType.MODIFIES, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.VALUE, null, null));
+      allowed.add(TypeOccuranceInformation.of(XmlItemType.ENTRY, null, null));
    }
 
    public Set<TypeOccuranceInformation> getAllowedItem()
@@ -74,7 +78,7 @@ public class ClassXmlItem extends AbstractXmlItem
          Field field = Reflections.findDeclaredField(getJavaClass(), e.getKey());
          if (field != null)
          {
-            values.add(new FieldXmlItem(this, field, e.getValue(), document, lineno));
+            values.add(new FieldXmlItem(this, field, e.getValue(), null, document, lineno));
          }
          else
          {
@@ -221,6 +225,39 @@ public class ClassXmlItem extends AbstractXmlItem
             }
          }
       }
+      return result;
+   }
+
+   public BeanResult<?> createVirtualFieldBeanResult(BeanManager manager)
+   {
+      boolean override = !getChildrenOfType(ReplacesXmlItem.class).isEmpty();
+      boolean extend = !getChildrenOfType(ModifiesXmlItem.class).isEmpty();
+      Field member;
+      try
+      {
+         member = VirtualProducerField.class.getField("field");
+      }
+      catch (Exception e)
+      {
+         throw new RuntimeException(e);
+      }
+
+      BeanResultType beanType = BeanResultType.ADD;
+      if (override || extend)
+      {
+         throw new XmlConfigurationException("A virtual producer field may not containe <override> or <extend> tags", getDocument(), getLineno());
+      }
+      ClassXmlItem vclass = new ClassXmlItem(null, VirtualProducerField.class, Collections.EMPTY_MAP, document, lineno);
+      FieldXmlItem field = new FieldXmlItem(vclass, member, null, getJavaClass(), document, lineno);
+      vclass.addChild(field);
+      for (XmlItem i : this.getChildren())
+      {
+         field.addChild(i);
+      }
+      field.resolveChildren(manager);
+      BeanResult<?> result = vclass.createBeanResult(manager);
+      AnnotatedTypeBuilder<?> builder = result.getBuilder();
+      builder.overrideFieldType(member, this.getJavaClass());
       return result;
    }
 
