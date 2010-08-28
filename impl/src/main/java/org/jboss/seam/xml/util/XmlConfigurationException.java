@@ -33,6 +33,13 @@ public class XmlConfigurationException extends RuntimeException
       this.lineno = lineno;
    }
 
+   public XmlConfigurationException(String message, String document, int lineno, Throwable cause)
+   {
+      super(message, cause);
+      this.document = document;
+      this.lineno = lineno;
+   }
+
    @Override
    public String getMessage()
    {

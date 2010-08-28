@@ -48,8 +48,6 @@ public class XmlResult implements Comparable<XmlResult>
 
    private final List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
 
-   private final List<GenericBeanResult> genericBeans = new ArrayList<GenericBeanResult>();
-
    private final String sortKey;
 
    public XmlResult(String fileUrl)
@@ -144,16 +142,6 @@ public class XmlResult implements Comparable<XmlResult>
    public List<Class<?>> getVeto()
    {
       return veto;
-   }
-
-   public void addGenericBean(GenericBeanResult result)
-   {
-      genericBeans.add(result);
-   }
-
-   public List<GenericBeanResult> getGenericBeans()
-   {
-      return genericBeans;
    }
 
    public int compareTo(XmlResult o)

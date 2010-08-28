@@ -520,36 +520,6 @@ public @interface OtherQualifier {
 </programlisting>  
     </section>
     
-    
-    <section>
-    	<title>Generic Beans</title>
-    	<para>Gereric beans allow for multiple beans to be created from a single bean definition. They are 
-    	designed for use by framework writers. From the users perspective there is no
-    	special configuration required, if you configure a bean that a framework writer has marked as a generic
-    	bean then you will end up with multiple beans instead.</para>
-    	<para>Generic beans are configured using the syntax described above. For every bean that the user 
-    	configures, a corresponding bean from the generic bean declaration is created. For example in the 
-    	framework xml configuration:</para>
-<programlisting role="XML" >
-            <![CDATA[
-<s:genericBean class="org.jboss.seam.xml.test.generic.GenericMain" >
-	<test:GenericDependant>
-		<s:ApplyQualifiers/>
-		<s:modifies/>
-		<test:instance>
-			<s:ApplyQualifiers/>
-		</test:instance>
-	</test:GenericDependant>
-</s:genericBean>
-]]>
-        </programlisting>    
-        <para>The declaration above means that for every <literal>GenericMain</literal> that a user configures via xml 
-        a corresponding <literal>GenericDependant</literal> is created as well. The 
-        <literal>&lt;s:ApplyQualifiers /&gt;</literal> is replaced with the qualifiers that are present on the user 
-        configured bean.</para>
-    </section>
-    
-   
     <section>
         <title>More Information</title>
         <para>For further information look at the units tests in the seam-xml distribution, also the 

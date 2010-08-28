@@ -24,12 +24,11 @@ package org.jboss.seam.xml.parser.namespace;
 import org.jboss.seam.xml.model.ArrayXmlItem;
 import org.jboss.seam.xml.model.ClassXmlItem;
 import org.jboss.seam.xml.model.EntryXmlItem;
-import org.jboss.seam.xml.model.GenericBeanXmlItem;
 import org.jboss.seam.xml.model.KeyXmlItem;
 import org.jboss.seam.xml.model.ModifiesXmlItem;
-import org.jboss.seam.xml.model.ReplacesXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.ParametersXmlItem;
+import org.jboss.seam.xml.model.ReplacesXmlItem;
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
@@ -85,10 +84,6 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
       else if (item.equals("parameters"))
       {
          return new ParametersXmlItem(parent, node.getDocument(), node.getLineNo());
-      }
-      else if (item.equals("genericBean"))
-      {
-         return new GenericBeanXmlItem(parent, node.getAttributes(), node.getDocument(), node.getLineNo());
       }
       // now deal with primitive types
 

@@ -23,7 +23,6 @@ package org.jboss.seam.xml.model;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +34,6 @@ import javax.interceptor.InterceptorBinding;
 
 import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.BeanResultType;
-import org.jboss.seam.xml.core.GenericBeanResult;
 import org.jboss.seam.xml.core.XmlResult;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.parser.namespace.CompositeNamespaceElementResolver;
@@ -149,22 +147,6 @@ public class ModelBuilder
          {
             addStereotypeToResult(ret, xmlItem);
          }
-      }
-      else if (xmlItem.getType() == XmlItemType.GENERIC_BEAN)
-      {
-
-         GenericBeanXmlItem item = (GenericBeanXmlItem) xmlItem;
-         Set<BeanResult<?>> classes = new HashSet<BeanResult<?>>();
-         for (ClassXmlItem c : xmlItem.getChildrenOfType(ClassXmlItem.class))
-         {
-            BeanResult<?> br = c.createBeanResult(manager);
-            if (br.getBeanType() != BeanResultType.ADD)
-            {
-               ret.addVeto(br.getType());
-            }
-            classes.add(br);
-         }
-         ret.addGenericBean(new GenericBeanResult(item.getJavaClass(), classes));
       }
    }
 

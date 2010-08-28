@@ -22,7 +22,6 @@
 package org.jboss.seam.xml.bootstrap;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,10 +49,7 @@ import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
 
-import org.jboss.seam.xml.annotations.internal.ApplyQualifiers;
 import org.jboss.seam.xml.core.BeanResult;
-import org.jboss.seam.xml.core.BeanResultType;
-import org.jboss.seam.xml.core.GenericBeanResult;
 import org.jboss.seam.xml.core.XmlConfiguredBean;
 import org.jboss.seam.xml.core.XmlId;
 import org.jboss.seam.xml.core.XmlResult;
@@ -65,8 +61,6 @@ import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.core.Exact;
-import org.jboss.weld.extensions.core.Veto;
-import org.jboss.weld.extensions.literal.DefaultLiteral;
 import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,8 +86,6 @@ public class XmlExtension implements Extension
    Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
 
    List<Exception> errors = new ArrayList<Exception>();
-
-   Map<Class<?>, GenericBeanResult> genericBeans = new HashMap<Class<?>, GenericBeanResult>();
 
    /**
     * This is the entry point for the extension
@@ -128,11 +120,6 @@ public class XmlExtension implements Extension
       // build the generic bean data
       for (XmlResult r : results)
       {
-         for (GenericBeanResult b : r.getGenericBeans())
-         {
-            genericBeans.put(b.getGenericBean(), b);
-         }
-
          // add the qualifiers as we need them before we process the generic
          // bean info
          for (Class<? extends Annotation> b : r.getQualifiers())
@@ -176,24 +163,6 @@ public class XmlExtension implements Extension
          }
          for (BeanResult<?> bb : r.getFlattenedBeans())
          {
-            GenericBeanResult found = null;
-            for (Class<?> g : genericBeans.keySet())
-            {
-               if (g.isAssignableFrom(bb.getType()))
-               {
-                  found = genericBeans.get(g);
-                  break;
-               }
-            }
-            if (found != null)
-            {
-               List<AnnotatedType<?>> types = processGenericBeans(bb, found, beanManager);
-               for (AnnotatedType<?> i : types)
-               {
-                  event.addAnnotatedType(i);
-               }
-            }
-
             bb.getBuilder().addToClass(new AnnotationLiteral<XmlConfiguredBean>()
             {
             });
@@ -278,134 +247,6 @@ public class XmlExtension implements Extension
       catch (Exception e)
       {
          throw new RuntimeException(e);
-      }
-      return ret;
-   }
-
-   /**
-    * installs a set of secondary beans for a given generic bean, the secondary
-    * beans have the same qualifiers added to them as the generic bean, in
-    * addition the generic beans qualifiers are added whereever the
-    * ApplyQualiers annotation is found
-    * 
-    */
-   public List<AnnotatedType<?>> processGenericBeans(BeanResult<?> bean, GenericBeanResult genericBeans, BeanManager beanManager)
-   {
-      List<AnnotatedType<?>> ret = new ArrayList<AnnotatedType<?>>();
-      AnnotatedType<?> rootType = bean.getBuilder().create();
-      // ret.add(rootType);
-      Set<Annotation> qualifiers = new HashSet<Annotation>();
-
-      for (Annotation i : rootType.getAnnotations())
-      {
-         if (beanManager.isQualifier(i.annotationType()))
-         {
-            qualifiers.add(i);
-         }
-      }
-      for (BeanResult<?> c : genericBeans.getSecondaryBeans())
-      {
-
-         AnnotatedType<?> type = c.getBuilder().create();
-         AnnotatedTypeBuilder<?> gb = new AnnotatedTypeBuilder().setJavaClass(type.getJavaClass());
-         if (c.getBeanType() == BeanResultType.MODIFIES)
-         {
-            gb.readFromType((Class) type.getJavaClass());
-            // we don't want to keep the veto annotation on the class
-            gb.removeFromClass(Veto.class);
-         }
-         // if the original type was qualified @Default we add that as well
-         if (!isQualifierPresent(type, beanManager))
-         {
-            gb.addToClass(DefaultLiteral.INSTANCE);
-         }
-         // we always apply qualifiers to the actual type
-         for (Annotation q : qualifiers)
-         {
-            gb.addToClass(q);
-         }
-         for (AnnotatedField<?> f : type.getFields())
-         {
-            if (f.isAnnotationPresent(ApplyQualifiers.class))
-            {
-               // we need to manually add @default as it stops being applied
-               // when
-               // we add our qualifiers, however if we are deling with the main
-               // type we do not
-               // bother, as it should not be qualified @Default
-               if (!isQualifierPresent(f, beanManager) && f.getJavaMember().getType() != rootType.getJavaClass())
-               {
-                  gb.addToField(f.getJavaMember(), DefaultLiteral.INSTANCE);
-               }
-               for (Annotation q : qualifiers)
-               {
-                  gb.addToField(f.getJavaMember(), q);
-               }
-            }
-         }
-         for (AnnotatedMethod<?> m : type.getMethods())
-         {
-
-            if (m.isAnnotationPresent(ApplyQualifiers.class))
-            {
-               if (!isQualifierPresent(m, beanManager))
-               {
-                  gb.addToMethod(m.getJavaMember(), DefaultLiteral.INSTANCE);
-               }
-               for (Annotation q : qualifiers)
-               {
-                  gb.addToMethod(m.getJavaMember(), q);
-               }
-            }
-
-            for (AnnotatedParameter<?> p : m.getParameters())
-            {
-
-               if (p.isAnnotationPresent(ApplyQualifiers.class))
-               {
-                  if (!isQualifierPresent(p, beanManager) && p.getBaseType() != rootType.getJavaClass())
-                  {
-                     gb.addToMethodParameter(m.getJavaMember(), p.getPosition(), DefaultLiteral.INSTANCE);
-                  }
-                  for (Annotation q : qualifiers)
-                  {
-                     gb.addToMethodParameter(m.getJavaMember(), p.getPosition(), q);
-                  }
-               }
-            }
-         }
-
-         for (AnnotatedConstructor<?> con : type.getConstructors())
-         {
-            if (con.isAnnotationPresent(ApplyQualifiers.class))
-            {
-               if (!isQualifierPresent(con, beanManager))
-               {
-                  gb.addToConstructor((Constructor) con.getJavaMember(), DefaultLiteral.INSTANCE);
-               }
-               for (Annotation q : qualifiers)
-               {
-                  gb.addToConstructor((Constructor) con.getJavaMember(), q);
-               }
-            }
-
-            for (AnnotatedParameter<?> p : con.getParameters())
-            {
-               if (p.isAnnotationPresent(ApplyQualifiers.class) && p.getBaseType() != rootType.getJavaClass())
-               {
-                  if (!isQualifierPresent(p, beanManager))
-                  {
-                     gb.addToConstructorParameter((Constructor) con.getJavaMember(), p.getPosition(), DefaultLiteral.INSTANCE);
-                  }
-                  for (Annotation q : qualifiers)
-                  {
-                     gb.addToConstructorParameter((Constructor) con.getJavaMember(), p.getPosition(), q);
-                  }
-               }
-            }
-         }
-
-         ret.add(fixExactSupport(gb).create());
       }
       return ret;
    }
