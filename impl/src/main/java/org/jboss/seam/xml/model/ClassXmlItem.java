@@ -24,7 +24,6 @@ package org.jboss.seam.xml.model;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -45,6 +44,11 @@ import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.weld.extensions.util.properties.Properties;
+import org.jboss.weld.extensions.util.properties.Property;
+import org.jboss.weld.extensions.util.properties.query.NamedPropertyCriteria;
+import org.jboss.weld.extensions.util.properties.query.PropertyQueries;
+import org.jboss.weld.extensions.util.properties.query.PropertyQuery;
 
 public class ClassXmlItem extends AbstractXmlItem
 {
@@ -69,38 +73,22 @@ public class ClassXmlItem extends AbstractXmlItem
       return allowed;
    }
 
-   public Set<AbstractFieldXmlItem> getShorthandFieldValues()
+   public Set<PropertyXmlItem> getShorthandFieldValues()
    {
-      Set<AbstractFieldXmlItem> values = new HashSet<AbstractFieldXmlItem>();
+      Set<PropertyXmlItem> values = new HashSet<PropertyXmlItem>();
       for (Entry<String, String> e : attributes.entrySet())
       {
-
-         Field field = Reflections.findDeclaredField(getJavaClass(), e.getKey());
-         if (field != null)
+         PropertyQuery<Object> query = PropertyQueries.createQuery(getJavaClass());
+         query.addCriteria(new NamedPropertyCriteria(e.getKey()));
+         Property<?> property = query.getFirstResult();
+         if (property != null)
          {
-            values.add(new FieldXmlItem(this, field, e.getValue(), null, document, lineno));
+            values.add(new PropertyXmlItem(this, property, e.getValue(), null, document, lineno));
          }
          else
          {
-            String methodName = "set" + Character.toUpperCase(e.getKey().charAt(0)) + e.getKey().substring(1);
-            if (Reflections.methodExists(getJavaClass(), methodName))
-            {
-               Set<Method> methods = Reflections.getAllDeclaredMethods(getJavaClass());
-               for (Method m : methods)
-               {
-                  if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)
-                  {
-                     values.add(new PropertyXmlItem(this, e.getKey(), m, e.getValue(), document, lineno));
-                     break;
-                  }
-               }
-            }
-            else
-            {
-               throw new XmlConfigurationException("Could not resolve field: " + e.getKey(), document, lineno);
-            }
+            throw new XmlConfigurationException("Could not resolve field: " + e.getKey(), document, lineno);
          }
-
       }
       return values;
    }
@@ -126,7 +114,7 @@ public class ClassXmlItem extends AbstractXmlItem
       // get all the field values from the bean
       Set<String> configuredFields = new HashSet<String>();
       List<FieldValueObject> fields = new ArrayList<FieldValueObject>();
-      for (AbstractFieldXmlItem xi : getChildrenOfType(AbstractFieldXmlItem.class))
+      for (PropertyXmlItem xi : getChildrenOfType(PropertyXmlItem.class))
       {
          inlineBeans.addAll(xi.getInlineBeans());
          FieldValueObject f = xi.getFieldValue();
@@ -137,7 +125,7 @@ public class ClassXmlItem extends AbstractXmlItem
          }
       }
 
-      for (AbstractFieldXmlItem f : getShorthandFieldValues())
+      for (PropertyXmlItem f : getShorthandFieldValues())
       {
          if (configuredFields.contains(f.getFieldName()))
          {
@@ -170,12 +158,19 @@ public class ClassXmlItem extends AbstractXmlItem
             constList.add(item);
          }
       }
-      for (FieldXmlItem item : getChildrenOfType(FieldXmlItem.class))
+      for (PropertyXmlItem item : getChildrenOfType(PropertyXmlItem.class))
       {
-         for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
+         if (item.getField() != null)
          {
-            Annotation a = AnnotationUtils.createAnnotation(fi);
-            type.addToField(item.getField(), a);
+            for (AnnotationXmlItem fi : item.getChildrenOfType(AnnotationXmlItem.class))
+            {
+               Annotation a = AnnotationUtils.createAnnotation(fi);
+               type.addToField(item.getField(), a);
+            }
+         }
+         else if (!item.getChildrenOfType(AnnotationXmlItem.class).isEmpty())
+         {
+            throw new XmlConfigurationException("Property's that do not have an underlying field may not have annotations added to them", item.getDocument(), item.getLineno());
          }
       }
       for (MethodXmlItem item : getChildrenOfType(MethodXmlItem.class))
@@ -232,23 +227,13 @@ public class ClassXmlItem extends AbstractXmlItem
    {
       boolean override = !getChildrenOfType(ReplacesXmlItem.class).isEmpty();
       boolean extend = !getChildrenOfType(ModifiesXmlItem.class).isEmpty();
-      Field member;
-      try
-      {
-         member = VirtualProducerField.class.getField("field");
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-
-      BeanResultType beanType = BeanResultType.ADD;
       if (override || extend)
       {
          throw new XmlConfigurationException("A virtual producer field may not containe <override> or <extend> tags", getDocument(), getLineno());
       }
+      Field member = org.jboss.seam.xml.util.Reflections.getField(VirtualProducerField.class, "field");
       ClassXmlItem vclass = new ClassXmlItem(null, VirtualProducerField.class, Collections.EMPTY_MAP, document, lineno);
-      FieldXmlItem field = new FieldXmlItem(vclass, member, null, getJavaClass(), document, lineno);
+      PropertyXmlItem field = new PropertyXmlItem(vclass, Properties.createProperty(member), null, getJavaClass(), document, lineno);
       vclass.addChild(field);
       for (XmlItem i : this.getChildren())
       {

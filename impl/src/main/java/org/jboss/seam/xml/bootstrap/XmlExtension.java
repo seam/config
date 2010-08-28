@@ -129,7 +129,7 @@ public class XmlExtension implements Extension
          {
             for (String i : r.getProblems())
             {
-               errors.add(new RuntimeException(i));
+               errors.add(new Exception(i));
             }
          }
          for (BeanResult<?> b : r.getFlattenedBeans())

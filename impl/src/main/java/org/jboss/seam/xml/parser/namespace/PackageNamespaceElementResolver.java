@@ -21,8 +21,6 @@
  */
 package org.jboss.seam.xml.parser.namespace;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -30,7 +28,6 @@ import java.util.Set;
 
 import org.jboss.seam.xml.model.AnnotationXmlItem;
 import org.jboss.seam.xml.model.ClassXmlItem;
-import org.jboss.seam.xml.model.FieldXmlItem;
 import org.jboss.seam.xml.model.MethodXmlItem;
 import org.jboss.seam.xml.model.ParameterXmlItem;
 import org.jboss.seam.xml.model.PropertyXmlItem;
@@ -40,6 +37,10 @@ import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.util.Reflections;
+import org.jboss.weld.extensions.util.properties.Property;
+import org.jboss.weld.extensions.util.properties.query.NamedPropertyCriteria;
+import org.jboss.weld.extensions.util.properties.query.PropertyQueries;
+import org.jboss.weld.extensions.util.properties.query.PropertyQuery;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
@@ -121,34 +122,22 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
    public static XmlItem resolveMethodOrField(String name, XmlItem parent, String innerText, String document, int lineno)
    {
       Class<?> p = parent.getJavaClass();
-      Field f = null;
       boolean methodFound = Reflections.methodExists(p, name);
-      f = Reflections.findDeclaredField(p, name);
+      PropertyQuery<Object> query = PropertyQueries.createQuery(parent.getJavaClass());
+      query.addCriteria(new NamedPropertyCriteria(name));
+      Property<?> property = query.getFirstResult();
 
-      if (methodFound && f != null)
+      if (methodFound && property != null)
       {
-         throw new XmlConfigurationException(parent.getJavaClass().getName() + " has both a method and a field named " + name + " and so cannot be configured via XML", document, lineno);
+         throw new XmlConfigurationException(parent.getJavaClass().getName() + " has both a method and a property named " + name + " and so cannot be configured via XML", document, lineno);
       }
       if (methodFound)
       {
          return new MethodXmlItem(parent, name, document, lineno);
       }
-      else if (f != null)
+      else if (property != null)
       {
-         return new FieldXmlItem(parent, f, innerText, null, document, lineno);
-      }
-
-      String methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
-      if (Reflections.methodExists(p, methodName))
-      {
-         Set<Method> methods = Reflections.getAllDeclaredMethods(p);
-         for (Method m : methods)
-         {
-            if (m.getName().equals(methodName) && m.getParameterTypes().length == 1)
-            {
-               return new PropertyXmlItem(parent, name, m, innerText, document, lineno);
-            }
-         }
+         return new PropertyXmlItem(parent, property, innerText, null, document, lineno);
       }
       return null;
    }

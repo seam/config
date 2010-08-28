@@ -21,29 +21,55 @@
  */
 package org.jboss.seam.xml.model;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import javax.enterprise.inject.spi.BeanManager;
+
+import org.jboss.seam.xml.core.BeanResult;
+import org.jboss.seam.xml.fieldset.ArrayFieldSet;
+import org.jboss.seam.xml.fieldset.CollectionFieldSet;
 import org.jboss.seam.xml.fieldset.ConstantFieldValue;
 import org.jboss.seam.xml.fieldset.ELFieldValue;
 import org.jboss.seam.xml.fieldset.FieldValue;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
+import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
-import org.jboss.weld.extensions.util.properties.Properties;
+import org.jboss.seam.xml.util.TypeOccuranceInformation;
+import org.jboss.seam.xml.util.XmlConfigurationException;
+import org.jboss.weld.extensions.util.properties.Property;
 
-public class PropertyXmlItem extends AbstractFieldXmlItem
+public class PropertyXmlItem extends AbstractXmlItem
 {
+   private final Property<?> property;
+   private final HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
+   private final Class<?> fieldType;
+   private final List<BeanResult<?>> inlineBeans = new ArrayList<BeanResult<?>>();
 
-   private final String name;
-   private final Class<?> type;
-   private final Class<?> declaringClass;
+   private FieldValueObject fieldValue;
 
-   public PropertyXmlItem(XmlItem parent, String name, Method setter, String innerText, String document, int lineno)
+   public PropertyXmlItem(XmlItem parent, Property<?> property, String innerText, String document, int lineno)
    {
-      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, null, document, lineno);
-      this.name = name;
-      this.type = setter.getParameterTypes()[0];
-      this.declaringClass = setter.getDeclaringClass();
-      this.property = Properties.createProperty(setter);
+      this(parent, property, innerText, null, document, lineno);
+   }
+
+   public PropertyXmlItem(XmlItem parent, Property<?> property, String innerText, Class<?> overridenFieldType, String document, int lineno)
+   {
+      super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, document, lineno);
+      this.property = property;
+      if (overridenFieldType == null)
+      {
+         this.fieldType = property.getJavaClass();
+      }
+      else
+      {
+         this.fieldType = overridenFieldType;
+      }
       if (innerText != null && innerText.length() > 0)
       {
          FieldValue fv;
@@ -55,8 +81,11 @@ public class PropertyXmlItem extends AbstractFieldXmlItem
          {
             fv = new ConstantFieldValue(innerText);
          }
-         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, fv, null);
+         fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, fv, fieldType);
       }
+      allowed.add(new TypeOccuranceInformation(XmlItemType.VALUE, null, null));
+      allowed.add(new TypeOccuranceInformation(XmlItemType.ANNOTATION, null, null));
+      allowed.add(new TypeOccuranceInformation(XmlItemType.ENTRY, null, null));
    }
 
    public FieldValueObject getFieldValue()
@@ -65,21 +94,137 @@ public class PropertyXmlItem extends AbstractFieldXmlItem
    }
 
    @Override
+   public boolean resolveChildren(BeanManager manager)
+   {
+      List<EntryXmlItem> mapEntries = new ArrayList<EntryXmlItem>();
+      List<ValueXmlItem> valueEntries = new ArrayList<ValueXmlItem>();
+      if (fieldValue == null)
+      {
+         for (XmlItem i : children)
+         {
+            if (i.getType() == XmlItemType.VALUE)
+            {
+               valueEntries.add((ValueXmlItem) i);
+            }
+            else if (i.getType() == XmlItemType.ENTRY)
+            {
+               mapEntries.add((EntryXmlItem) i);
+            }
+
+         }
+      }
+      if (!mapEntries.isEmpty() || !valueEntries.isEmpty())
+      {
+         if (Map.class.isAssignableFrom(getFieldType()))
+         {
+            if (!valueEntries.isEmpty())
+            {
+               throw new XmlConfigurationException("Map fields cannot have <value> elements as children,only <entry> elements Field:" + getDeclaringClass().getName() + '.' + getFieldName(), getDocument(), getLineno());
+            }
+            if (!mapEntries.isEmpty())
+            {
+               for (EntryXmlItem entry : mapEntries)
+               {
+                  // resolve inline beans if nessesary
+                  Set<BeanResult<?>> beans = entry.getBeanResults(manager);
+                  inlineBeans.addAll(beans);
+
+               }
+               fieldValue = new MapFieldSet(property, mapEntries);
+            }
+         }
+         else if (Collection.class.isAssignableFrom(getFieldType()) || getFieldType().isArray())
+         {
+            if (!mapEntries.isEmpty())
+            {
+               throw new XmlConfigurationException("Collection fields must be set using <value> not <entry> Field:" + getDeclaringClass().getName() + '.' + getFieldName(), getDocument(), getLineno());
+            }
+            if (!valueEntries.isEmpty())
+            {
+               for (ValueXmlItem value : valueEntries)
+               {
+                  // resolve inline beans if nessesary
+                  BeanResult<?> result = value.getBeanResult(manager);
+                  if (result != null)
+                  {
+                     inlineBeans.add(result);
+                  }
+               }
+               if (getFieldType().isArray())
+               {
+                  fieldValue = new ArrayFieldSet(property, valueEntries);
+               }
+               else
+               {
+                  fieldValue = new CollectionFieldSet(property, valueEntries);
+               }
+            }
+         }
+         else
+         {
+            if (!mapEntries.isEmpty())
+            {
+               throw new XmlConfigurationException("Only Map fields can be set using <entry> Field:" + getDeclaringClass().getName() + '.' + getFieldName(), getDocument(), getLineno());
+            }
+            if (valueEntries.size() != 1)
+            {
+               throw new XmlConfigurationException("Non collection fields can only have a single <value> element Field:" + getDeclaringClass().getName() + '.' + getFieldName(), getDocument(), getLineno());
+            }
+            ValueXmlItem value = valueEntries.get(0);
+            BeanResult<?> result = value.getBeanResult(manager);
+            fieldValue = new SimpleFieldValue(parent.getJavaClass(), property, value.getValue(), fieldType);
+            if (result != null)
+            {
+               inlineBeans.add(result);
+            }
+         }
+      }
+      return true;
+   }
+
+   /**
+    * Returns the field that corresponds to the property, or null if it does not
+    * exist
+    * 
+    * @return
+    */
+   public Field getField()
+   {
+      if (property.getMember() instanceof Field)
+      {
+         return (Field) property.getMember();
+      }
+      return org.jboss.seam.xml.util.Reflections.getField(parent.getJavaClass(), property.getName());
+   }
+
+   public Set<TypeOccuranceInformation> getAllowedItem()
+   {
+      return allowed;
+   }
+
+   public Collection<? extends BeanResult> getInlineBeans()
+   {
+      return inlineBeans;
+   }
+
    public Class<?> getDeclaringClass()
    {
-      return declaringClass;
+      return property.getDeclaringClass();
    }
 
-   @Override
    public String getFieldName()
    {
-      return name;
+      return property.getName();
    }
 
-   @Override
    public Class<?> getFieldType()
    {
-      return type;
+      return fieldType;
+   }
+
+   public Property<?> getProperty()
+   {
+      return property;
    }
 
 }
