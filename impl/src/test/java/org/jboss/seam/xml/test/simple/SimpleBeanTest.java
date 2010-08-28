@@ -21,6 +21,7 @@
  */
 package org.jboss.seam.xml.test.simple;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import javax.enterprise.inject.spi.Bean;
@@ -65,7 +66,7 @@ public class SimpleBeanTest extends AbstractXMLTest
    }
 
    @Test
-   public void testExtends()
+   public void testExtends() throws SecurityException, NoSuchMethodException
    {
       AnnotationLiteral<ExtendedQualifier1> e1 = new AnnotationLiteral<ExtendedQualifier1>()
       {
@@ -76,6 +77,7 @@ public class SimpleBeanTest extends AbstractXMLTest
 
       ExtendedBean ext = getReference(ExtendedBean.class, e1, e2);
       Assert.assertTrue(ext != null);
-
+      Method method = ext.getClass().getDeclaredMethod("getData");
+      method.getGenericReturnType();
    }
 }

@@ -21,8 +21,16 @@
  */
 package org.jboss.seam.xml.test.simple;
 
+import java.util.List;
+
+import javax.enterprise.context.ApplicationScoped;
+
 @ExtendedQualifier1
+@ApplicationScoped
 public class ExtendedBean
 {
-
+   public List<String> getData()
+   {
+      return null;
+   }
 }

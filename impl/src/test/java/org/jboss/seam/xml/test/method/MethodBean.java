@@ -40,10 +40,15 @@ public class MethodBean
    {
       return beans.length;
    }
-   
+
    public int method(Instance<MethodValueBean> bean)
    {
-	   return bean.get().getValue() + 1;
+      return bean.get().getValue() + 1;
+   }
+
+   public int method(Instance<MethodValueBean> bean, Instance<MethodValueBean> bean1)
+   {
+      return bean.get().getValue() + 1;
    }
 
 }

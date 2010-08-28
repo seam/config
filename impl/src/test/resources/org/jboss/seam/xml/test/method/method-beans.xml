@@ -46,6 +46,18 @@
                 </Instance>
             </parameters>
         </test:method>
+        <test:method>
+            <Produces />
+            <test:Qualifier2 />
+            <parameters>
+                <Instance>
+                    <test:Qualifier2 />
+                </Instance>
+                <Instance>
+                    <test:Qualifier2 />
+                </Instance>
+            </parameters>
+        </test:method>
     </test:MethodBean>
 
     <test:MethodTarget>
