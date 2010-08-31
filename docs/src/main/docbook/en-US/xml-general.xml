@@ -521,6 +521,54 @@ public @interface OtherQualifier {
     </section>
     
     <section>
+      <title>Virtual Producer Fields</title>
+      <para>
+         Seam XML supports configuration of virtual producer fields. These allow for configuration 
+         of resource producer fields, Weld Extensions generic bean and constant values directly via 
+         XML. First an exmaple:
+      </para>
+<programlisting role="XML" >
+<![CDATA[
+<s:EntityManager>
+  <s:Produces/>
+  <sPersistenceContext unitName="customerPu" />
+</s:EntityManager>
+
+<s:String>
+  <s:Produces/>
+  <my:VersionQualifier />
+  <value>Version 1.23</value>
+</s:String>
+]]>
+</programlisting>      
+      <para>
+         The first example configures a resource producer field. The second configures a bean
+         of type String, with the qualifier <literal>@VersionQualifier</literal> and the value
+         <literal>'Version 1.23'</literal>. The corresponding java for the above XML is:
+      </para>
+<programlisting role="java" >
+<![CDATA[
+public class SomeClass
+{
+
+  @Produces
+  @PersistenceContext(unitName="customerPu")
+  EntityManager field1;
+  
+  @Produces
+  @VersionQualifier
+  String field2 = "Version 1.23";
+
+}
+]]>
+</programlisting>       
+    <para>
+      Although these look superficially like normal bean declarations, the <literal>&lt;Produces&gt;</literal>
+      declaration means it is treated as a producer field instead of a normal bean.  
+    </para>
+    </section>
+    
+    <section>
         <title>More Information</title>
         <para>For further information look at the units tests in the seam-xml distribution, also the 
           JSR-299 Public Review Draft section on XML Configuration was the base for this extension, 
