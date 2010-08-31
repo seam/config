@@ -22,7 +22,7 @@
 package org.jboss.seam.xml.core;
 
 /**
- * This class used to reigister virtual producer fields
+ * The class used to register virtual producer fields
  * 
  * @author stuart
  * 

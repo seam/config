@@ -223,6 +223,12 @@ public class ClassXmlItem extends AbstractXmlItem
       return result;
    }
 
+   /**
+    * Builds up a bean result for a virtual producer field.
+    * 
+    * @param manager
+    * @return
+    */
    public BeanResult<?> createVirtualFieldBeanResult(BeanManager manager)
    {
       boolean override = !getChildrenOfType(ReplacesXmlItem.class).isEmpty();
