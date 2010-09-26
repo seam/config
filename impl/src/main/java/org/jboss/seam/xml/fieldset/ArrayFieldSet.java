@@ -29,7 +29,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.ValueXmlItem;
-import org.jboss.weld.extensions.util.properties.Property;
+import org.jboss.weld.extensions.properties.Property;
 
 /**
  * class responsible for setting the value of array properties.
@@ -39,11 +39,11 @@ import org.jboss.weld.extensions.util.properties.Property;
  */
 public class ArrayFieldSet implements FieldValueObject
 {
-   final private Property field;
+   final private Property<Object> field;
    final private List<FieldValue> values;
    final private Class<?> arrayType;
 
-   public ArrayFieldSet(Property<?> field, List<ValueXmlItem> items)
+   public ArrayFieldSet(Property<Object> field, List<ValueXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<FieldValue>();

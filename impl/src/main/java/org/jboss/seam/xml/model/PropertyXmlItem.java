@@ -42,23 +42,23 @@ import org.jboss.seam.xml.fieldset.MapFieldSet;
 import org.jboss.seam.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
-import org.jboss.weld.extensions.util.properties.Property;
+import org.jboss.weld.extensions.properties.Property;
 
 public class PropertyXmlItem extends AbstractXmlItem
 {
-   private final Property<?> property;
+   private final Property<Object> property;
    private final HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
    private final Class<?> fieldType;
    private final List<BeanResult<?>> inlineBeans = new ArrayList<BeanResult<?>>();
 
    private FieldValueObject fieldValue;
 
-   public PropertyXmlItem(XmlItem parent, Property<?> property, String innerText, String document, int lineno)
+   public PropertyXmlItem(XmlItem parent, Property<Object> property, String innerText, String document, int lineno)
    {
       this(parent, property, innerText, null, document, lineno);
    }
 
-   public PropertyXmlItem(XmlItem parent, Property<?> property, String innerText, Class<?> overridenFieldType, String document, int lineno)
+   public PropertyXmlItem(XmlItem parent, Property<Object> property, String innerText, Class<?> overridenFieldType, String document, int lineno)
    {
       super(XmlItemType.FIELD, parent, parent.getJavaClass(), innerText, null, document, lineno);
       this.property = property;

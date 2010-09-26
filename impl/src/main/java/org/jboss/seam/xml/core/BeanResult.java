@@ -26,8 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jboss.seam.xml.fieldset.FieldValueObject;
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
 import org.jboss.weld.extensions.core.Veto;
+import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
 
 public class BeanResult<X>
 {

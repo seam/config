@@ -38,7 +38,7 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.ValueXmlItem;
 import org.jboss.seam.xml.util.TypeReader;
-import org.jboss.weld.extensions.util.properties.Property;
+import org.jboss.weld.extensions.properties.Property;
 
 /**
  * class responsible for setting the value of collection properties.
@@ -51,12 +51,12 @@ import org.jboss.weld.extensions.util.properties.Property;
  */
 public class CollectionFieldSet implements FieldValueObject
 {
-   private final Property field;
+   private final Property<Object> field;
    private final List<FieldValue> values;
    private final Class<?> elementType;
    private final Class<? extends Collection> collectionType;
 
-   public CollectionFieldSet(Property field, List<ValueXmlItem> items)
+   public CollectionFieldSet(Property<Object> field, List<ValueXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<FieldValue>();

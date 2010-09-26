@@ -36,11 +36,11 @@ import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
-import org.jboss.weld.extensions.util.Reflections;
-import org.jboss.weld.extensions.util.properties.Property;
-import org.jboss.weld.extensions.util.properties.query.NamedPropertyCriteria;
-import org.jboss.weld.extensions.util.properties.query.PropertyQueries;
-import org.jboss.weld.extensions.util.properties.query.PropertyQuery;
+import org.jboss.weld.extensions.properties.Property;
+import org.jboss.weld.extensions.properties.query.NamedPropertyCriteria;
+import org.jboss.weld.extensions.properties.query.PropertyQueries;
+import org.jboss.weld.extensions.properties.query.PropertyQuery;
+import org.jboss.weld.extensions.reflection.Reflections;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {
@@ -125,7 +125,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       boolean methodFound = Reflections.methodExists(p, name);
       PropertyQuery<Object> query = PropertyQueries.createQuery(parent.getJavaClass());
       query.addCriteria(new NamedPropertyCriteria(name));
-      Property<?> property = query.getFirstResult();
+      Property<Object> property = query.getFirstResult();
 
       if (methodFound && property != null)
       {

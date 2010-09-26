@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
@@ -42,13 +42,13 @@ import org.jboss.seam.xml.core.VirtualProducerField;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
-import org.jboss.weld.extensions.annotated.AnnotatedTypeBuilder;
-import org.jboss.weld.extensions.util.Reflections;
-import org.jboss.weld.extensions.util.properties.Properties;
-import org.jboss.weld.extensions.util.properties.Property;
-import org.jboss.weld.extensions.util.properties.query.NamedPropertyCriteria;
-import org.jboss.weld.extensions.util.properties.query.PropertyQueries;
-import org.jboss.weld.extensions.util.properties.query.PropertyQuery;
+import org.jboss.weld.extensions.properties.Properties;
+import org.jboss.weld.extensions.properties.Property;
+import org.jboss.weld.extensions.properties.query.NamedPropertyCriteria;
+import org.jboss.weld.extensions.properties.query.PropertyQueries;
+import org.jboss.weld.extensions.properties.query.PropertyQuery;
+import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
 
 public class ClassXmlItem extends AbstractXmlItem
 {
@@ -80,7 +80,7 @@ public class ClassXmlItem extends AbstractXmlItem
       {
          PropertyQuery<Object> query = PropertyQueries.createQuery(getJavaClass());
          query.addCriteria(new NamedPropertyCriteria(e.getKey()));
-         Property<?> property = query.getFirstResult();
+         Property<Object> property = query.getFirstResult();
          if (property != null)
          {
             values.add(new PropertyXmlItem(this, property, e.getValue(), null, document, lineno));

@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -55,7 +55,7 @@ import org.jboss.seam.xml.model.ModelBuilder;
 import org.jboss.seam.xml.parser.ParserMain;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.FileDataReader;
-import org.jboss.weld.extensions.util.AnnotationInstanceProvider;
+import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

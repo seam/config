@@ -24,7 +24,7 @@ package org.jboss.seam.xml.fieldset;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.weld.extensions.util.properties.Property;
+import org.jboss.weld.extensions.properties.Property;
 
 /**
  * Field value object for a simple field
@@ -35,13 +35,13 @@ import org.jboss.weld.extensions.util.properties.Property;
 public class SimpleFieldValue implements FieldValueObject
 {
 
-   private final Property field;
+   private final Property<Object> field;
 
    private final FieldValue value;
 
    private final Class<?> type;
 
-   public SimpleFieldValue(Class<?> javaObject, final Property<?> f, FieldValue value, Class<?> type)
+   public SimpleFieldValue(Class<?> javaObject, final Property<Object> f, FieldValue value, Class<?> type)
    {
       this.field = f;
       this.value = value;

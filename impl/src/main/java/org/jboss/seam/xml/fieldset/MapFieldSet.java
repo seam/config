@@ -28,16 +28,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.xml.model.EntryXmlItem;
 import org.jboss.seam.xml.util.TypeReader;
-import org.jboss.weld.extensions.util.properties.Property;
+import org.jboss.weld.extensions.properties.Property;
 
 /**
  * class responsible for setting the value of map properties.
@@ -48,13 +48,13 @@ import org.jboss.weld.extensions.util.properties.Property;
  */
 public class MapFieldSet implements FieldValueObject
 {
-   private final Property field;
+   private final Property<Object> field;
    private final List<Entry<FieldValue, FieldValue>> values;
    private final Class<?> keyType;
    private final Class<?> valueType;
    private final Class<? extends Map> collectionType;
 
-   public MapFieldSet(Property field, List<EntryXmlItem> items)
+   public MapFieldSet(Property<Object> field, List<EntryXmlItem> items)
    {
       this.field = field;
       this.values = new ArrayList<Entry<FieldValue, FieldValue>>();
