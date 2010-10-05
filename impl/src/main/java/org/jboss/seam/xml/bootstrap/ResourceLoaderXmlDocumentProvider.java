@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -88,7 +88,7 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
 
       for (String i : resources)
       {
-         Set<URL> e = manager.getResources(i);
+         Collection<URL> e = manager.getResources(i);
          docs.addAll(e);
       }
       iterator = docs.listIterator();
