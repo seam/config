@@ -429,8 +429,7 @@ int method(MethodValueBean[] param);
     <s:array>
       <test:MethodValueBean/>
     </s:array>
-</test:method>
-        ]]>
+</test:method>]]>
         </programlisting>
     </section>
    <section>

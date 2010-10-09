@@ -202,7 +202,7 @@ public class PropertyXmlItem extends AbstractXmlItem
       return allowed;
    }
 
-   public Collection<? extends BeanResult> getInlineBeans()
+   public Collection<? extends BeanResult<?>> getInlineBeans()
    {
       return inlineBeans;
    }

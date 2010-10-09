@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -42,7 +42,6 @@ import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Named;
 
 import org.jboss.seam.xml.core.BeanResult;
@@ -62,24 +61,24 @@ import org.slf4j.LoggerFactory;
 public class XmlExtension implements Extension
 {
 
-   AnnotationInstanceProvider ac = new AnnotationInstanceProvider();
+   private AnnotationInstanceProvider annotationInstanceProvider = new AnnotationInstanceProvider();
 
    static final String PROVIDERS_FILE = "META-INF/services/org.jboss.seam.xml.XmlExtension";
 
-   List<XmlResult> results = new ArrayList<XmlResult>();
+   private List<XmlResult> results = new ArrayList<XmlResult>();
 
-   Set<Class<?>> veto = new HashSet<Class<?>>();
+   private Set<Class<?>> veto = new HashSet<Class<?>>();
 
-   int count = 0;
+   private int count = 0;
 
    private static final Logger log = LoggerFactory.getLogger(XmlExtension.class);
 
    /**
     * map of syntetic bean id to a list of field value objects
     */
-   Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
+   private Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
 
-   List<Exception> errors = new ArrayList<Exception>();
+   private List<Exception> errors = new ArrayList<Exception>();
 
    /**
     * This is the entry point for the extension
@@ -114,12 +113,21 @@ public class XmlExtension implements Extension
       // build the generic bean data
       for (XmlResult r : results)
       {
-         // add the qualifiers as we need them before we process the generic
-         // bean info
+         // add the qualifiers etc first
          for (Class<? extends Annotation> b : r.getQualifiers())
          {
             log.info("Adding XML Defined Qualifier: " + b.getName());
             event.addQualifier(b);
+         }
+         for (Class<? extends Annotation> b : r.getInterceptorBindings())
+         {
+            log.info("Adding XML Defined Interceptor Binding: " + b.getName());
+            event.addInterceptorBinding(b);
+         }
+         for (Entry<Class<? extends Annotation>, Annotation[]> b : r.getStereotypes().entrySet())
+         {
+            log.info("Adding XML Defined Stereotype: " + b.getKey().getName());
+            event.addStereotype(b.getKey(), b.getValue());
          }
       }
 
@@ -140,27 +148,14 @@ public class XmlExtension implements Extension
                fieldValues.put(val, b.getFieldValues());
                Map<String, Object> am = new HashMap<String, Object>();
                am.put("value", val);
-               Annotation a = ac.get(XmlId.class, am);
-               b.getBuilder().addToClass(a);
+               Annotation a = annotationInstanceProvider.get(XmlId.class, am);
+               b.addToClass(a);
             }
          }
 
-         for (Class<? extends Annotation> b : r.getInterceptorBindings())
-         {
-            log.info("Adding XML Defined Interceptor Binding: " + b.getName());
-            event.addInterceptorBinding(b);
-         }
-         for (Entry<Class<? extends Annotation>, Annotation[]> b : r.getStereotypes().entrySet())
-         {
-            log.info("Adding XML Defined Stereotype: " + b.getKey().getName());
-            event.addStereotype(b.getKey(), b.getValue());
-         }
          for (BeanResult<?> bb : r.getFlattenedBeans())
          {
-            bb.getBuilder().addToClass(new AnnotationLiteral<XmlConfiguredBean>()
-            {
-            });
-            AnnotatedType<?> tp = bb.getBuilder().create();
+            AnnotatedType<?> tp = bb.getAnnotatedType();
             log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
             event.addAnnotatedType(tp);
          }

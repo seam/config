@@ -21,9 +21,20 @@
  */
 package org.jboss.seam.xml.core;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.enterprise.context.NormalScope;
+import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Scope;
 
 import org.jboss.seam.xml.fieldset.FieldValueObject;
 import org.jboss.weld.extensions.core.Veto;
@@ -37,10 +48,18 @@ public class BeanResult<X>
    private final List<FieldValueObject> fieldValues;
    private final List<BeanResult<?>> inlineBeans;
 
-   public BeanResult(Class<X> type, boolean readAnnotations, BeanResultType beanType, List<FieldValueObject> fieldValues, List<BeanResult<?>> inlineBeans)
+   private final BeanManager beanManager;
+
+   private final Map<Method, Annotation> methodScopeOverrides;
+   private final Map<Field, Annotation> fieldScopeOverrides;
+   private Annotation beanScopeOverride = null;
+
+   public BeanResult(Class<X> type, boolean readAnnotations, BeanResultType beanType, List<FieldValueObject> fieldValues, List<BeanResult<?>> inlineBeans, BeanManager beanManager)
    {
+      this.beanManager = beanManager;
       this.type = type;
-      builder = new AnnotatedTypeBuilder().setJavaClass(type);
+      builder = new AnnotatedTypeBuilder<X>().setJavaClass(type);
+      builder.addToClass(XmlConfiguredBeanLiteral.INSTANCE);
       if (readAnnotations)
       {
          builder.readFromType(type);
@@ -50,16 +69,13 @@ public class BeanResult<X>
       this.beanType = beanType;
       this.fieldValues = new ArrayList<FieldValueObject>(fieldValues);
       this.inlineBeans = new ArrayList<BeanResult<?>>(inlineBeans);
+      methodScopeOverrides = new HashMap<Method, Annotation>();
+      fieldScopeOverrides = new HashMap<Field, Annotation>();
    }
 
    public List<BeanResult<?>> getInlineBeans()
    {
       return inlineBeans;
-   }
-
-   public AnnotatedTypeBuilder<X> getBuilder()
-   {
-      return builder;
    }
 
    public Class<X> getType()
@@ -75,6 +91,59 @@ public class BeanResult<X>
    public List<FieldValueObject> getFieldValues()
    {
       return Collections.unmodifiableList(fieldValues);
+   }
+
+   public void addToClass(Annotation annotation)
+   {
+      // TODO: this should be done with the BeanManager one WELD-721 is resolved
+      if (annotation.annotationType().isAnnotationPresent(Scope.class) || annotation.annotationType().isAnnotationPresent(NormalScope.class))
+      {
+         beanScopeOverride = annotation;
+      }
+      builder.addToClass(annotation);
+   }
+
+   public void addToField(Field field, Annotation annotation)
+   {
+      if (annotation.annotationType().isAnnotationPresent(Scope.class) || annotation.annotationType().isAnnotationPresent(NormalScope.class))
+      {
+         fieldScopeOverrides.put(field, annotation);
+      }
+      builder.addToField(field, annotation);
+   }
+
+   public void addToMethod(Method method, Annotation annotation)
+   {
+      if (annotation.annotationType().isAnnotationPresent(Scope.class) || annotation.annotationType().isAnnotationPresent(NormalScope.class))
+      {
+         methodScopeOverrides.put(method, annotation);
+      }
+      builder.addToMethod(method, annotation);
+   }
+
+   public void addToMethodParameter(Method method, int param, Annotation annotation)
+   {
+      builder.addToMethodParameter(method, param, annotation);
+   }
+
+   public void addToConstructor(Constructor<?> constructor, Annotation annotation)
+   {
+      builder.addToConstructor((Constructor) constructor, annotation);
+   }
+
+   public void addToConstructorParameter(Constructor<?> constructor, int param, Annotation annotation)
+   {
+      builder.addToConstructorParameter((Constructor) constructor, param, annotation);
+   }
+
+   public void overrideFieldType(Field field, Class<?> javaClass)
+   {
+      builder.overrideFieldType(field, javaClass);
+   }
+
+   public AnnotatedType<?> getAnnotatedType()
+   {
+      return builder.create();
    }
 
 }
