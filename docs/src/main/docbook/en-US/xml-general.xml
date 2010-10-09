@@ -424,8 +424,7 @@ public class MethodBean {
 int method(MethodValueBean[] param);
          </programlisting>        
         <para>could be configured via xml using the following:</para>
-        <programlisting role="XML">
-            <![CDATA[
+        <programlisting role="XML"><![CDATA[
 <test:method>
     <s:array>
       <test:MethodValueBean/>
@@ -434,7 +433,33 @@ int method(MethodValueBean[] param);
         ]]>
         </programlisting>
     </section>
-    
+   <section>
+      <title>Configuring the bean constructor</title>
+      <para>
+         It is also possible to configure the bean constructor in a similar manner. This is done with a 
+         <code>&lt;s:parameters&gt;</code> element directly on the bean element. The constructor is 
+         resolved in the same way methods are resolved. This constructor will automatically have the 
+         <code>@Inject</code> annotation applied to it. Annotations can be applied to the constructor 
+         parameters in the same manner as method parameters.
+      </para>
+      <programlisting role="XML"><![CDATA[<test:MyBean>
+   <s:parameters>
+         <s:Integer>
+            <test:MyQualifier/>
+         </s:Integer>
+   </s:parameters>      
+</test:MyBean>]]></programlisting>
+      <para>
+         The example above is equivilent to the following java:
+      </para>      
+      <programlisting role="JAVA">class MyBean {
+   @Inject   
+   MyBean(@MyQualifier Integer count)
+   {
+      ...
+   }      
+}      </programlisting>      
+   </section>    
     <section>
         <title>Overriding the type of an injection point</title>
         
