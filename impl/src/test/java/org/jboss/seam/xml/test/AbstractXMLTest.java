@@ -73,8 +73,8 @@ public abstract class AbstractXMLTest
          bs.append("]");
          throw new RuntimeException("More than one bean found with class: " + clazz + " and bindings " + bs);
       }
-      Bean bean = beans.iterator().next();
-      return (T) bean.create(manager.createCreationalContext(bean));
+      Bean<?> bean = beans.iterator().next();
+      return (T) manager.getReference(bean, clazz, manager.createCreationalContext(bean));
    }
 
 }
