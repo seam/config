@@ -33,4 +33,8 @@
          <test:ExtendedQualifier2/>
     </test:ExtendedBean>
           
+    <test:ScopeOverrideBean>
+      <modifies/>
+      <ApplicationScoped/>
+    </test:ScopeOverrideBean>      
 </beans>

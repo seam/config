@@ -27,9 +27,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.enterprise.context.NormalScope;
 import javax.enterprise.inject.spi.AnnotatedType;
@@ -50,10 +48,6 @@ public class BeanResult<X>
 
    private final BeanManager beanManager;
 
-   private final Map<Method, Annotation> methodScopeOverrides;
-   private final Map<Field, Annotation> fieldScopeOverrides;
-   private Annotation beanScopeOverride = null;
-
    public BeanResult(Class<X> type, boolean readAnnotations, BeanResultType beanType, List<FieldValueObject> fieldValues, List<BeanResult<?>> inlineBeans, BeanManager beanManager)
    {
       this.beanManager = beanManager;
@@ -69,8 +63,6 @@ public class BeanResult<X>
       this.beanType = beanType;
       this.fieldValues = new ArrayList<FieldValueObject>(fieldValues);
       this.inlineBeans = new ArrayList<BeanResult<?>>(inlineBeans);
-      methodScopeOverrides = new HashMap<Method, Annotation>();
-      fieldScopeOverrides = new HashMap<Field, Annotation>();
    }
 
    public List<BeanResult<?>> getInlineBeans()
@@ -98,7 +90,15 @@ public class BeanResult<X>
       // TODO: this should be done with the BeanManager one WELD-721 is resolved
       if (annotation.annotationType().isAnnotationPresent(Scope.class) || annotation.annotationType().isAnnotationPresent(NormalScope.class))
       {
-         beanScopeOverride = annotation;
+         // if the user is adding a new scope we need to remove any existing
+         // ones
+         for (Annotation typeAnnotation : type.getAnnotations())
+         {
+            if (typeAnnotation.annotationType().isAnnotationPresent(Scope.class) || typeAnnotation.annotationType().isAnnotationPresent(NormalScope.class))
+            {
+               builder.removeFromClass(typeAnnotation.annotationType());
+            }
+         }
       }
       builder.addToClass(annotation);
    }
@@ -107,7 +107,13 @@ public class BeanResult<X>
    {
       if (annotation.annotationType().isAnnotationPresent(Scope.class) || annotation.annotationType().isAnnotationPresent(NormalScope.class))
       {
-         fieldScopeOverrides.put(field, annotation);
+         for (Annotation typeAnnotation : field.getAnnotations())
+         {
+            if (typeAnnotation.annotationType().isAnnotationPresent(Scope.class) || typeAnnotation.annotationType().isAnnotationPresent(NormalScope.class))
+            {
+               builder.removeFromField(field, typeAnnotation.annotationType());
+            }
+         }
       }
       builder.addToField(field, annotation);
    }
@@ -116,7 +122,13 @@ public class BeanResult<X>
    {
       if (annotation.annotationType().isAnnotationPresent(Scope.class) || annotation.annotationType().isAnnotationPresent(NormalScope.class))
       {
-         methodScopeOverrides.put(method, annotation);
+         for (Annotation typeAnnotation : method.getAnnotations())
+         {
+            if (typeAnnotation.annotationType().isAnnotationPresent(Scope.class) || typeAnnotation.annotationType().isAnnotationPresent(NormalScope.class))
+            {
+               builder.removeFromMethod(method, typeAnnotation.annotationType());
+            }
+         }
       }
       builder.addToMethod(method, annotation);
    }
