@@ -63,7 +63,7 @@ public class XmlExtension implements Extension
 
    private AnnotationInstanceProvider annotationInstanceProvider = new AnnotationInstanceProvider();
 
-   static final String PROVIDERS_FILE = "META-INF/services/org.jboss.seam.xml.XmlExtension";
+   static final String PROVIDERS_FILE = "META-INF/services/" + XmlDocumentProvider.class.getName();
 
    private List<XmlResult> results = new ArrayList<XmlResult>();
 
