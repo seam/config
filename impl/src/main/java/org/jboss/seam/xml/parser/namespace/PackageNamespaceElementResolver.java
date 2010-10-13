@@ -21,6 +21,9 @@
  */
 package org.jboss.seam.xml.parser.namespace;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -137,6 +140,19 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       }
       else if (property != null)
       {
+         // ensure the property is accessible
+         Member member = property.getMember();
+         if (member instanceof Field)
+         {
+            Field field = (Field) member;
+            field.setAccessible(true);
+         }
+         else if (member instanceof Method)
+         {
+            Method method = (Method) member;
+            method.setAccessible(true);
+         }
+
          return new PropertyXmlItem(parent, property, innerText, null, document, lineno);
       }
       return null;

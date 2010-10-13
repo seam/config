@@ -226,6 +226,7 @@ public class ClassXmlItem extends AbstractXmlItem
          throw new XmlConfigurationException("A virtual producer field may not containe <override> or <extend> tags", getDocument(), getLineno());
       }
       Field member = org.jboss.seam.xml.util.Reflections.getField(VirtualProducerField.class, "field");
+      member.setAccessible(true);
       ClassXmlItem vclass = new ClassXmlItem(null, VirtualProducerField.class, Collections.<String, String> emptyMap(), document, lineno);
       PropertyXmlItem field = new PropertyXmlItem(vclass, Properties.createProperty(member), null, getJavaClass(), document, lineno);
       vclass.addChild(field);
