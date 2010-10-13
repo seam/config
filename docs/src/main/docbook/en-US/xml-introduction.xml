@@ -2,85 +2,102 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="introduction">
-  <title>Seam XML Introduction</title>
-  
-  <para>Seam provides a method for configuring JSR-299 beans using XML. Using XML it is possible to add new beans, override existing beans, and add 
-  extra configuration to existing beans. The default is to add a new bean.
-  </para>
-  
- <section>
-    <title>Getting Started</title>
-    <para>No special configuration is required, all that is required is to include the jar file and the weld extensions jar in your deployment. </para>
-    <para>The first thing we need is some xml files, by default these are discovered from the classpath in the following locations:</para>
-    <itemizedlist>
-	    <listitem><literal>/META-INF/beans.xml</literal></listitem>
-	    <listitem><literal>/WEB-INF/classes/seam-beans.xml</literal></listitem>
-	    <listitem><literal>/META-INF/seam-beans.xml</literal></listitem>
-	    <listitem><literal>/seam-beans.xml</literal></listitem>
-    </itemizedlist>
-    <warning>
-    	<para>It is currently not possible to load beans.xml from WEB-INF. This will be addressed before the final release of seam-xml.</para>
-    </warning>
+   <title>Seam XML Introduction</title>
 
-    <para>The <literal>beans.xml</literal> file is the preferred way of configuring beans via XML, however it may be possible that some JSR-299 implementations will not allow this, 
-    so <literal>seam-beans.xml</literal> is provided as an alternative. </para>
-    
-    <para>Let's start with a simple example. Say we have the following class that represents a report:</para>
-	<programlisting role="JAVA"><![CDATA[
-public class Report
-{
+   <para>
+      Seam provides a method for configuring JSR-299 beans using XML. Using XML
+      it is possible to add new beans, override existing beans, and add
+      extra configuration to existing beans. The default is to add a new
+      bean.
+  </para>
+
+   <section>
+      <title>Getting Started</title>
+      <para>No special configuration is required, all that is required
+         is to include the jar file and the weld extensions jar in your
+         deployment. </para>
+      <para>The first thing we need is some xml files, by default these
+         are discovered from the classpath in the following locations:</para>
+      <itemizedlist>
+         <listitem>
+            <literal>/META-INF/beans.xml</literal>
+         </listitem>
+         <listitem>
+            <literal>/WEB-INF/beans.xml</literal>
+         </listitem>
+         <listitem>
+            <literal>/WEB-INF/seam-beans.xml</literal>
+         </listitem>
+         <listitem>
+            <literal>/META-INF/seam-beans.xml</literal>
+         </listitem>
+      </itemizedlist>
+
+      <para>
+         The <literal>beans.xml</literal> file is the preferred way of 
+         configuring beans via XML, however it may be possible that 
+         some JSR-299 implementations will not allow this, so
+         <literal>seam-beans.xml</literal> is provided as an alternative.
+      </para>
+
+      <para>
+         Let's start with a simple example. Say we have the following
+         class that represents a report:
+      </para>
+      <programlisting role="JAVA"><![CDATA[class Report {
 	String filename;
 	
 	@Inject
 	Datasource datasource;
 	
 	//getters and setters
-}
-]]></programlisting>
-    <para>And the following support classes:</para>
-	<programlisting role="JAVA">
-    <![CDATA[
-public interface Datasource
-{
+}]]></programlisting>
+
+      <para>
+         And the following support classes:
+      </para>
+      <programlisting role="JAVA">
+    <![CDATA[interface Datasource {
 	public Data getData();
 }
 
 @SalesQualifier
-public class SalesDatasource implements Datasource
-{
+class SalesDatasource implements Datasource {
   public Data getData()
   {
   	//return sales data
   }
 }
 
-public class BillingDatasource implements Datasource
-{
+class BillingDatasource implements Datasource {
   public Data getData()
   {
   	//return billing data
   }
-}
+}]]></programlisting>
 
-]]>
-    </programlisting>    
-    
-    <para>Our <literal>Report</literal> bean is fairly simple. It has a filename that tells the report engine where to load the report definition from, and a datasource that provides the data used to 
-    fill the report. We are going to configure up multiple <literal>Report</literal> beans via xml.</para>
-    <programlistingco>
-      <areaspec>
-                   <area id="namepsace-declaration-seam" coords="6"/>
-                   <area id="namepsace-declaration-reports" coords="7"/>
-                   <area id="resport-dec" coords="9"/>
-                   <area id="specializes" coords="10"/>
-                   <area id="filename" coords="11"/>
-                   <area id="datasource-qualifier" coords="13"/>
-                   <area id="filename-short" coords="17"/>
-                   <area id="replaces" coords="18"/>
-                   <area id="inject" coords="20"/>
-                   <area id="datasource-type" coords="21"/>
-       </areaspec>
-                        <programlisting role="XML">
+      <para>
+         Our <code>Report</code> bean is fairly simple. It has a 
+         filename that tells the report engine where to load the 
+         report definition from, and a datasource that provides 
+         the data used to fill the report. We are going to 
+         configure up multiple <literal>Report</literal>
+         beans via xml.
+      </para>
+      <programlistingco>
+         <areaspec>
+            <area id="namepsace-declaration-seam" coords="6" />
+            <area id="namepsace-declaration-reports" coords="7" />
+            <area id="resport-dec" coords="9" />
+            <area id="specializes" coords="10" />
+            <area id="filename" coords="11" />
+            <area id="datasource-qualifier" coords="13" />
+            <area id="filename-short" coords="17" />
+            <area id="replaces" coords="18" />
+            <area id="inject" coords="20" />
+            <area id="datasource-type" coords="21" />
+         </areaspec>
+         <programlisting role="XML">
     <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
@@ -105,54 +122,106 @@ public class BillingDatasource implements Datasource
   	</r:Report>  	
 </beans>
     ]]>
-    </programlisting>
-    <calloutlist>
-                            <callout arearefs="namepsace-declaration-seam">
-                                <para>The namespace <literal>urn:java:ee</literal> is seam-xml's root namespace. This is where the builtin tags and CDI annotations live.</para>
-                            </callout>
-                            <callout arearefs="namepsace-declaration-reports">
-                                <para>The namespace <literal>urn:java:org.example.reports</literal> corresponds to the package <literal>org.example.reports</literal>, where our reporting classes live.</para>
-                            </callout>
-                            <callout arearefs="resport-dec">
-                                <para>The <literal>&lt;Report&gt;</literal> declaration configures an instance of our <literal>Report</literal> class as a bean.</para>
-                            </callout>
-                            <callout arearefs="specializes">
-                                <para>Beans installed using <literal>&lt;s:specializes&gt;</literal> read annotations from the existing class, and merge them with the annotations defined via xml.
-                                 In addition if a bean is installed with <literal>&lt;s:specializes&gt;</literal> it prevents the original class being installed as a bean.</para>
-                            </callout>
-                            <callout arearefs="filename">
-                                <para>The <literal>&lt;r:filename&gt;</literal> element sets the initial value of the filename field.</para>
-                            </callout>
-                            <callout arearefs="datasource-qualifier">
-                                <para>The <literal>&lt;r:SalesQualifier&gt;</literal> element applies the <literal>@SalesQualifier</literal> to the <literal>datasource</literal> field. 
-                                As the field already has an <literal>@Inject</literal> on the class definition this will cause the <literal>SalesDatasource</literal>
-                                bean to be injected.</para>
-                            </callout>
-                            <callout arearefs="filename-short">
-                                <para>This is the shorthand syntax for setting a field value.</para>
-                            </callout>
-                            <callout arearefs="replaces">
-                                <para>Beans installed using <literal>&lt;s:replaces&gt;</literal> do not read annotations from the existing class. In addition if a bean is installed with 
-                                <literal>&lt;s:replaces&gt;</literal> it prevents the original class being installed as a bean.</para>
-                            </callout>
-                            <callout arearefs="inject">
-                                <para>The <literal>&lt;s:Inject&gt;</literal> element is needed this bean was installed with <literal>&lt;s:replaces&gt;</literal>, so annotations are not read
-                                from the class definition.</para>
-                            </callout>
-                            <callout arearefs="datasource-type">
-                                <para>The <literal>&lt;s:Eact&gt;</literal> annotation restricts the type of bean that is availible for injection without using qualifiers. In this case 
-                                <literal>BillingDatasource</literal> will be injected. This is provided as part of weld-extensions.</para>
-                            </callout>
-                            
-    </calloutlist>
-    </programlistingco>
-    
-    </section>
-    <section>
-    	<title>The Princess Rescue Example</title>
-    
-    </section>
-<!--
+         </programlisting>
+         <calloutlist>
+         
+            <callout arearefs="namepsace-declaration-seam">
+               <para>
+                  The namespace <literal>urn:java:ee</literal>
+                  is seam-xml's root namespace. This is where the
+                  builtin tags and CDI annotations live.
+               </para>
+            </callout>
+            
+            <callout arearefs="namepsace-declaration-reports">
+               <para>
+                  The namespace <literal>urn:java:org.example.reports</literal>
+                  corresponds to the package <literal>org.example.reports</literal>,
+                  where our reporting classes live. Multiple java packages can be aggregated
+                  into a single namespace declaration by selerating the package names
+                  with colons, e.g. 
+                  <literal>urn:java:org.example.reports:org.example.model</literal>
+               </para>
+            </callout>
+            
+            <callout arearefs="resport-dec">
+               <para>
+                  The <literal>&lt;Report&gt;</literal> declaration configures an 
+                  instance of our <literal>Report</literal> class as a bean.
+               </para>
+            </callout>
+            
+            <callout arearefs="specializes">
+               <para>
+                  Beans installed using <literal>&lt;s:specializes&gt;</literal>
+                  read annotations from the existing class, and merge them with 
+                  the annotations defined via xml. In addition if a bean is 
+                  installed with <literal>&lt;s:specializes&gt;</literal>
+                  it prevents the original class being installed as a bean.
+               </para>
+            </callout>
+            
+            <callout arearefs="filename">
+               <para>
+                  The <literal>&lt;r:filename&gt;</literal> element sets the 
+                  initial value of the filename field.
+               </para>
+            </callout>
+            
+            <callout arearefs="datasource-qualifier">
+               <para>
+                  The <literal>&lt;r:SalesQualifier&gt;</literal> element applies 
+                  the <literal>@SalesQualifier</literal> to the 
+                  <literal>datasource</literal> field. As the field already has an
+                  <literal>@Inject</literal> on the class definition this will cause 
+                  the <literal>SalesDatasource</literal> bean to be injected.
+               </para>
+            </callout>
+            
+            <callout arearefs="filename-short">
+               <para>
+                  This is the shorthand syntax for setting a field
+                  value.
+               </para>
+            </callout>
+            
+            <callout arearefs="replaces">
+               <para>
+                  Beans installed using <literal>&lt;s:replaces&gt;</literal>
+                  do not read annotations from the existing class. In addition if 
+                  a bean is installed with <literal>&lt;s:replaces&gt;</literal>
+                  it prevents the original class being installed as a bean.
+               </para>
+            </callout>
+            
+            <callout arearefs="inject">
+               <para>
+                  The <literal>&lt;s:Inject&gt;</literal> element is needed this 
+                  bean was installed with <literal>&lt;s:replaces&gt;</literal>,
+                  so annotations are not read from the class definition.
+               </para>
+            </callout>
+            
+            <callout arearefs="datasource-type">
+               <para>
+                  The <literal>&lt;s:Exact&gt;</literal> annotation restricts the 
+                  type of bean that is availible for injection without using 
+                  qualifiers. In this case <literal>BillingDatasource</literal>
+                  will be injected. This is provided as part of weld-extensions.
+               </para>
+            </callout>
+
+         </calloutlist>
+      </programlistingco>
+
+   </section>
+   <section>
+      <title>The Princess Rescue Example</title>
+      <para>
+         TODO
+      </para>
+   </section>
+   <!--
 vim:et:ts=3:sw=3:tw=120
--->    
+-->
 </chapter>
