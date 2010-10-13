@@ -47,7 +47,7 @@ public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
 
    private final ResourceLoaderManager manager = new ResourceLoaderManager();
 
-   static final String[] DEFAULT_RESOURCES = { "seam-beans.xml", "META-INF/seam-beans.xml", "META-INF/beans.xml", "WEB-INF/beans.xml" };
+   static final String[] DEFAULT_RESOURCES = { "META-INF/seam-beans.xml", "META-INF/beans.xml", "WEB-INF/beans.xml", "WEB-INF/seam-beans.xml" };
 
    final String[] resources;
 
