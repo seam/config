@@ -19,67 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.seam.xml.test.fieldset;
+package org.jboss.seam.xml.util;
 
-import java.math.BigDecimal;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 
-import org.jboss.seam.xml.test.method.QualifierEnum;
+import org.jboss.weld.extensions.properties.Property;
 
-public class FieldValueBean
+public class PropertyUtils
 {
-
-   public void init()
+   private PropertyUtils()
    {
-      assert ivalue != 20;
+
    }
 
-   private int ivalue = 20;
-
-   public String stringValue;
-
-   public QualifierEnum enumValue;
-
-   public boolean bvalue;
-
-   public float fvalue = 1;
-
-   public double dvalue = 1;
-
-   private BigDecimal bigDecimalValue;
-
-   public BigDecimal readBigDecimalValue()
+   public static <V> void setAccessible(Property<V> property)
    {
-      return bigDecimalValue;
-   }
-
-   public short svalue;
-
-   public long lvalue;
-
-   public String elValue;
-
-   public String elInnerTextValue;
-
-   int noFieldValue;
-
-   public void setIvalue(int value)
-   {
-      this.ivalue = value + 1;
-   }
-
-   public int getIvalue()
-   {
-      return ivalue;
-   }
-
-   public int getNoField()
-   {
-      return noFieldValue;
-   }
-
-   public void setNoField(int value)
-   {
-      noFieldValue = value;
+      Member member = property.getMember();
+      if (member instanceof Field)
+      {
+         Field field = (Field) member;
+         field.setAccessible(true);
+      }
+      else if (member instanceof Method)
+      {
+         Method method = (Method) member;
+         method.setAccessible(true);
+      }
    }
 
 }

@@ -44,7 +44,7 @@ public class SetFieldValueBeanTest extends AbstractXMLTest
    public void simpleFieldSetterTest()
    {
       FieldValueBean x = getReference(FieldValueBean.class);
-      Assert.assertTrue(x.bigDecimalValue.compareTo(BigDecimal.TEN) == 0);
+      Assert.assertTrue(x.readBigDecimalValue().compareTo(BigDecimal.TEN) == 0);
       Assert.assertTrue(x.bvalue == true);
       Assert.assertTrue(x.dvalue == 0);
       Assert.assertTrue(x.enumValue == QualifierEnum.A);
@@ -63,7 +63,7 @@ public class SetFieldValueBeanTest extends AbstractXMLTest
       FieldValueBean x = getReference(FieldValueBean.class, new AnnotationLiteral<FieldsetQualifier>()
       {
       });
-      Assert.assertTrue(x.bigDecimalValue.compareTo(BigDecimal.TEN) == 0);
+      Assert.assertTrue(x.readBigDecimalValue().compareTo(BigDecimal.TEN) == 0);
       Assert.assertTrue(x.bvalue == true);
       Assert.assertTrue(x.dvalue == 0);
       Assert.assertTrue(x.enumValue == QualifierEnum.A);

@@ -38,6 +38,7 @@ import org.jboss.seam.xml.core.BeanResult;
 import org.jboss.seam.xml.core.BeanResultType;
 import org.jboss.seam.xml.core.VirtualProducerField;
 import org.jboss.seam.xml.fieldset.FieldValueObject;
+import org.jboss.seam.xml.util.PropertyUtils;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.literal.InjectLiteral;
@@ -81,6 +82,7 @@ public class ClassXmlItem extends AbstractXmlItem
          Property<Object> property = query.getFirstResult();
          if (property != null)
          {
+            PropertyUtils.setAccessible(property);
             values.add(new PropertyXmlItem(this, property, e.getValue(), null, document, lineno));
          }
          else

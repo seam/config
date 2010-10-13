@@ -21,9 +21,6 @@
  */
 package org.jboss.seam.xml.parser.namespace;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -37,6 +34,7 @@ import org.jboss.seam.xml.model.PropertyXmlItem;
 import org.jboss.seam.xml.model.XmlItem;
 import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
+import org.jboss.seam.xml.util.PropertyUtils;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.properties.Property;
@@ -141,18 +139,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       else if (property != null)
       {
          // ensure the property is accessible
-         Member member = property.getMember();
-         if (member instanceof Field)
-         {
-            Field field = (Field) member;
-            field.setAccessible(true);
-         }
-         else if (member instanceof Method)
-         {
-            Method method = (Method) member;
-            method.setAccessible(true);
-         }
-
+         PropertyUtils.setAccessible(property);
          return new PropertyXmlItem(parent, property, innerText, null, document, lineno);
       }
       return null;
