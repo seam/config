@@ -7,8 +7,7 @@
    <para>
       Seam provides a method for configuring JSR-299 beans using XML. Using XML
       it is possible to add new beans, override existing beans, and add
-      extra configuration to existing beans. The default is to add a new
-      bean.
+      extra configuration to existing beans. 
   </para>
 
    <section>
@@ -56,8 +55,7 @@
       <para>
          And the following support classes:
       </para>
-      <programlisting role="JAVA">
-    <![CDATA[interface Datasource {
+      <programlisting role="JAVA"><![CDATA[interface Datasource {
 	public Data getData();
 }
 
@@ -84,29 +82,28 @@ class BillingDatasource implements Datasource {
          configure up multiple <literal>Report</literal>
          beans via xml.
       </para>
+      <example>
       <programlistingco>
          <areaspec>
-            <area id="namepsace-declaration-seam" coords="6" />
-            <area id="namepsace-declaration-reports" coords="7" />
-            <area id="resport-dec" coords="9" />
-            <area id="specializes" coords="10" />
-            <area id="filename" coords="11" />
-            <area id="datasource-qualifier" coords="13" />
-            <area id="filename-short" coords="17" />
-            <area id="replaces" coords="18" />
-            <area id="inject" coords="20" />
-            <area id="datasource-type" coords="21" />
+            <area id="namepsace-declaration-seam" coords="4" />
+            <area id="namepsace-declaration-reports" coords="5" />
+            <area id="resport-dec" coords="7" />
+            <area id="modifies" coords="8" />
+            <area id="filename" coords="9" />
+            <area id="datasource-qualifier" coords="11" />
+            <area id="filename-short" coords="15" />
+            <area id="replaces" coords="16" />
+            <area id="inject" coords="18" />
+            <area id="datasource-type" coords="19" />
          </areaspec>
-         <programlisting role="XML">
-    <![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
+         <programlisting ><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:s="urn:java:ee" 
        xmlns:r="urn:java:org.example.reports">
 
  	<r:Report>
- 		<s:specializes/>
+ 		<s:modifies/>
  		<r:filename>sales.jrxml<r:filename>
  		<r:datasource>
  			<r:SalesQualifier/>
@@ -135,36 +132,53 @@ class BillingDatasource implements Datasource {
             
             <callout arearefs="namepsace-declaration-reports">
                <para>
+                  There are now multiple namespaces in the <literal>beans.xml</literal>
+                  file. These namespaces correspond to java package names.
+               </para>
+               <para>
                   The namespace <literal>urn:java:org.example.reports</literal>
                   corresponds to the package <literal>org.example.reports</literal>,
                   where our reporting classes live. Multiple java packages can be aggregated
-                  into a single namespace declaration by selerating the package names
+                  into a single namespace declaration by seperating the package names
                   with colons, e.g. 
-                  <literal>urn:java:org.example.reports:org.example.model</literal>
+                  <literal>urn:java:org.example.reports:org.example.model</literal>.
+                  The namespaces are searched in the order they are specified in the xml 
+                  document, so if two packages in the namespace have a class with the same name,
+                  the first one listed will be resolved. For more information see
+                  <link linkend="xml.namespaces">Namespaces</link>.
                </para>
             </callout>
             
             <callout arearefs="resport-dec">
                <para>
                   The <literal>&lt;Report&gt;</literal> declaration configures an 
-                  instance of our <literal>Report</literal> class as a bean.
+                  instance of our <code>Report</code> class as a bean.
                </para>
             </callout>
             
-            <callout arearefs="specializes">
+            <callout arearefs="modifies">
                <para>
-                  Beans installed using <literal>&lt;s:specializes&gt;</literal>
+                  Beans installed using <literal>&lt;s:modifies&gt;</literal>
                   read annotations from the existing class, and merge them with 
                   the annotations defined via xml. In addition if a bean is 
-                  installed with <literal>&lt;s:specializes&gt;</literal>
-                  it prevents the original class being installed as a bean.
+                  installed with <literal>&lt;s:modifies&gt;</literal>
+                  it prevents the original class being installed as a bean. It 
+                  is also possible to add new beans and replace beans altogether,
+                  for more information see 
+                  <link linkend="xml.installing-beans">Adding, modifying and
+                  replacing beans</link>.
+                  
                </para>
             </callout>
             
             <callout arearefs="filename">
                <para>
                   The <literal>&lt;r:filename&gt;</literal> element sets the 
-                  initial value of the filename field.
+                  initial value of the filename field. For more information on how
+                  methods and fields are resolved see 
+                  <link linkend="xml.configuring-methods">Configuring Methods</link>,
+                  and 
+                  <link linkend="xml.configuring-fields">Configuring Fields</link>.
                </para>
             </callout>
             
@@ -213,12 +227,12 @@ class BillingDatasource implements Datasource {
 
          </calloutlist>
       </programlistingco>
-
+      </example>
    </section>
    <section>
       <title>The Princess Rescue Example</title>
       <para>
-         TODO
+         TODO next release
       </para>
    </section>
    <!--
