@@ -4,61 +4,70 @@
 <chapter id="xml">
   <title>Seam XML Reference</title>
 
-    <section id="xml.namespaces">
-        <title>XML Namespaces</title>
-        <para>The main namespace is <literal>urn:java:ee</literal> contains builtin tags and types from core packages.
-        The builtin tags are:</para>
+   <section id="xml.namespaces">
+      <title>XML Namespaces</title>
+      
+      <para>
+         The main namespace is <literal>urn:java:ee</literal> contains builtin tags 
+         and types from core packages. The builtin tags are:
+      </para>
         
-        <itemizedlist>
-            <listitem><para><literal>Beans</literal></para></listitem>
-            <listitem><para><literal>modifies</literal></para></listitem>
-            <listitem><para><literal>replaces</literal></para></listitem>
-            <listitem><para><literal>parameters</literal></para></listitem>
-            <listitem><para><literal>value</literal></para></listitem>
-            <listitem><para><literal>key</literal></para></listitem>
-            <listitem><para><literal>entry</literal></para></listitem>
-            <listitem><para><literal>e</literal> (alias for entry)</para></listitem>
-            <listitem><para><literal>v</literal> (alias for value)</para></listitem>
-            <listitem><para><literal>k</literal> (alias for key)</para></listitem>
-            <listitem><para><literal>array</literal></para></listitem>
-            <listitem><para><literal>int</literal></para></listitem>
-            <listitem><para><literal>short</literal></para></listitem>
-            <listitem><para><literal>long</literal></para></listitem>
-            <listitem><para><literal>byte</literal></para></listitem>
-            <listitem><para><literal>char</literal></para></listitem>
-            <listitem><para><literal>double</literal></para></listitem>
-            <listitem><para><literal>float</literal></para></listitem>
-            <listitem><para><literal>boolean</literal></para></listitem>
-         </itemizedlist>
+      <itemizedlist>
+         <listitem><para><literal>Beans</literal></para></listitem>
+         <listitem><para><literal>modifies</literal></para></listitem>
+         <listitem><para><literal>replaces</literal></para></listitem>
+         <listitem><para><literal>parameters</literal></para></listitem>
+         <listitem><para><literal>value</literal></para></listitem>
+         <listitem><para><literal>key</literal></para></listitem>
+         <listitem><para><literal>entry</literal></para></listitem>
+         <listitem><para><literal>e</literal> (alias for entry)</para></listitem>
+         <listitem><para><literal>v</literal> (alias for value)</para></listitem>
+         <listitem><para><literal>k</literal> (alias for key)</para></listitem>
+         <listitem><para><literal>array</literal></para></listitem>
+         <listitem><para><literal>int</literal></para></listitem>
+         <listitem><para><literal>short</literal></para></listitem>
+         <listitem><para><literal>long</literal></para></listitem>
+         <listitem><para><literal>byte</literal></para></listitem>
+         <listitem><para><literal>char</literal></para></listitem>
+         <listitem><para><literal>double</literal></para></listitem>
+         <listitem><para><literal>float</literal></para></listitem>
+         <listitem><para><literal>boolean</literal></para></listitem>
+      </itemizedlist>
          
-         <para>as well as classes from the following packages:</para>    
+      <para>
+         as well as classes from the following packages:
+      </para>    
          
-        <itemizedlist>
-            <listitem><para><literal>java.lang</literal></para></listitem>
-            <listitem><para><literal>java.util</literal></para></listitem>
-            <listitem><para><literal>javax.annotation</literal></para></listitem>
-            <listitem><para><literal>javax.inject</literal></para></listitem>
-            <listitem><para><literal>javax.enterprise.inject</literal></para></listitem>
-            <listitem><para><literal>javax.enterprise.context</literal></para></listitem>
-            <listitem><para><literal>javax.enterprise.event</literal></para></listitem>
-            <listitem><para><literal>javax.decorator</literal></para></listitem>
-            <listitem><para><literal>javax.interceptor</literal></para></listitem>
-            <listitem><para><literal>org.jboss.weld.extensions.core</literal></para></listitem>
-            <listitem><para><literal>org.jboss.weld.extensions.unwraps</literal></para></listitem>
-            <listitem><para><literal>org.jboss.weld.extensions.resourceLoader</literal></para></listitem>
-        </itemizedlist>
+      <itemizedlist>
+         <listitem><para><literal>java.lang</literal></para></listitem>
+         <listitem><para><literal>java.util</literal></para></listitem>
+         <listitem><para><literal>javax.annotation</literal></para></listitem>
+         <listitem><para><literal>javax.inject</literal></para></listitem>
+         <listitem><para><literal>javax.enterprise.inject</literal></para></listitem>
+         <listitem><para><literal>javax.enterprise.context</literal></para></listitem>
+         <listitem><para><literal>javax.enterprise.event</literal></para></listitem>
+         <listitem><para><literal>javax.decorator</literal></para></listitem>
+         <listitem><para><literal>javax.interceptor</literal></para></listitem>
+         <listitem><para><literal>org.jboss.weld.extensions.core</literal></para></listitem>
+         <listitem><para><literal>org.jboss.weld.extensions.unwraps</literal></para></listitem>
+         <listitem><para><literal>org.jboss.weld.extensions.resourceLoader</literal></para></listitem>
+      </itemizedlist>
         
-        <para>Other namspaces are specified using the following syntax:</para>
+      <para>
+         Other namspaces are specified using the following syntax:
+      </para>
+        
       <programlisting>
-        <![CDATA[xmlns:ns="urn:java:com.mydomain.package1:com.mydomain.package2"]]>
-     </programlisting>   
+        <![CDATA[xmlns:my="urn:java:com.mydomain.package1:com.mydomain.package2"]]></programlisting> 
+          
         <para>
-           This maps <literal>ns</literal> to the packages <literal>com.mydomain.package1</literal> 
-           and <literal>com.mydomain.package2</literal>. These packages are searched in order to 
-           resolve elements in this namespace.
+           This maps the namespace <literal>my</literal> to the packages 
+           <literal>com.mydomain.package1</literal> and 
+           <literal>com.mydomain.package2</literal>. These packages are searched in 
+           order to resolve elements in this namespace.
         </para> 
         
-        <para >
+        <para>
            For example, say you had a class <literal>com.mydomain.package2.Report</literal>. 
            To configure a <literal>Report</literal> bean you would use 
            <literal>&lt;ns:Report&gt;</literal>. Methods and fields on the bean are resolved
@@ -70,22 +79,26 @@
         
     </section>
     
-    <section id="xml.installing-beans">
-        <title>Adding, replacing and modifying beans</title>
-        <para>By configuring a bean via XML creates a new bean, however there 
-          may be cases where you want to modify an existing bean rather than
-          adding a new one. The <literal>&lt;s:replaces&gt;</literal> and 
-          <literal>&lt;s:modifies&gt;</literal> tags allow you to do this.</para>
-          <para>The <literal>&lt;s:replaces&gt;</literal> tag prevents the existing bean from being 
-          installed, and registers a new one with the given configuration. The 
-          <literal>&lt;s:modifies&gt;</literal> tag does the same, except that it merges
-          the annotations on the bean with the annotations defined in XML. This has almost
-          the same effect as modifiying an existing bean, except it is possible to install 
-          multiple beans that modify the same class.
-        </para>
+   <section id="xml.installing-beans">
+      <title>Adding, replacing and modifying beans</title>
+      
+      <para>
+         By configuring a bean via XML creates a new bean, however there 
+         may be cases where you want to modify an existing bean rather than
+         adding a new one. The <literal>&lt;s:replaces&gt;</literal> and 
+         <literal>&lt;s:modifies&gt;</literal> tags allow you to do this.
+      </para>
+      
+      <para>
+         The <literal>&lt;s:replaces&gt;</literal> tag prevents the existing bean from being 
+         installed, and registers a new one with the given configuration. The 
+         <literal>&lt;s:modifies&gt;</literal> tag does the same, except that it merges
+         the annotations on the bean with the annotations defined in XML. This has almost
+         the same effect as modifiying an existing bean, except it is possible to install 
+         multiple beans that modify the same class.
+      </para>
         
-        <programlisting role="XML"><![CDATA[
-<test:Report>
+      <programlisting role="XML"><![CDATA[<test:Report>
 	<s:modifies>
 	<test:NewQualifier/>
 </test:Report>
@@ -93,32 +106,78 @@
 <test:ReportDatasource>
 	<s:replaces>
 	<test:NewQualifier/>
-</test:ReportDatasource>]]>
-        </programlisting>
-        <para>The first entry above adds a new bean with an extra qualifier, in addition to the qualifiers already present, 
-        and prevents the existing <literal>Report</literal> bean from being installed.</para> 
-        <para>The second prevents the existing bean from being installed, and registers a new bean with a single qualifier.</para>
-    </section>
+</test:ReportDatasource>]]></programlisting>
+
+      <para>
+         The first entry above adds a new bean with an extra qualifier, in addition 
+         to the qualifiers already present, and prevents the existing 
+         <literal>Report</literal> bean from being installed.
+      </para> 
+        
+      <para>
+         The second prevents the existing bean from being installed, and registers 
+         a new bean with a single qualifier.
+      </para>
+      
+   </section>
+
+   <section>
+      <title>Applying annotations using XML</title>
+      
+      <para>
+         Annotations are resolved in the same way as normal classes. Conceptually 
+         annotations are applied to the object their parent element in the resolves
+         to. It is possible to set the value of annotation members using the xml
+         attribute that corresponds to the member name. For example:     
+      </para>
+      
+      <programlisting role="JAVA" ><![CDATA[public @interface OtherQualifier {
+   String value1();
+   int value2();
+   QualifierEnum value();
+}]]></programlisting>
+
+      <programlisting role="XML" ><![CDATA[<test:QualifiedBean1>
+        <test:OtherQualifier value1="AA" value2="1">A</test:OtherQualifier>
+</test:QualifiedBean1>
     
-    <secion id="xml.configuring-fields" >
+<test:QualifiedBean2>
+        <test:OtherQualifier value1="BB" value2="2" value="B" />
+</test:QualifiedBean2>
+]]></programlisting>
+      
+      <para>
+         The <code>value</code> member can be set using the inner text of the node, as seen 
+         in the first example. Type conversion is performed automatically.
+      </para>
+      
+      <note>
+         <para>
+            It is currently not possible set array annotation members.
+         </para>
+      </note>
+      
+    </section>    
+    
+    <section id="xml.configuring-fields" >
       <title>Configuring Fields</title>
+      
       <para>
          It is possible to both apply qualifiers to and set the initial value of a field. 
          Fields reside in the same namespace as the declaring bean, and the element name 
          must exactly match the field name. For example if we have the following class:
       </para>
       
-      <programlisting role="JAVA">class RobotFactory {
-         Robot robot;
-      }
-      </programlisting>
+      <programlisting role="JAVA" >class RobotFactory {
+  Robot robot;
+}</programlisting>
       
       <para>
          The following xml will add the <code>@Produces</code> annotation to the 
          <code>robot</code> field: 
       </para>
       
-      <programlisting role="JAVA" ><![CDATA[<my:RobotFactory>
+      <programlisting role="XML" ><![CDATA[<my:RobotFactory>
   <my:robot>
     <s:Produces/>
   </my:robot>
@@ -126,7 +185,11 @@
       
       <section>
          <title>Initial Field Values</title>
-         <para>Inital field values can be set three different ways as shown below:</para>
+         
+         <para>
+            Inital field values can be set three different ways as shown below:
+         </para>
+         
          <programlisting role="XML"><![CDATA[<r:MyBean company="Red Hat Inc" />
 
 <r:MyBean>
@@ -138,12 +201,18 @@
   	<s:value>Red Hat Inc<s:value>
   	<r:SomeQualifier/>
   </r:company>
-</r:MyBean>]]>
-         </programlisting>
+</r:MyBean>]]></programlisting>
 
-         <para>The third form is the only one that also allows you to add annotations such as qualifiers to the field.</para>
+         <para>
+            The third form is the only one that also allows you to add annotations such as 
+            qualifiers to the field.
+         </para>
 
-         <para>It is possible to set <literal>Map</literal>,<literal>Array</literal> and <literal>Collection</literal> field values. Some examples:</para>
+         <para>
+            It is possible to set <literal>Map</literal>,<literal>Array</literal> and 
+            <literal>Collection</literal> field values. Some examples:
+         </para>
+         
          <programlisting role="XML"><![CDATA[<test:ArrayFieldValue>
 
     <test:iarray>
@@ -207,6 +276,7 @@
             them an artificial qualifier. Inline beans may have any scope, however the default <literal>Dependent</literal> scope is 
             recomended.
          </para>
+         
          <programlisting role="XML"><![CDATA[<my:Knight>
   <my:sword>
      <value>
@@ -225,10 +295,11 @@
         </my:Horse>
      </value>
   </my:horse>
-</my:Knight>]]></programlisting>      
+</my:Knight>]]></programlisting>   
+   
       </section>
         
-   </secion>  
+   </section>  
     
    <section id="xml.configuring-methods" >
       <title>Configuring methods</title>
@@ -236,6 +307,7 @@
       <para>
          It is also possible to configure methods in a similar way to configuring fields:
       </para>
+      
       <programlisting role="XML" ><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -282,7 +354,7 @@
    }
    
    public void doStuff(MethodValueBean[][] beans) {
-      //do stuff
+      /*do stuff */
    }
 
 }]]></programlisting>
@@ -291,11 +363,13 @@
          In this instance <literal>MethodBean</literal> has three methods, all of them rather 
          imaginatively named <literal>doStuff</literal>.
       </para>
+      
       <para> 
          The first <literal>&lt;test:doStuff&gt;</literal> 
          entry in the XML file configures the method that takes no arguments. The 
          <literal>&lt;s:Produces&gt;</literal> element makes it into a producer method. 
       </para>
+      
       <para>
          The next entry in the file configures the method that takes a 
          <literal>MethodValueBean</literal> as a parameter and the final entry 
@@ -303,6 +377,7 @@
          as a parameter. For both these methods a qualifier was added to the method parameter and
          they were made into producer methods.
       </para>
+      
       <para>
          Method parameters are specified inside the <literal>&lt;s:parameters&gt;</literal>
          element. If these parameters have annotation children they are taken to be annotations on 
@@ -316,15 +391,15 @@
       <programlisting role="JAVA"><![CDATA[class MethodBean {
             
 	@Produces
-	public int doStuff() {//method body}            
+	public int doStuff() {/*method body */}            
 	            
 	@Produces
 	@Qualifier1
-	public int doStuff(@Qualifier2 MethodValueBean param) {//method body}
+	public int doStuff(@Qualifier2 MethodValueBean param) {/*method body */}
 	
 	@Produces
 	@Qualifier1
-	public int doStuff(@Qualifier2 MethodValueBean[][] param) {//method body}
+	public int doStuff(@Qualifier2 MethodValueBean[][] param) {/*method body */}
 }]]></programlisting>
 
       <para>
@@ -348,7 +423,8 @@
             <code>&lt;parameters&gt;</code> element, in which case it is resolved
             as a method.
          </para>
-      </note>     
+      </note>    
+      
    </section>
 
    <section>
@@ -403,36 +479,9 @@
       </para>
         
    </section>    
-    
+        
    <section>
-      <title>Annotation Members</title>
-      <para>
-         It is possible to set the value of annotation members using attributes in xml. For example:
-      </para>
-      <programlisting role="JAVA" ><![CDATA[public @interface OtherQualifier {
-   String value1();
-   int value2();
-   QualifierEnum value();
-}]]></programlisting>
-
-      <programlisting role="XML" ><![CDATA[<test:QualifiedBean1>
-        <test:OtherQualifier value1="AA" value2="1">A</test:OtherQualifier>
-</test:QualifiedBean1>
-    
-<test:QualifiedBean2>
-        <test:OtherQualifier value1="BB" value2="2" value="B" />
-</test:QualifiedBean2>
-]]>
-      </programlisting>
-      
-      <para>
-         The value member can be set using the inner text of the node, as seen in the first example.
-      </para>
-      
-    </section>
-    
-    <section>
-    	<title>Configuring Meta Annotations</title>
+      <title>Configuring Meta Annotations</title>
     	
       <para>
          It is possible to make existing annotations into qualifiers, stereotypes or interceptor bindings.
@@ -491,7 +540,7 @@
          <literal>'Version 1.23'</literal>. The corresponding java for the above XML is:
       </para>
       
-<programlisting role="java" ><![CDATA[class SomeClass
+<programlisting role="JAVA" ><![CDATA[class SomeClass
 {
 
   @Produces
