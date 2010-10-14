@@ -36,7 +36,6 @@ import org.jboss.seam.xml.model.XmlItemType;
 import org.jboss.seam.xml.parser.SaxNode;
 import org.jboss.seam.xml.util.PropertyUtils;
 import org.jboss.seam.xml.util.TypeOccuranceInformation;
-import org.jboss.seam.xml.util.XmlConfigurationException;
 import org.jboss.weld.extensions.properties.Property;
 import org.jboss.weld.extensions.properties.query.NamedPropertyCriteria;
 import org.jboss.weld.extensions.properties.query.PropertyQueries;
@@ -106,7 +105,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
          // if the item can be a method of a FIELD
          if (TypeOccuranceInformation.isTypeInSet(parent.getAllowedItem(), XmlItemType.METHOD) || TypeOccuranceInformation.isTypeInSet(parent.getAllowedItem(), XmlItemType.FIELD))
          {
-            return resolveMethodOrField(name, parent, node.getInnerText(), node.getDocument(), node.getLineNo());
+            return resolveMethodOrField(name, parent, node);
          }
          else
          {
@@ -120,7 +119,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       return null;
    }
 
-   public static XmlItem resolveMethodOrField(String name, XmlItem parent, String innerText, String document, int lineno)
+   public static XmlItem resolveMethodOrField(String name, XmlItem parent, SaxNode node)
    {
       Class<?> p = parent.getJavaClass();
       boolean methodFound = Reflections.methodExists(p, name);
@@ -130,17 +129,29 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
 
       if (methodFound && property != null)
       {
-         throw new XmlConfigurationException(parent.getJavaClass().getName() + " has both a method and a property named " + name + " and so cannot be configured via XML", document, lineno);
+         // if there is both a method and a field of the same name
+         // we look for the <parameters> element
+         for (SaxNode child : node.getChildren())
+         {
+            if (child.getName().equals(XmlItemType.PARAMETERS.getElementName()))
+            {
+               property = null;
+            }
+         }
+         if (property != null)
+         {
+            methodFound = false;
+         }
       }
       if (methodFound)
       {
-         return new MethodXmlItem(parent, name, document, lineno);
+         return new MethodXmlItem(parent, name, node.getDocument(), node.getLineNo());
       }
       else if (property != null)
       {
          // ensure the property is accessible
          PropertyUtils.setAccessible(property);
-         return new PropertyXmlItem(parent, property, innerText, null, document, lineno);
+         return new PropertyXmlItem(parent, property, node.getInnerText(), null, node.getDocument(), node.getLineNo());
       }
       return null;
    }

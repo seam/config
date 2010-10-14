@@ -20,7 +20,9 @@
     	<replaces/>
         <test:produceBean3>
             <Produces/>
+            <parameters/>
         </test:produceBean3>
+        <test:produceBean3>test value</test:produceBean3>
     </test:Bean2>
     
     <test:OverriddenBean>

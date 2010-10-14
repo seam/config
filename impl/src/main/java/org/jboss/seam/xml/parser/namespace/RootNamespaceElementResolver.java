@@ -57,31 +57,31 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
    XmlItem getRootItem(SaxNode node, XmlItem parent)
    {
       String item = node.getName();
-      if (item.equals("value") || item.equals("v"))
+      if (item.equals(XmlItemType.VALUE.getElementName()) || item.equals(XmlItemType.VALUE.getAlias()))
       {
          return new ValueXmlItem(parent, node.getInnerText(), node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("key") || item.equals("k"))
+      else if (item.equals(XmlItemType.KEY.getElementName()) || item.equals(XmlItemType.KEY.getAlias()))
       {
          return new KeyXmlItem(parent, node.getInnerText(), node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("entry") || item.equals("e"))
+      else if (item.equals(XmlItemType.ENTRY.getElementName()) || item.equals(XmlItemType.ENTRY.getAlias()))
       {
          return new EntryXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("array"))
+      else if (item.equals(XmlItemType.ARRAY.getElementName()))
       {
          return new ArrayXmlItem(parent, node.getAttributes(), node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("replaces"))
+      else if (item.equals(XmlItemType.REPLACE.getElementName()))
       {
          return new ReplacesXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("modifies"))
+      else if (item.equals(XmlItemType.MODIFIES.getElementName()))
       {
          return new ModifiesXmlItem(parent, node.getDocument(), node.getLineNo());
       }
-      else if (item.equals("parameters"))
+      else if (item.equals(XmlItemType.PARAMETERS.getElementName()))
       {
          return new ParametersXmlItem(parent, node.getDocument(), node.getLineNo());
       }

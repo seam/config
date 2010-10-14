@@ -51,6 +51,9 @@ public class SimpleBeanTest extends AbstractXMLTest
       Assert.assertTrue(x != null);
       Assert.assertTrue(x.bean2 != null);
 
+      Bean2 bean2 = getReference(Bean2.class);
+      Assert.assertEquals("test value", bean2.produceBean3);
+
       Bean3 y = getReference(Bean3.class);
       Assert.assertTrue(y != null);
       Assert.assertTrue("Post construct method not called", x.value == 1);

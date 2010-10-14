@@ -41,4 +41,6 @@ public class Bean2
    {
       return new Bean3();
    }
+
+   public String produceBean3;
 }

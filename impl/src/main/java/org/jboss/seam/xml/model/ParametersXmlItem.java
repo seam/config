@@ -37,7 +37,7 @@ public class ParametersXmlItem extends AbstractXmlItem
 
    public Set<TypeOccuranceInformation> getAllowedItem()
    {
-      return Collections.singleton(TypeOccuranceInformation.of(XmlItemType.PARAMETER, 1, null));
+      return Collections.singleton(TypeOccuranceInformation.of(XmlItemType.PARAMETER, null, null));
    }
 
 }
