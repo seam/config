@@ -38,7 +38,7 @@ public class RootNamespaceElementResolver implements NamespaceElementResolver
 {
 
    private final CompositeNamespaceElementResolver delegate;
-   static final String[] namspaces = { "java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "org.jboss.seam.xml.annotations.internal", "org.jboss.weld.extensions.core" };
+   static final String[] namspaces = { "java.lang", "java.util", "javax.annotation", "javax.inject", "javax.enterprise.inject", "javax.enterprise.context", "javax.enterprise.event", "javax.decorator", "javax.interceptor", "org.jboss.seam.xml.annotations.internal", "org.jboss.weld.extensions.core", "org.jboss.weld.extensions.unwraps", "org.jboss.weld.extensions.resourceLoader" };
 
    public RootNamespaceElementResolver()
    {
