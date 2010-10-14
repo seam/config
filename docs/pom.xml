@@ -1,17 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
       <groupId>org.jboss.seam.xml</groupId>
       <artifactId>seam-xml-config-parent</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
+      <version>3.0.0.Alpha3</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
    <groupId>org.jboss.seam.xml</groupId>
    <artifactId>seam-xml-config-reference-guide</artifactId>
-   <version>3.0.0-SNAPSHOT</version>
+   <version>3.0.0.Alpha3</version>
    <packaging>jdocbook</packaging>
    <name>Seam XML Config Reference Guide</name>
 
@@ -75,8 +74,8 @@
 
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/docs</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/docs</developerConnection>
-      <url>http://fisheye.jboss.org/browse/seam/modules/xml/docs</url>
+      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/tags/3.0.0.Alpha3/docs</connection>
+      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/tags/3.0.0.Alpha3/docs</developerConnection>
+      <url>http://fisheye.jboss.org/browse/seam/modules/xml/docs/tags/3.0.0.Alpha3/docs</url>
    </scm>
 </project>
