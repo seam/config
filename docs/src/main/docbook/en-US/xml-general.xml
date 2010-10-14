@@ -68,8 +68,8 @@
         </para> 
         
         <para>
-           For example, say you had a class <literal>com.mydomain.package2.Report</literal>. 
-           To configure a <literal>Report</literal> bean you would use 
+           For example, say you had a class <code>com.mydomain.package2.Report</code>. 
+           To configure a <code>Report</code> bean you would use 
            <literal>&lt;ns:Report&gt;</literal>. Methods and fields on the bean are resolved
            from the same namespace as the bean itself. It is possible to distinguish between 
            overloaded methods by specifying the parameter types, for more information see
@@ -83,7 +83,7 @@
       <title>Adding, replacing and modifying beans</title>
       
       <para>
-         By configuring a bean via XML creates a new bean, however there 
+         By default configuring a bean via XML creates a new bean, however there 
          may be cases where you want to modify an existing bean rather than
          adding a new one. The <literal>&lt;s:replaces&gt;</literal> and 
          <literal>&lt;s:modifies&gt;</literal> tags allow you to do this.
@@ -93,20 +93,21 @@
          The <literal>&lt;s:replaces&gt;</literal> tag prevents the existing bean from being 
          installed, and registers a new one with the given configuration. The 
          <literal>&lt;s:modifies&gt;</literal> tag does the same, except that it merges
-         the annotations on the bean with the annotations defined in XML. This has almost
-         the same effect as modifiying an existing bean, except it is possible to install 
-         multiple beans that modify the same class.
+         the annotations on the bean with the annotations defined in XML. Where the
+         same annotation is specified on both the class and in XML the annotation in
+         XML takes precidence. This has almost the same effect as modifiying an existing 
+         bean, except it is possible to install multiple beans that modify the same class.
       </para>
         
-      <programlisting role="XML"><![CDATA[<test:Report>
+      <programlisting role="XML"><![CDATA[<my:Report>
 	<s:modifies>
-	<test:NewQualifier/>
-</test:Report>
+	<my:NewQualifier/>
+</my:Report>
 
-<test:ReportDatasource>
+<my:ReportDatasource>
 	<s:replaces>
-	<test:NewQualifier/>
-</test:ReportDatasource>]]></programlisting>
+	<my:NewQualifier/>
+</my:ReportDatasource>]]></programlisting>
 
       <para>
          The first entry above adds a new bean with an extra qualifier, in addition 
@@ -126,7 +127,7 @@
       
       <para>
          Annotations are resolved in the same way as normal classes. Conceptually 
-         annotations are applied to the object their parent element in the resolves
+         annotations are applied to the object their parent element resolves
          to. It is possible to set the value of annotation members using the xml
          attribute that corresponds to the member name. For example:     
       </para>
@@ -138,13 +139,12 @@
 }]]></programlisting>
 
       <programlisting role="XML" ><![CDATA[<test:QualifiedBean1>
-        <test:OtherQualifier value1="AA" value2="1">A</test:OtherQualifier>
-</test:QualifiedBean1>
+        <test:OtherQualifier value1="AA" value2="1">A</my:OtherQualifier>
+</my:QualifiedBean1>
     
 <test:QualifiedBean2>
         <test:OtherQualifier value1="BB" value2="2" value="B" />
-</test:QualifiedBean2>
-]]></programlisting>
+</my:QualifiedBean2>]]></programlisting>
       
       <para>
          The <code>value</code> member can be set using the inner text of the node, as seen 
@@ -213,43 +213,43 @@
             <literal>Collection</literal> field values. Some examples:
          </para>
          
-         <programlisting role="XML"><![CDATA[<test:ArrayFieldValue>
+         <programlisting role="XML"><![CDATA[<my:ArrayFieldValue>
 
-    <test:iarray>
+    <my:intArrayField>
         <s:value>1</s:value>
         <s:value>2</s:value>
-    </test:iarray>
+    </my:intArrayField>
     
-    <test:carray>
+    <my:classArrayField>
         <s:value>java.lang.Integer</s:value>
         <s:value>java.lang.Long</s:value>
-    </test:carray>
+    </my:classArrayField>
     
-    <test:sarray>
+    <my:stringArrayField>
         <s:value>hello</s:value>
         <s:value>world</s:value>
-    </test:sarray>
+    </my:stringArrayField>
     
-</test:ArrayFieldValue>
+</my:ArrayFieldValue>
 
-<test:MapFieldValue>
+<my:MapFieldValue>
 
-    <test:map1>
+    <my:map1>
         <s:entry><s:key>1</s:key><s:value>hello</s:value></s:entry>
         <s:entry><s:key>2</s:key><s:value>world</s:value></s:entry>
-    </test:map1>
+    </my:map1>
     
-    <test:map2>
+    <my:map2>
         <s:e><s:k>1</s:k><s:v>java.lang.Integer</s:v></s:e>
         <s:e><s:k>2</s:k><s:v>java.lang.Long</s:v></s:e>
-    </test:map2>
+    </my:map2>
     
-</test:MapFieldValue>]]></programlisting>
+</my:MapFieldValue>]]></programlisting>
 
          <para>
-            Type conversion is done automatically for all primitives and primitive wrappers, <literal>Date</literal>, 
-            <literal>Calendar</literal>,<literal>Enum</literal> and <literal>Class</literal> fields. 
-            In this instance <literal>ArrayFieldValue.carray</literal> is actually an array of classes, not an array of Strings.
+            Type conversion is done automatically for all primitives and primitive wrappers, 
+            <literal>Date</literal>, <literal>Calendar</literal>,<literal>Enum</literal> and 
+            <literal>Class</literal> fields. 
          </para>
         
          <para>
@@ -263,6 +263,13 @@
       <s:value>#{paramValue}</s:key>
    </m:parameters>
 </m:Report>]]></programlisting>
+
+         <para>
+            Internally field values are set by wrapping the <code>InjectionTarget</code> 
+            for a bean. This means that the expressions are evaluated once, at bean 
+            creation time.
+         </para>
+
       </section>
     
       <section>
@@ -273,7 +280,7 @@
             This allows for the configuration of complex types with nestled classes. Inline beans can be declared inside both
             <literal>&lt;s:value&gt;</literal> and <literal>&lt;s:key&gt;</literal> elements, and may be used in both collections 
             and simple field values. Inline beans must not have any qualifier annotations declared on the bean, instead seam-xml assigns 
-            them an artificial qualifier. Inline beans may have any scope, however the default <literal>Dependent</literal> scope is 
+            them an artificial qualifier. Inline beans may have any scope, however the default <code>Dependent</code> scope is 
             recomended.
          </para>
          
@@ -288,7 +295,7 @@
         <my:Horse>
            <my:name>
               <value>billy</value>
-           </test:name>
+           </my:name>
            <my:shoe>
               <Inject/>
            </my:shoe>
@@ -308,42 +315,7 @@
          It is also possible to configure methods in a similar way to configuring fields:
       </para>
       
-      <programlisting role="XML" ><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://java.sun.com/xml/ns/javaee"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:s="urn:java:ee" 
-       xmlns:test="urn:java:org.jboss.seam.xml.test.method">
-    <test:MethodBean>
-    
-        <test:doStuff>
-            <s:Produces/>
-        </test:doStuff>
-        
-        <test:doStuff>
-            <s:Produces/>
-            <test:Qualifier1/>
-            <s:parameters>
-                <test:MethodValueBean>
-                    <test:Qualifier2/>
-                </test:MethodValueBean>
-            </s:parameters>
-        </test:doStuff>
-        
-        <test:doStuff>
-            <s:Produces/>
-            <test:Qualifier1/>
-            <s:parameters>
-                <s:array dimensions="2">
-                    <test:Qualifier2/>
-                    <test:MethodValueBean/>
-                </s:array>
-            </s:parameters>
-        </test:doStuff>
-        
-    </test:MethodBean>
-</beans>]]></programlisting>
-
-<programlisting role="JAVA" ><![CDATA[class MethodBean {
+      <programlisting role="JAVA" ><![CDATA[class MethodBean {
 
    public int doStuff() {
       return 1;
@@ -358,6 +330,41 @@
    }
 
 }]]></programlisting>
+
+      <programlisting role="XML" ><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:s="urn:java:ee" 
+       xmlns:my="urn:java:org.jboss.seam.xml.test.method">
+    <my:MethodBean>
+    
+        <my:doStuff>
+            <s:Produces/>
+        </my:doStuff>
+        
+        <my:doStuff>
+            <s:Produces/>
+            <my:Qualifier1/>
+            <s:parameters>
+                <my:MethodValueBean>
+                    <my:Qualifier2/>
+                </my:MethodValueBean>
+            </s:parameters>
+        </my:doStuff>
+        
+        <my:doStuff>
+            <s:Produces/>
+            <my:Qualifier1/>
+            <s:parameters>
+                <s:array dimensions="2">
+                    <my:Qualifier2/>
+                    <my:MethodValueBean/>
+                </s:array>
+            </s:parameters>
+        </my:doStuff>
+        
+    </my:MethodBean>
+</beans>]]></programlisting>
             
       <para>
          In this instance <literal>MethodBean</literal> has three methods, all of them rather 
@@ -409,11 +416,11 @@
          the following:
       </para>
 
-      <programlisting role="XML"><![CDATA[<test:method>
+      <programlisting role="XML"><![CDATA[<my:method>
     <s:array>
-      <test:MethodValueBean/>
+      <my:MethodValueBean/>
     </s:array>
-</test:method>]]>
+</my:method>]]>
       </programlisting>
         
       <note>
@@ -436,15 +443,15 @@
          <code>@Inject</code> annotation applied to it. Annotations can be applied to the constructor 
          parameters in the same manner as method parameters.
       </para>
-      <programlisting role="XML"><![CDATA[<test:MyBean>
+      <programlisting role="XML"><![CDATA[<my:MyBean>
    <s:parameters>
          <s:Integer>
-            <test:MyQualifier/>
+            <my:MyQualifier/>
          </s:Integer>
    </s:parameters>      
-</test:MyBean>]]></programlisting>
+</my:MyBean>]]></programlisting>
       <para>
-         The example above is equivilent to the following java:
+         The example above is equivalent to the following java:
       </para>      
       <programlisting role="JAVA">class MyBean {
    @Inject   
@@ -459,23 +466,25 @@
       <title>Overriding the type of an injection point</title>
         
       <para>
-         It is possible to limit which bean types are availible to inject int a given injection point:
+         It is possible to limit which bean types are availible to inject 
+         into a given injection point:
       </para>
       <programlisting role="JAVA"><![CDATA[class SomeBean
 {
 	public Object someField;
 }]]></programlisting>
 
-<programlisting role="XML"><![CDATA[<test:SomeBean>
-        <test:someField>
+<programlisting role="XML"><![CDATA[<my:SomeBean>
+        <my:someField>
          	<s:Inject/>
          	<s:Exact>com.mydomain.InjectedBean</s:Exact>
-        </test:someField>
-</test:SomeBean>]]></programlisting>
+        </my:someField>
+</my:SomeBean>]]></programlisting>
 
       <para>
          In the example above only beans that are assignable to InjectedBean will be eligable for injection into the field.
-   	   This also works for parameter injection points.
+   	   This also works for parameter injection points. This functionallity is part of Weld Extensions, and the
+         <code>@Exact</code> annotation can be used directly in java. 
       </para>
         
    </section>    
@@ -492,26 +501,26 @@
     	   binding and is named:
       </para>
       
-      <programlisting role="XML" ><![CDATA[<test:SomeStereotype>
-        <s:Stereotype/>
-        <test:InterceptorBinding/>
-        <s:Named/>
-   </test:SomeStereotype>]]></programlisting>   
+      <programlisting role="XML" ><![CDATA[<my:SomeStereotype>
+  <s:Stereotype/>
+  <my:InterceptorBinding/>
+  <s:Named/>
+</my:SomeStereotype>]]></programlisting>   
    
       <para>
          This configures a qualifier annotation:
       </para>
       
-<programlisting role="XML" ><![CDATA[<test:SomeQualifier>
-        <s:Qualifier/>
-   </test:SomeQualifier>]]></programlisting>   
+<programlisting role="XML" ><![CDATA[<my:SomeQualifier>
+  <s:Qualifier/>
+</my:SomeQualifier>]]></programlisting>   
  	
       <para>
          This configures an interceptor binding:
       </para>
-      <programlisting role="XML" ><![CDATA[<test:SomeInterceptorBinding>
-        <s:InterceptorBinding/>
-   </test:SomeInterceptorBinding>]]></programlisting>  
+      <programlisting role="XML" ><![CDATA[<my:SomeInterceptorBinding>
+  <s:InterceptorBinding/>
+</my:SomeInterceptorBinding>]]></programlisting>  
    
    </section>
     
