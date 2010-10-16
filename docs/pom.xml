@@ -74,8 +74,8 @@
 
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/docs</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/docs</developerConnection>
-      <url>http://fisheye.jboss.org/browse/seam/modules/xml/docs</url>
+      <connection>scm:git:git://github.com/seam/xml-config.git</connection>
+      <developerConnection>scm:git:git@github.com:seam/xml-config.git</developerConnection>
+      <url>http://github.com/seam/xml-config</url>
    </scm>
 </project>

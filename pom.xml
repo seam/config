@@ -156,9 +156,9 @@
    </profiles>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk</developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk</url>
+      <connection>scm:git:git://github.com/seam/xml-config.git</connection>
+      <developerConnection>scm:git:git@github.com:seam/xml-config.git</developerConnection>
+      <url>http://github.com/seam/xml-config</url>
    </scm>
 
 </project>

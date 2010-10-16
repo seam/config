@@ -92,9 +92,9 @@
    </dependencies>
 
    <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/seam/modules/xml/trunk/impl</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/seam/modules/xml/trunk/impl</developerConnection>
-      <url>http://fisheye.jboss.org/browse/Seam/modules/xml/trunk/impl</url>
+      <connection>scm:git:git://github.com/seam/xml-config.git</connection>
+      <developerConnection>scm:git:git@github.com:seam/xml-config.git</developerConnection>
+      <url>http://github.com/seam/xml-config</url>
    </scm>
 
    <build>
