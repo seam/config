@@ -188,7 +188,11 @@
     <p:shootEffect>KILL</p:shootEffect>
    	<p:Room>wumpusRoom</p:Room>
    	<p:south><s:Inject/><p:Room>emptyRoom9</p:Room></p:south>
-   </p:GameRoom>      
+   </p:GameRoom>   
+   
+   <p:GameMessage>
+      <s:modifies/>
+   </p:GameMessage>   
       
       
 </beans>
