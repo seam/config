@@ -22,15 +22,15 @@
             <literal>/META-INF/beans.xml</literal>
          </listitem>
          <listitem>
-            <literal>/WEB-INF/beans.xml</literal>
-         </listitem>
-         <listitem>
-            <literal>/WEB-INF/seam-beans.xml</literal>
-         </listitem>
-         <listitem>
             <literal>/META-INF/seam-beans.xml</literal>
          </listitem>
       </itemizedlist>
+      
+      <warning>
+         <para>Due to ordering issues seam-xml cannot reliably read beans.xml from the servlet context. If
+         you are deploying a war archive it is recommended that you define your beans in 
+         <literal>WEB-INF/classes/META-INF/seam-beans.xml</literal></para>
+      </warning>
 
       <para>
          The <literal>beans.xml</literal> file is the preferred way of 
