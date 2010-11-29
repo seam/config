@@ -232,7 +232,12 @@ class BillingDatasource implements Datasource {
    <section>
       <title>The Princess Rescue Example</title>
       <para>
-         TODO next release
+         The princess rescue example is a sample web app that uses Seam XML. You can run it with the following command:
+      </para>
+      <programlisting>mvn jetty:run</programlisting>
+      <para>
+         And then navigate to <literal>http://localhost:9090/princess-rescue</literal>. The XML configuration for the example
+         is in <literal>src/main/resources/META-INF/seam-beans.xml</literal>.
       </para>
    </section>
    <!--
