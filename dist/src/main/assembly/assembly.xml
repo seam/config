@@ -27,7 +27,7 @@
          <outputDirectory>artifacts</outputDirectory>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.xml:seam-xml-config</include>
+            <include>org.jboss.seam.config:seam-config-xml</include>
          </includes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
@@ -37,7 +37,7 @@
          <useProjectArtifact>false</useProjectArtifact>
          <useTransitiveDependencies>true</useTransitiveDependencies>
          <excludes>
-            <exclude>org.jboss.seam.xml:*</exclude>
+            <exclude>org.jboss.seam.config:*</exclude>
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
@@ -47,7 +47,7 @@
          <unpack>true</unpack>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.xml:seam-xml-examples-princess-rescue</include>
+            <include>org.jboss.seam.config:seam-config-example-princess-rescue</include>
          </includes>
       </dependencySet>
       <!-- Pull in docbook artifacts -->
@@ -56,7 +56,7 @@
          <unpack>true</unpack>
          <useProjectArtifact>false</useProjectArtifact>
          <includes>
-            <include>org.jboss.seam.xml:seam-xml-config-reference-guide</include>
+            <include>org.jboss.seam.config:seam-config-reference-guide</include>
          </includes>
          <unpackOptions>
             <excludes>

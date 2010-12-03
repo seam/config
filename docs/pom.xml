@@ -2,21 +2,20 @@
    <modelVersion>4.0.0</modelVersion>
 
    <parent>
-      <groupId>org.jboss.seam.xml</groupId>
-      <artifactId>seam-xml-config-parent</artifactId>
+      <groupId>org.jboss.seam.config</groupId>
+      <artifactId>seam-config-parent</artifactId>
       <version>3.0.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
-   <groupId>org.jboss.seam.xml</groupId>
-   <artifactId>seam-xml-config-reference-guide</artifactId>
+   <groupId>org.jboss.seam.config</groupId>
+   <artifactId>seam-config-reference-guide</artifactId>
    <version>3.0.0-SNAPSHOT</version>
    <packaging>jdocbook</packaging>
-   <name>Seam XML Config Reference Guide</name>
+   <name>Seam Config Reference Guide</name>
 
    <properties>
-      <pdf.name>xml-reference.pdf</pdf.name>
-      <weld.docbook.version>1.1.1-Beta5</weld.docbook.version>
+      <pdf.name>${project.artifactId}.pdf</pdf.name>
    </properties>
 
    <build>
@@ -71,11 +70,4 @@
          </build>
       </profile>
    </profiles>
-
-
-   <scm>
-      <connection>scm:git:git://github.com/seam/xml-config.git</connection>
-      <developerConnection>scm:git:git@github.com:seam/xml-config.git</developerConnection>
-      <url>http://github.com/seam/xml-config</url>
-   </scm>
 </project>

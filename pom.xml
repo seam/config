@@ -7,11 +7,13 @@
       <version>4</version>
    </parent>
 
-   <groupId>org.jboss.seam.xml</groupId>
-   <artifactId>seam-xml-config-parent</artifactId>
+   <groupId>org.jboss.seam.config</groupId>
+   <artifactId>seam-config-parent</artifactId>
    <packaging>pom</packaging>
    <version>3.0.0-SNAPSHOT</version>
-   <name>Seam XML Config Parent</name>
+   <name>Seam Config Parent</name>
+   <url>http://seamframework.org/Seam3/ConfigModule</url>
+   <description>Alternate metadata sources for defining and configuring beans</description>
 
    <properties>
       <seam.version>3.0.0.b01</seam.version>
@@ -27,7 +29,7 @@
    </prerequisites>
 
    <modules>
-      <module>impl</module>
+      <module>providers/xml</module>
    </modules>
 
    <dependencyManagement>
@@ -42,8 +44,8 @@
 
          <!-- Override submodule versions from org.jboss.seam:seam -->
          <dependency>
-            <groupId>org.jboss.seam.xml</groupId>
-            <artifactId>seam-xml-config</artifactId>
+            <groupId>org.jboss.seam.config</groupId>
+            <artifactId>seam-config-xml</artifactId>
             <version>${project.version}</version>
          </dependency>
          
@@ -156,9 +158,9 @@
    </profiles>
 
    <scm>
-      <connection>scm:git:git://github.com/seam/xml-config.git</connection>
-      <developerConnection>scm:git:git@github.com:seam/xml-config.git</developerConnection>
-      <url>http://github.com/seam/xml-config</url>
+      <connection>scm:git:git://github.com/seam/config.git</connection>
+      <developerConnection>scm:git:git@github.com:seam/config.git</developerConnection>
+      <url>http://github.com/seam/config</url>
    </scm>
 
 </project>

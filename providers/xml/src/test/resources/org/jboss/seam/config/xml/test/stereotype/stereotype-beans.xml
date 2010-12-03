@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+          xmlns:test="urn:java:org.jboss.seam.config.xml.test.stereotype"
+          xmlns:int="urn:java:org.jboss.seam.config.xml.test.interceptor">
+   
+   <test:Stereotype1>
+        <Stereotype/>
+        <int:InterceptorBinding/>
+   </test:Stereotype1>
+   
+    <int:InterceptedBean>
+         <modifies/>
+        <test:Stereotype1/>
+    </int:InterceptedBean>
+          
+</beans>

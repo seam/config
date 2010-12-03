@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="urn:java:ee"
+          xmlns:test="urn:java:org.jboss.seam.config.xml.test.interceptor">
+   
+    <test:InterceptedBean>
+    	<replaces/>
+        <test:method>
+            <test:InterceptorBinding/>
+        </test:method>
+    </test:InterceptedBean> 
+          
+</beans>

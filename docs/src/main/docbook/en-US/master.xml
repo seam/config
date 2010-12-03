@@ -5,8 +5,9 @@
       
    <toc/>
    
-   <title>Seam XML Configuration</title>      
-   <xi:include href="xml-introduction.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  
-   <xi:include href="xml-general.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  
+   <title>Seam Config</title>      
+   <subtitle>Alternative metadata sources for defining and configuration beans</subtitle>
+   <xi:include href="introduction.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  
+   <xi:include href="xml-provider.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  
 
 </book>
