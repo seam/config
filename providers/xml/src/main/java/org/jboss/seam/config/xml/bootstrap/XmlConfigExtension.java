@@ -54,7 +54,7 @@ import org.jboss.seam.config.xml.model.ModelBuilder;
 import org.jboss.seam.config.xml.parser.ParserMain;
 import org.jboss.seam.config.xml.parser.SaxNode;
 import org.jboss.seam.config.xml.util.FileDataReader;
-import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
+import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

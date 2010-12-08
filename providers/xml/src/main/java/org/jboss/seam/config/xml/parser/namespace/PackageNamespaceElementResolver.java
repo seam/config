@@ -36,11 +36,11 @@ import org.jboss.seam.config.xml.model.XmlItemType;
 import org.jboss.seam.config.xml.parser.SaxNode;
 import org.jboss.seam.config.xml.util.PropertyUtils;
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
-import org.jboss.weld.extensions.properties.Property;
-import org.jboss.weld.extensions.properties.query.NamedPropertyCriteria;
-import org.jboss.weld.extensions.properties.query.PropertyQueries;
-import org.jboss.weld.extensions.properties.query.PropertyQuery;
-import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.seam.solder.properties.Property;
+import org.jboss.seam.solder.properties.query.NamedPropertyCriteria;
+import org.jboss.seam.solder.properties.query.PropertyQueries;
+import org.jboss.seam.solder.properties.query.PropertyQuery;
+import org.jboss.seam.solder.reflection.Reflections;
 
 public class PackageNamespaceElementResolver implements NamespaceElementResolver
 {

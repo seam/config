@@ -28,16 +28,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.config.xml.model.EntryXmlItem;
 import org.jboss.seam.config.xml.util.TypeReader;
-import org.jboss.weld.extensions.properties.Property;
+import org.jboss.seam.solder.properties.Property;
 
 /**
  * class responsible for setting the value of map properties.

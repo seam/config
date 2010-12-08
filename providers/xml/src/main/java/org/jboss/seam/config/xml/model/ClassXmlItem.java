@@ -41,13 +41,13 @@ import org.jboss.seam.config.xml.fieldset.FieldValueObject;
 import org.jboss.seam.config.xml.util.PropertyUtils;
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.config.xml.util.XmlConfigurationException;
-import org.jboss.weld.extensions.literal.InjectLiteral;
-import org.jboss.weld.extensions.properties.Properties;
-import org.jboss.weld.extensions.properties.Property;
-import org.jboss.weld.extensions.properties.query.NamedPropertyCriteria;
-import org.jboss.weld.extensions.properties.query.PropertyQueries;
-import org.jboss.weld.extensions.properties.query.PropertyQuery;
-import org.jboss.weld.extensions.reflection.Reflections;
+import org.jboss.seam.solder.literal.InjectLiteral;
+import org.jboss.seam.solder.properties.Properties;
+import org.jboss.seam.solder.properties.Property;
+import org.jboss.seam.solder.properties.query.NamedPropertyCriteria;
+import org.jboss.seam.solder.properties.query.PropertyQueries;
+import org.jboss.seam.solder.properties.query.PropertyQuery;
+import org.jboss.seam.solder.reflection.Reflections;
 
 public class ClassXmlItem extends AbstractXmlItem
 {

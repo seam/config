@@ -35,8 +35,8 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Scope;
 
 import org.jboss.seam.config.xml.fieldset.FieldValueObject;
-import org.jboss.weld.extensions.core.Veto;
-import org.jboss.weld.extensions.reflection.annotated.AnnotatedTypeBuilder;
+import org.jboss.seam.solder.core.Veto;
+import org.jboss.seam.solder.reflection.annotated.AnnotatedTypeBuilder;
 
 public class BeanResult<X>
 {

@@ -24,7 +24,7 @@ package org.jboss.seam.config.xml.fieldset;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.weld.extensions.properties.Property;
+import org.jboss.seam.solder.properties.Property;
 
 /**
  * Field value object for a simple field

@@ -38,7 +38,7 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.config.xml.model.ValueXmlItem;
 import org.jboss.seam.config.xml.util.TypeReader;
-import org.jboss.weld.extensions.properties.Property;
+import org.jboss.seam.solder.properties.Property;
 
 /**
  * class responsible for setting the value of collection properties.

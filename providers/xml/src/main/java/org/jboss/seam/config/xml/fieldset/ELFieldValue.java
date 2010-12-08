@@ -25,8 +25,8 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
-import org.jboss.weld.extensions.el.Expressions;
-import org.jboss.weld.extensions.literal.DefaultLiteral;
+import org.jboss.seam.solder.el.Expressions;
+import org.jboss.seam.solder.literal.DefaultLiteral;
 
 /**
  * Field value impl for EL expressions

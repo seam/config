@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 
 import org.jboss.seam.config.xml.util.XmlConfigurationException;
 import org.jboss.seam.config.xml.util.XmlObjectConverter;
-import org.jboss.weld.extensions.reflection.AnnotationInstanceProvider;
+import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 
 /**
  * 

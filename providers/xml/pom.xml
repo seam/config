@@ -54,8 +54,8 @@
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.weld</groupId>
-         <artifactId>weld-extensions</artifactId>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder</artifactId>
       </dependency>
       
       <dependency>

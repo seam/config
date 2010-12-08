@@ -42,7 +42,7 @@ import org.jboss.seam.config.xml.fieldset.MapFieldSet;
 import org.jboss.seam.config.xml.fieldset.SimpleFieldValue;
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.config.xml.util.XmlConfigurationException;
-import org.jboss.weld.extensions.properties.Property;
+import org.jboss.seam.solder.properties.Property;
 
 public class PropertyXmlItem extends AbstractXmlItem
 {

@@ -25,7 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import org.jboss.weld.extensions.properties.Property;
+import org.jboss.seam.solder.properties.Property;
 
 public class PropertyUtils
 {

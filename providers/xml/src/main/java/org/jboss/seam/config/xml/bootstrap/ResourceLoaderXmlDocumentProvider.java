@@ -33,7 +33,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jboss.weld.extensions.resourceLoader.ResourceLoaderManager;
+import org.jboss.seam.solder.resourceLoader.ResourceLoaderManager;
 import org.xml.sax.InputSource;
 
 /**
