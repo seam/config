@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.enterprise.inject.spi.BeanManager;
 
@@ -38,7 +38,6 @@ import org.jboss.seam.config.xml.core.BeanResult;
 import org.jboss.seam.config.xml.core.BeanResultType;
 import org.jboss.seam.config.xml.core.VirtualProducerField;
 import org.jboss.seam.config.xml.fieldset.FieldValueObject;
-import org.jboss.seam.config.xml.util.PropertyUtils;
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.config.xml.util.XmlConfigurationException;
 import org.jboss.seam.solder.literal.InjectLiteral;
@@ -79,10 +78,10 @@ public class ClassXmlItem extends AbstractXmlItem
       {
          PropertyQuery<Object> query = PropertyQueries.createQuery(getJavaClass());
          query.addCriteria(new NamedPropertyCriteria(e.getKey()));
-         Property<Object> property = query.getFirstResult();
+         Property<Object> property = query.getFirstWritableResult();
          if (property != null)
          {
-            PropertyUtils.setAccessible(property);
+            property.setAccessible();
             values.add(new PropertyXmlItem(this, property, e.getValue(), null, document, lineno));
          }
          else

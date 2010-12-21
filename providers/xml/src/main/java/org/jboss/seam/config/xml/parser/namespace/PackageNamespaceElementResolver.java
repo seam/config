@@ -34,7 +34,6 @@ import org.jboss.seam.config.xml.model.PropertyXmlItem;
 import org.jboss.seam.config.xml.model.XmlItem;
 import org.jboss.seam.config.xml.model.XmlItemType;
 import org.jboss.seam.config.xml.parser.SaxNode;
-import org.jboss.seam.config.xml.util.PropertyUtils;
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 import org.jboss.seam.solder.properties.Property;
 import org.jboss.seam.solder.properties.query.NamedPropertyCriteria;
@@ -125,7 +124,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       boolean methodFound = Reflections.methodExists(p, name);
       PropertyQuery<Object> query = PropertyQueries.createQuery(parent.getJavaClass());
       query.addCriteria(new NamedPropertyCriteria(name));
-      Property<Object> property = query.getFirstResult();
+      Property<Object> property = query.getFirstWritableResult();
 
       if (methodFound && property != null)
       {
@@ -150,7 +149,7 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       else if (property != null)
       {
          // ensure the property is accessible
-         PropertyUtils.setAccessible(property);
+         property.setAccessible();
          return new PropertyXmlItem(parent, property, node.getInnerText(), null, node.getDocument(), node.getLineNo());
       }
       return null;
