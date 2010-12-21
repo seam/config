@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
 
    <parent>
       <groupId>org.jboss.seam.config</groupId>
@@ -8,12 +9,10 @@
       <relativePath>../../pom.xml</relativePath>
    </parent>
 
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jboss.seam.config</groupId>
    <artifactId>seam-config-example-princess-rescue</artifactId>
    <packaging>war</packaging>
+
    <name>Seam Config Example: Princess Rescue (XML)</name>
-   <version>3.0.0-SNAPSHOT</version>
 
    <properties>
       <jboss.home>${env.JBOSS_HOME}</jboss.home>
@@ -35,15 +34,14 @@
       </dependency>
 
       <dependency>
-         <groupId>javax.annotation</groupId>
-         <artifactId>jsr250-api</artifactId>
-         <scope>provided</scope>
+        <groupId>org.jboss.spec.javax.annotation</groupId>
+        <artifactId>jboss-annotations-api_1.1_spec</artifactId>
+        <scope>provided</scope>
       </dependency>
 
       <dependency>
          <groupId>org.testng</groupId>
          <artifactId>testng</artifactId>
-         <scope>test</scope>
          <classifier>jdk15</classifier>
       </dependency>
 
@@ -51,12 +49,6 @@
          <groupId>org.jboss.seam.solder</groupId>
          <artifactId>seam-solder</artifactId>
          <scope>runtime</scope>
-         <exclusions>
-            <exclusion>
-               <groupId>javax.el</groupId>
-               <artifactId>el-api</artifactId>
-            </exclusion>
-         </exclusions>
       </dependency>
 
    </dependencies>

@@ -4,24 +4,19 @@
    <parent>
       <artifactId>seam-parent</artifactId>
       <groupId>org.jboss.seam</groupId>
-      <version>4</version>
+      <version>5</version>
    </parent>
 
    <groupId>org.jboss.seam.config</groupId>
    <artifactId>seam-config-parent</artifactId>
    <packaging>pom</packaging>
    <version>3.0.0-SNAPSHOT</version>
-   <name>Seam Config Parent</name>
+   <name>Seam Config Module</name>
    <url>http://seamframework.org/Seam3/ConfigModule</url>
    <description>Alternate metadata sources for defining and configuring beans</description>
 
    <properties>
-      <seam.version>3.0.0.b01</seam.version>
-      <seam-solder.version>3.0.0.Beta1</seam-solder.version>
-      <el-impl.version>1.0</el-impl.version>
-      <weld.version>1.1.0.Beta1</weld.version>
-      <jboss.logging.version>3.0.0.Beta4</jboss.logging.version>
-      <cdi-api.version>1.0-SP2</cdi-api.version>
+      <seam.version>3.0.0.b04</seam.version>
    </properties>
    
    <prerequisites>
@@ -36,7 +31,7 @@
       <dependencies>
          <dependency>
             <groupId>org.jboss.seam</groupId>
-            <artifactId>seam</artifactId>
+            <artifactId>seam-bom</artifactId>
             <version>${seam.version}</version>
             <type>pom</type>
             <scope>import</scope>
@@ -48,58 +43,27 @@
             <artifactId>seam-config-xml</artifactId>
             <version>${project.version}</version>
          </dependency>
-         
+   
+         <!-- Override CDI/Weld version until tests are upgraded -->
          <dependency>
-           <groupId>javax.enterprise</groupId>
-           <artifactId>cdi-api</artifactId>
-           <version>${cdi-api.version}</version>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.0-SP2</version>
          </dependency>
-         
-         <dependency>
-            <groupId>org.jboss.seam.solder</groupId>
-            <artifactId>seam-solder</artifactId>
-            <version>${seam-solder.version}</version>
-         </dependency>
-         
-         <dependency>
-            <groupId>el-impl</groupId>
-            <artifactId>el-impl</artifactId>
-            <version>${el-impl.version}</version>
-         </dependency>
-         
-         <dependency>
-      	   <groupId>javax.servlet</groupId>
-      	   <artifactId>servlet-api</artifactId>
-      	   <version>2.5</version>
-      	</dependency>
 
          <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-core</artifactId>
-            <version>${weld.version}</version>
+            <version>1.1.0.Beta1</version>
          </dependency>
-         
+
          <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
-            <version>${weld.version}</version>
-            <scope>test</scope>
+            <version>1.1.0.Beta1</version>
          </dependency>
-         
-         <dependency>
-            <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet</artifactId>
-            <version>${weld.version}</version>   
-         </dependency>
-         
-         <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging</artifactId>
-            <version>${jboss.logging.version}</version>
-            <scope>test</scope>
-         </dependency>
+
       </dependencies>
-      
    </dependencyManagement>
    
    <profiles>

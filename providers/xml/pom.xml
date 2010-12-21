@@ -30,6 +30,22 @@
       </dependency>
 
       <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-api</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder-impl</artifactId>
+      </dependency>
+
+      <dependency>
          <groupId>org.jboss.weld</groupId>
          <artifactId>weld-core</artifactId>
          <scope>test</scope>
@@ -42,36 +58,18 @@
       </dependency>
       
       <dependency>
-         <groupId>javax.servlet</groupId>
-         <artifactId>servlet-api</artifactId>
-         <scope>test</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.seam.solder</groupId>
-         <artifactId>seam-solder</artifactId>
-      </dependency>
-      
-      <dependency>
-         <groupId>org.jboss.logging</groupId>
-         <artifactId>jboss-logging</artifactId>
+         <groupId>org.jboss.spec.javax.servlet</groupId>
+         <artifactId>jboss-servlet-api_3.0_spec</artifactId>
          <scope>test</scope>
       </dependency>
       
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <scope>test</scope>
       </dependency>
       
       <dependency>
-         <groupId>el-impl</groupId>
+         <groupId>org.glassfish.web</groupId>
          <artifactId>el-impl</artifactId>
          <scope>test</scope>
       </dependency>

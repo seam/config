@@ -38,7 +38,6 @@
          <artifactId>seam-config-xml</artifactId>
          <version>${project.version}</version>
          <classifier>javadoc</classifier>
-         <optional>true</optional>
       </dependency>
 
       <dependency>
