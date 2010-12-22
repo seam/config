@@ -1,6 +1,6 @@
 
                               Seam XML Module
-                               3.0.0 Beta1
+                               3.0.0 Beta2
 
  What is it?
  ===========
