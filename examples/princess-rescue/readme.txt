@@ -17,5 +17,5 @@ http://localhost:6060/princess-rescue/home.jsf
 To deploy the example to jbossas 6:
 
 export JBOSS_HOME=/path/to/jboss
-mvn clean install jboss:hard-deploy
+mvn clean install jboss:hard-deploy -Pjbossas
 
