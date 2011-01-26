@@ -41,7 +41,6 @@ public class TypesTest extends AbstractXMLTest
    @Test
    public void testTypeRestriction()
    {
-
       TypeInjectedClass x = getReference(TypeInjectedClass.class);
       Assert.assertTrue(x.value instanceof AllowedType);
       Assert.assertTrue(x.createValue instanceof RestrictedType);

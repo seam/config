@@ -48,5 +48,6 @@ public class StereotypeTest extends AbstractXMLTest
       String res = x.method();
       Assert.assertTrue(res.equals("hello world"));
 
+
    }
 }
