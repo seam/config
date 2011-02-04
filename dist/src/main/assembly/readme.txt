@@ -29,7 +29,8 @@
  Licensing
  =========
 
- This distribution, as a whole, is licensed under the terms of the GNU Lesser General Public license version 2.1. 
+ This distribution, as a whole, is licensed under the terms of the Apache
+ Software License, Version 2.0 (ASL).
 
  Seam Config URLs
  ================
