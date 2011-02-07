@@ -13,7 +13,7 @@
    <section>
       <title>Getting Started</title>
       <para>
-         No special configuration is required, all that is required is to include the JAR file and the Weld Extensions
+         No special configuration is required, all that is required is to include the JAR file and the Seam Solder
          JAR in your project. For Maven projects, that means adding the following dependencies to your pom.xml:
       </para>
       <programlisting role="XML"><![CDATA[
@@ -42,14 +42,6 @@
             <literal>/META-INF/seam-beans.xml</literal>
          </listitem>
       </itemizedlist>
-      
-      <warning>
-         <para>
-            Due to ordering issues Seam Config cannot reliably read beans.xml from the servlet context. If you are
-            deploying a war archive it is recommended that you define your beans in
-            <literal>WEB-INF/classes/META-INF/seam-beans.xml</literal>
-         </para>
-      </warning>
 
       <para>
          The <literal>beans.xml</literal> file is the preferred way of 
@@ -251,7 +243,7 @@ class BillingDatasource implements Datasource {
    <section>
       <title>The Princess Rescue Example</title>
       <para>
-         The princess rescue example is a sample web app that uses Seam XML. You can run it with the following command:
+         The princess rescue example is a sample web app that uses Seam Config. You can run it with the following command:
       </para>
       <programlisting>mvn jetty:run</programlisting>
       <para>

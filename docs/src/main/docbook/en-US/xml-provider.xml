@@ -8,8 +8,8 @@
       <title>XML Namespaces</title>
       
       <para>
-         The main namespace is <literal>urn:java:ee</literal> contains builtin tags 
-         and types from core packages. The builtin tags are:
+         The main namespace is <literal>urn:java:ee</literal>.  This namespace contains built-in 
+         tags and types from core packages. The built-in tags are:
       </para>
         
       <itemizedlist>
@@ -54,7 +54,7 @@
       </itemizedlist>
         
       <para>
-         Other namspaces are specified using the following syntax:
+         Other namespaces are specified using the following syntax:
       </para>
         
       <programlisting>
@@ -70,7 +70,7 @@
         <para>
            For example, say you had a class <code>com.mydomain.package2.Report</code>. 
            To configure a <code>Report</code> bean you would use 
-           <literal>&lt;ns:Report&gt;</literal>. Methods and fields on the bean are resolved
+           <literal>&lt;my:Report&gt;</literal>. Methods and fields on the bean are resolved
            from the same namespace as the bean itself. It is possible to distinguish between 
            overloaded methods by specifying the parameter types, for more information see
            <link linkend="xml-provider.configuring-methods">Configuring Methods</link>.
@@ -483,7 +483,7 @@
 
       <para>
          In the example above only beans that are assignable to InjectedBean will be eligable for injection into the field.
-   	   This also works for parameter injection points. This functionallity is part of Weld Extensions, and the
+   	   This also works for parameter injection points. This functionallity is part of Seam Solder, and the
          <code>@Exact</code> annotation can be used directly in java. 
       </para>
         
@@ -529,7 +529,7 @@
       <para>
          Seam XML supports configuration of virtual producer fields. These allow for configuration 
          of resource producer fields, Weld Extensions generic bean and constant values directly via 
-         XML. First an exmaple:
+         XML. First an example:
       </para>
       
 <programlisting role="XML" ><![CDATA[<s:EntityManager>
