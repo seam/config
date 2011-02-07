@@ -44,6 +44,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.inject.Named;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.config.xml.core.BeanResult;
 import org.jboss.seam.config.xml.core.XmlConfiguredBean;
 import org.jboss.seam.config.xml.core.XmlId;
@@ -55,8 +56,6 @@ import org.jboss.seam.config.xml.parser.ParserMain;
 import org.jboss.seam.config.xml.parser.SaxNode;
 import org.jboss.seam.config.xml.util.FileDataReader;
 import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class XmlConfigExtension implements Extension
 {
@@ -71,7 +70,7 @@ public class XmlConfigExtension implements Extension
 
    private int count = 0;
 
-   private static final Logger log = LoggerFactory.getLogger(XmlConfigExtension.class);
+   private static final Logger log = Logger.getLogger(XmlConfigExtension.class);
 
    /**
     * map of syntetic bean id to a list of field value objects
