@@ -14,6 +14,7 @@
    <packaging>jar</packaging>
    <name>Seam Config XML provider</name>
    <description>Provides an alternative metadata source for beans using a "type-safe" XML syntax</description>
+   <url>http://seamframework.org/Seam3/ConfigModule</url>
 
    <dependencies>
    
