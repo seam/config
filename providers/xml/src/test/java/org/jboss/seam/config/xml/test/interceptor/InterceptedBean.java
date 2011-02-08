@@ -21,7 +21,7 @@
  */
 package org.jboss.seam.config.xml.test.interceptor;
 
-@InterceptorBinding
+@Binding
 public class InterceptedBean
 {
 

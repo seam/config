@@ -41,8 +41,7 @@ public class InterceptorTest extends AbstractXMLTest
 
       InterceptedBean x = getReference(InterceptedBean.class);
       String res = x.method();
-      // FIXME assertion fails
-      //Assert.assertTrue(res.equals("hello world"));
+      Assert.assertEquals("hello world", res);
 
    }
 }
