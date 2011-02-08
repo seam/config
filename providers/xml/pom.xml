@@ -17,7 +17,7 @@
    <url>http://seamframework.org/Seam3/ConfigModule</url>
 
    <dependencies>
-   
+
       <dependency>
          <groupId>javax.enterprise</groupId>
          <artifactId>cdi-api</artifactId>
@@ -54,24 +54,24 @@
          <artifactId>weld-se-core</artifactId>
          <scope>test</scope>
       </dependency>
-      
+
       <dependency>
          <groupId>org.jboss.spec.javax.servlet</groupId>
          <artifactId>jboss-servlet-api_3.0_spec</artifactId>
          <scope>test</scope>
       </dependency>
-      
+
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
       </dependency>
-      
+
       <dependency>
          <groupId>org.glassfish.web</groupId>
          <artifactId>el-impl</artifactId>
          <scope>test</scope>
       </dependency>
-      
+
    </dependencies>
 
    <build>
@@ -81,7 +81,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
                <forkMode>once</forkMode>
-               <argLine>-Xmx512m</argLine>
+               <argLine>-Xmx512m -XX:MaxPermSize=128m</argLine>
             </configuration>
          </plugin>
       </plugins>

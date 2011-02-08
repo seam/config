@@ -35,7 +35,7 @@ public class StereotypeTest extends AbstractXMLTest
 {
 
    @Override
-   protected String getXmlFileName()
+   public String getXmlFileName()
    {
       return "stereotype-beans.xml";
    }
@@ -46,8 +46,6 @@ public class StereotypeTest extends AbstractXMLTest
 
       InterceptedBean x = getReference(InterceptedBean.class);
       String res = x.method();
-      Assert.assertTrue(res.equals("hello world"));
-
-
+      Assert.assertEquals("hello world",res);
    }
 }

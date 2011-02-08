@@ -55,6 +55,7 @@ import org.jboss.seam.config.xml.model.ModelBuilder;
 import org.jboss.seam.config.xml.parser.ParserMain;
 import org.jboss.seam.config.xml.parser.SaxNode;
 import org.jboss.seam.config.xml.util.FileDataReader;
+import org.jboss.seam.solder.literal.DefaultLiteral;
 import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 
 public class XmlConfigExtension implements Extension
@@ -156,7 +157,9 @@ public class XmlConfigExtension implements Extension
          {
             AnnotatedType<?> tp = bb.getAnnotatedType();
             log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
-            event.addAnnotatedType(tp);
+            ProcessAnnotatedType<?> pat = new ProcessAnnotatedTypeImpl((AnnotatedType) tp);
+            beanManager.fireEvent(pat, DefaultLiteral.INSTANCE);
+            event.addAnnotatedType(pat.getAnnotatedType());
          }
 
          veto.addAll(r.getVeto());
