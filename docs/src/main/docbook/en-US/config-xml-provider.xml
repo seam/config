@@ -568,6 +568,14 @@
       </para>
     
     </section>
+
+    <section>
+       <title>Notes on Configuring Interceptors</title>
+          <para>
+             Some versions of weld including <literal>1.1.0.Final</literal> do not support adding the 
+             <code>@AroundInvoke</code> annotation via the SPI, this will be fixed in future versions.
+          </para>
+    </section>
         
     <section>
         <title>More Information</title>
