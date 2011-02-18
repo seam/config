@@ -68,7 +68,7 @@
         </para> 
         
         <para>
-           For example, say you had a class <code>com.mydomain.package2.Report</code>. 
+           For example, you have a class <code>com.mydomain.package2.Report</code>. 
            To configure a <code>Report</code> bean you would use 
            <literal>&lt;my:Report&gt;</literal>. Methods and fields on the bean are resolved
            from the same namespace as the bean itself. It is possible to distinguish between 
@@ -83,7 +83,7 @@
       <title>Adding, replacing and modifying beans</title>
       
       <para>
-         By default configuring a bean via XML creates a new bean, however there 
+         By default configuring a bean via XML creates a new bean; however there 
          may be cases where you want to modify an existing bean rather than
          adding a new one. The <literal>&lt;s:replaces&gt;</literal> and 
          <literal>&lt;s:modifies&gt;</literal> tags allow you to do this.
@@ -126,7 +126,7 @@
       <title>Applying annotations using XML</title>
       
       <para>
-         Annotations are resolved in the same way as normal classes. Conceptually 
+         Annotations are resolved in the same way as normal classes. Conceptually, 
          annotations are applied to the object their parent element resolves
          to. It is possible to set the value of annotation members using the xml
          attribute that corresponds to the member name. For example:     
@@ -265,7 +265,7 @@
 </m:Report>]]></programlisting>
 
          <para>
-            Internally field values are set by wrapping the <code>InjectionTarget</code> 
+            Internally, field values are set by wrapping the <code>InjectionTarget</code> 
             for a bean. This means that the expressions are evaluated once, at bean 
             creation time.
          </para>
@@ -279,7 +279,7 @@
             Inline beans allow you to set field values to another bean that is declared inline inside the field declaration.
             This allows for the configuration of complex types with nestled classes. Inline beans can be declared inside both
             <literal>&lt;s:value&gt;</literal> and <literal>&lt;s:key&gt;</literal> elements, and may be used in both collections 
-            and simple field values. Inline beans must not have any qualifier annotations declared on the bean, instead Seam Config
+            and simple field values. Inline beans must not have any qualifier annotations declared on the bean; instead Seam Config
             assigns them an artificial qualifier. Inline beans may have any scope, however the default <code>Dependent</code> scope
             is recommended.
          </para>
@@ -367,8 +367,7 @@
 </beans>]]></programlisting>
             
       <para>
-         In this instance <literal>MethodBean</literal> has three methods, all of them rather 
-         imaginatively named <literal>doStuff</literal>.
+         In this example, <literal>MethodBean</literal> has three methods. They are all named <literal>doStuff</literal>.
       </para>
       
       <para> 
@@ -380,9 +379,7 @@
       <para>
          The next entry in the file configures the method that takes a 
          <literal>MethodValueBean</literal> as a parameter and the final entry 
-         configures a method that takes a two dimensional array of<literal>MethodValueBean</literal>'s
-         as a parameter. For both these methods a qualifier was added to the method parameter and
-         they were made into producer methods.
+         configures a method that takes a two dimensional array of<literal>MethodValueBean</literal>s as a parameter. For both of these methods, a qualifier was added to the method parameter and they were made into producer methods.
       </para>
       
       <para>
@@ -426,7 +423,7 @@
       <note>
          <para>
             If a class has a field and a method of the same name then by default the
-            field will be resolved, unless the element has a child 
+            field will be resolved. The exception is if the element has a child 
             <code>&lt;parameters&gt;</code> element, in which case it is resolved
             as a method.
          </para>
@@ -466,7 +463,7 @@
       <title>Overriding the type of an injection point</title>
         
       <para>
-         It is possible to limit which bean types are availible to inject 
+         It is possible to limit which bean types are available to inject 
          into a given injection point:
       </para>
       <programlisting role="JAVA"><![CDATA[class SomeBean
@@ -482,7 +479,7 @@
 </my:SomeBean>]]></programlisting>
 
       <para>
-         In the example above only beans that are assignable to InjectedBean will be eligable for injection into the field.
+         In the example above, only beans that are assignable to InjectedBean will be eligable for injection into the field.
    	   This also works for parameter injection points. This functionallity is part of Seam Solder, and the
          <code>@Exact</code> annotation can be used directly in java. 
       </para>
@@ -529,7 +526,7 @@
       <para>
          Seam XML supports configuration of virtual producer fields. These allow for configuration 
          of resource producer fields, Weld Extensions generic bean and constant values directly via 
-         XML. First an example:
+         XML. For example:
       </para>
       
 <programlisting role="XML" ><![CDATA[<s:EntityManager>
@@ -569,19 +566,19 @@
     
     </section>
 
-    <section>
+ <!--    <section>
        <title>Notes on Configuring Interceptors</title>
-          <para>
+         <para>
              Some versions of weld including <literal>1.1.0.Final</literal> do not support adding the 
              <code>@AroundInvoke</code> annotation via the SPI, this will be fixed in future versions.
-          </para>
-    </section>
+          </para> RNEWTON REMOVED: FEB 18 2011. Try not to tell people what we don't have :)
+    </section>-->
         
     <section>
         <title>More Information</title>
-        <para>For further information look at the units tests in the Seam Config distribution, also the 
-          JSR-299 Public Review Draft section on XML Configuration was the base for this extension, 
-        so it may also be worthwhile reading.</para>
+        <para>For further information look at the units tests in the Seam Config distribution. Also see the 
+          JSR-299 Public Review Draft section on XML Configuration.<!-- was the base for this extension, 
+        so it may also be worthwhile reading. --></para>
     </section>
     
     
