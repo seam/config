@@ -23,7 +23,7 @@ package org.jboss.seam.config.xml.model;
 
 public enum XmlItemType
 {
-   CLASS, METHOD, FIELD, ANNOTATION, VALUE("value", "v"), ENTRY("entry", "e"), KEY("key", "k"), DEPENDENCY, PARAMETERS("parameters"), PARAMETER, ARRAY("array"), REPLACE("replaces"), MODIFIES("modifies");
+   CLASS, METHOD, FIELD, ANNOTATION, VALUE("value", "v"), VALUES("values"), ENTRY("entry", "e"), KEY("key", "k"), DEPENDENCY, PARAMETERS("parameters"), PARAMETER, ARRAY("array"), REPLACE("replaces"), MODIFIES("modifies");
 
    private final String elementName;
    private final String alias;
