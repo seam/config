@@ -4,7 +4,7 @@
    <parent>
       <artifactId>seam-parent</artifactId>
       <groupId>org.jboss.seam</groupId>
-      <version>8</version>
+      <version>9</version>
    </parent>
 
    <groupId>org.jboss.seam.config</groupId>
@@ -16,7 +16,7 @@
    <description>Alternate metadata sources for defining and configuring beans</description>
 
    <properties>
-      <seam.version>3.0.0.b09</seam.version>
+      <seam.version>3.0.0.CR1</seam.version>
    </properties>
    
    <prerequisites>
