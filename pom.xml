@@ -10,7 +10,7 @@
    <groupId>org.jboss.seam.config</groupId>
    <artifactId>seam-config-parent</artifactId>
    <packaging>pom</packaging>
-   <version>3.0.0.CR1</version>
+   <version>3.0.0-SNAPSHOT</version>
    <name>Seam Config Module</name>
    <url>http://seamframework.org/Seam3/ConfigModule</url>
    <description>Alternate metadata sources for defining and configuring beans</description>
