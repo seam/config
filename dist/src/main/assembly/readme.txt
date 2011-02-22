@@ -14,17 +14,21 @@
  
     Provided libraries
 
+ doc/
+
+    API Docs and reference guide.
+
+ examples/
+
+    Seam Config examples    
+
  lib/
 
     Dependencies
+    
+ source/
 
- docs/
-
-    API Docs and reference guide.
-  
- examples/
-
-    Seam Config examples
+    Source code for this module
   
  Licensing
  =========

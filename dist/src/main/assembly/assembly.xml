@@ -14,9 +14,11 @@
       <fileSet>
          <directory>src/main/assembly</directory>
          <outputDirectory>.</outputDirectory>
+         <filtered>true</filtered>
          <includes>
             <include>readme.txt</include>
-            <include>lgpl.txt</include>
+            <include>license.txt</include>
+            <include>notice.txt</include>            
          </includes>
       </fileSet>
    </fileSets>
@@ -29,6 +31,10 @@
          <includes>
             <include>org.jboss.seam.config:seam-config-xml</include>
          </includes>
+         <excludes>
+            <exclude>org.jboss.seam.config:*:*:*:javadoc</exclude>
+            <exclude>org.jboss.seam.config:*:*:*:sources</exclude>
+         </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
       <!-- Add necessary dependencies -->
@@ -41,6 +47,7 @@
          </excludes>
          <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
       </dependencySet>
+      
       <!-- Pull in the example projects -->
       <dependencySet>
          <outputDirectory>examples</outputDirectory>
@@ -50,6 +57,7 @@
             <include>org.jboss.seam.config:seam-config-example-princess-rescue</include>
          </includes>
       </dependencySet>
+      
       <!-- Pull in docbook artifacts -->
       <dependencySet>
          <outputDirectory>doc/reference</outputDirectory>
@@ -64,5 +72,35 @@
             </excludes>
          </unpackOptions>
       </dependencySet>
+      
+      <!-- Pull in JavaDoc -->
+      <dependencySet>
+         <outputDirectory>doc/api</outputDirectory>
+         <unpack>true</unpack>
+         <useProjectArtifact>false</useProjectArtifact>
+         <includes>
+            <include>org.jboss.seam.config:seam-config-xml:jar:javadoc</include>
+         </includes>
+         <unpackOptions>
+            <excludes>
+               <exclude>META-INF/</exclude>
+            </excludes>
+         </unpackOptions>
+      </dependencySet>      
+      
+      <!-- Add the source -->
+      <dependencySet>
+         <outputDirectory>source</outputDirectory>
+         <unpack>true</unpack>
+         <useProjectArtifact>false</useProjectArtifact>
+         <includes>
+            <include>org.jboss.seam.config:seam-config-xml:*:sources</include>
+         </includes>
+         <unpackOptions>
+            <excludes>
+               <exclude>META-INF/</exclude>
+            </excludes>
+         </unpackOptions>
+      </dependencySet>      
    </dependencySets>
 </assembly>
