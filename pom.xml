@@ -25,6 +25,8 @@
 
    <modules>
       <module>providers/xml</module>
+      <module>docs</module>
+      <module>examples/princess-rescue</module>
    </modules>
 
    <dependencyManagement>
