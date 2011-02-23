@@ -99,6 +99,10 @@ public class PackageNamespaceElementResolver implements NamespaceElementResolver
       {
 
       }
+      catch (LinkageError e)
+      {
+         // this may be thrown by jboss modules instead of NoClassDefFoundError
+      }
       if (parent != null)
       {
          // if the item can be a method of a FIELD
