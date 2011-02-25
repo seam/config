@@ -15,30 +15,30 @@
       	<td>
       	<table>
       		<tr><td colspan="3"><b>Move</b></td></tr>
-      		<tr><td/><td><h:commandButton disabled="#{gameManager.currentRoom.north == null or gameManager.gameOver}" action="#{gameManager.moveNorth}" value="North"/></td><td/></tr>
+      		<tr><td/><td><h:commandButton id="movenorth" disabled="#{gameManager.currentRoom.north == null or gameManager.gameOver}" action="#{gameManager.moveNorth}" value="North"/></td><td/></tr>
       		<tr>
-      			<td><h:commandButton disabled="#{gameManager.currentRoom.west == null or gameManager.gameOver}" action="#{gameManager.moveWest}" value="West"/></td>
+      			<td><h:commandButton id="movewest" disabled="#{gameManager.currentRoom.west == null or gameManager.gameOver}" action="#{gameManager.moveWest}" value="West"/></td>
       			<td/>
-      			<td><h:commandButton disabled="#{gameManager.currentRoom.east == null or gameManager.gameOver}" action="#{gameManager.moveEast}" value="East"/></td>
+      			<td><h:commandButton id="moveeast" disabled="#{gameManager.currentRoom.east == null or gameManager.gameOver}" action="#{gameManager.moveEast}" value="East"/></td>
       		</tr>
-      		<tr><td/><td><h:commandButton disabled="#{gameManager.currentRoom.south == null or gameManager.gameOver}" action="#{gameManager.moveSouth}" value="South"/></td><td/></tr>
+      		<tr><td/><td><h:commandButton id="movesouth" disabled="#{gameManager.currentRoom.south == null or gameManager.gameOver}" action="#{gameManager.moveSouth}" value="South"/></td><td/></tr>
       	</table>
       	</td>
       	<td>
       	<table>
       		<tr><td colspan="3"><b>Shoot</b></td></tr>
-      		<tr><td/><td><h:commandButton disabled="#{gameManager.currentRoom.north == null or gameManager.gameOver}" action="#{gameManager.shootNorth}" value="North"/></td><td/></tr>
+      		<tr><td/><td><h:commandButton id="shotnorth" disabled="#{gameManager.currentRoom.north == null or gameManager.gameOver}" action="#{gameManager.shootNorth}" value="North"/></td><td/></tr>
       		<tr>
-      			<td><h:commandButton disabled="#{gameManager.currentRoom.west == null or gameManager.gameOver}" action="#{gameManager.shootWest}" value="West"/></td>
+      			<td><h:commandButton id="shotwest" disabled="#{gameManager.currentRoom.west == null or gameManager.gameOver}" action="#{gameManager.shootWest}" value="West"/></td>
       			<td/>
-      			<td><h:commandButton disabled="#{gameManager.currentRoom.east == null or gameManager.gameOver}" action="#{gameManager.shootEast}" value="East"/></td>
+      			<td><h:commandButton id="shoteast" disabled="#{gameManager.currentRoom.east == null or gameManager.gameOver}" action="#{gameManager.shootEast}" value="East"/></td>
       		</tr>
-      		<tr><td/><td><h:commandButton disabled="#{gameManager.currentRoom.south == null or gameManager.gameOver}" action="#{gameManager.shootSouth}" value="South"/></td><td/></tr>
+      		<tr><td/><td><h:commandButton id="shotsouth" disabled="#{gameManager.currentRoom.south == null or gameManager.gameOver}" action="#{gameManager.shootSouth}" value="South"/></td><td/></tr>
       	</table>
       	</td>
       	</tr>
       	</table>
-      	<h:commandButton value="New Game" action="home"/>
+      	<h:commandButton value="New Game" id="next" action="home"/>
       </h:form>
    </ui:define>
 </ui:composition>

@@ -51,6 +51,21 @@
          <scope>runtime</scope>
       </dependency>
 
+      <!-- Functional test dependencies -->
+      <dependency>
+         <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+         <artifactId>selenium-java-client-driver</artifactId>
+         <version>${selenium.java.client.version}</version>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.test</groupId>
+         <artifactId>richfaces-selenium</artifactId>
+         <version>${richfaces.selenium.version}</version>
+         <scope>test</scope>
+      </dependency>
+
    </dependencies>
 
    <build>
@@ -68,6 +83,14 @@
          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>tomcat-maven-plugin</artifactId>
+         </plugin>
+         <!-- No unit tests, surefire would instead run functional tests in incorrect phase -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <skip>true</skip>
+            </configuration>
          </plugin>
       </plugins>
    </build>
