@@ -113,7 +113,7 @@
          </build>
       </profile>
       <profile>
-         <id>jbossas</id>
+         <id>javaee</id>
          <build>
             <plugins>
             <plugin> 
