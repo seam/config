@@ -16,7 +16,7 @@
    <description>Alternate metadata sources for defining and configuring beans</description>
 
    <properties>
-      <seam.version>3.0.0.CR6</seam.version>
+      <seam.version>3.0.0.CR8</seam.version>
    </properties>
    
    <prerequisites>
