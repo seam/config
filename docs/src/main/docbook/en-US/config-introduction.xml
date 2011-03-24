@@ -5,7 +5,7 @@
    <title>Seam Config Introduction</title>
 
    <para>
-      Seam provides a method for configuring JSR-299 beans using alternate metadata sources, such as XML configuration. Currently, the XML provider is the only alternative available. Using a "type-safe" XML
+      Seam provides a method for configuring CDI beans using alternate metadata sources, such as XML configuration. Currently, the XML provider is the only alternative available. Using a "type-safe" XML
       syntax, it is possible to add new beans, override existing beans, and add extra configuration to existing beans. 
   </para>
 
@@ -44,7 +44,7 @@
 
       <para>
          The <literal>beans.xml</literal> file is the preferred way of 
-         configuring beans via XML; however some JSR-299 implementations will not allow this, so
+         configuring beans via XML; however some CDI implementations will not allow this, so
          <literal>seam-beans.xml</literal> is provided as an alternative.
       </para>
 

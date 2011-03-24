@@ -576,9 +576,13 @@
         
     <section>
         <title>More Information</title>
-        <para>For further information look at the units tests in the Seam Config distribution. Also see the 
-          JSR-299 Public Review Draft section on XML Configuration.<!-- was the base for this extension, 
-        so it may also be worthwhile reading. --></para>
+        <para>
+          For further information, look at the units tests in the Seam Config
+          distribution. Also see the XML based metadata chapter in the <ulink
+          url="http://jcp.org/aboutJava/communityprocess/pr/jsr299/index.html">JSR-299
+          Public Review Draft</ulink>, which is where this feature was
+          originally proposed. 
+        </para>
     </section>
     
     
