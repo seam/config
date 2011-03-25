@@ -5,15 +5,14 @@
    <title>Seam Config Introduction</title>
 
    <para>
-      Seam provides a method for configuring JSR-299 beans using alternate metadata sources, such as XML configuration.
-      (Currently, the XML provider is the only alternative available, though others are planned). Using a "type-safe" XML
-      syntax, it's possible to add new beans, override existing beans, and add extra configuration to existing beans. 
+      Seam provides a method for configuring CDI beans using alternate metadata sources, such as XML configuration. Currently, the XML provider is the only alternative available. Using a "type-safe" XML
+      syntax, it is possible to add new beans, override existing beans, and add extra configuration to existing beans. 
   </para>
 
    <section>
       <title>Getting Started</title>
       <para>
-         No special configuration is required, all that is required is to include the JAR file and the Seam Solder
+         Simply include the JAR file and the Seam Solder
          JAR in your project. For Maven projects, that means adding the following dependencies to your pom.xml:
       </para>
       <programlisting role="XML"><![CDATA[
@@ -31,7 +30,7 @@
          </dependency>]]>
       </programlisting>
       <para>
-         To take advantage of Seam Config, the first thing we need is some metadata sources in the form of XML files.
+         To take advantage of Seam Config, you need metadata sources in the form of XML files.
          By default these are discovered from the classpath in the following locations:
       </para>
       <itemizedlist>
@@ -45,14 +44,12 @@
 
       <para>
          The <literal>beans.xml</literal> file is the preferred way of 
-         configuring beans via XML, however it may be possible that 
-         some JSR-299 implementations will not allow this, so
+         configuring beans via XML; however some CDI implementations will not allow this, so
          <literal>seam-beans.xml</literal> is provided as an alternative.
       </para>
 
       <para>
-         Let's start with a simple example. Say we have the following
-         class that represents a report:
+         Here is a simple example. The following class represents a report:
       </para>
       <programlisting role="JAVA"><![CDATA[class Report {
 	String filename;
@@ -86,7 +83,7 @@ class BillingDatasource implements Datasource {
 }]]></programlisting>
 
       <para>
-         Our <code>Report</code> bean is fairly simple. It has a 
+         The <code>Report</code> bean is fairly simple. It has a 
          filename that tells the report engine where to load the 
          report definition from, and a datasource that provides 
          the data used to fill the report. We are going to 
@@ -149,7 +146,7 @@ class BillingDatasource implements Datasource {
                <para>
                   The namespace <literal>urn:java:org.example.reports</literal>
                   corresponds to the package <literal>org.example.reports</literal>,
-                  where our reporting classes live. Multiple java packages can be aggregated
+                  where the reporting classes live. Multiple java packages can be aggregated
                   into a single namespace declaration by seperating the package names
                   with colons, e.g. 
                   <literal>urn:java:org.example.reports:org.example.model</literal>.
@@ -163,7 +160,7 @@ class BillingDatasource implements Datasource {
             <callout arearefs="resport-dec">
                <para>
                   The <literal>&lt;Report&gt;</literal> declaration configures an 
-                  instance of our <code>Report</code> class as a bean.
+                  instance of the <code>Report</code> class as a bean.
                </para>
             </callout>
             
@@ -171,11 +168,11 @@ class BillingDatasource implements Datasource {
                <para>
                   Beans installed using <literal>&lt;s:modifies&gt;</literal>
                   read annotations from the existing class, and merge them with 
-                  the annotations defined via xml. In addition if a bean is 
-                  installed with <literal>&lt;s:modifies&gt;</literal>
+                  the annotations defined via xml. In addition, if a bean is 
+                  installed with <literal>&lt;s:modifies&gt;</literal>,
                   it prevents the original class being installed as a bean. It 
-                  is also possible to add new beans and replace beans altogether,
-                  for more information see 
+                  is also possible to add new beans and replace beans altogether.
+                  For more information see 
                   <link linkend="xml.installing-beans">Adding, modifying and
                   replacing beans</link>.
                   
@@ -213,7 +210,7 @@ class BillingDatasource implements Datasource {
             <callout arearefs="replaces">
                <para>
                   Beans installed using <literal>&lt;s:replaces&gt;</literal>
-                  do not read annotations from the existing class. In addition if 
+                  do not read annotations from the existing class. In addition, if 
                   a bean is installed with <literal>&lt;s:replaces&gt;</literal>
                   it prevents the original class being installed as a bean.
                </para>
@@ -221,7 +218,7 @@ class BillingDatasource implements Datasource {
             
             <callout arearefs="inject">
                <para>
-                  The <literal>&lt;s:Inject&gt;</literal> element is needed this 
+                  The <literal>&lt;s:Inject&gt;</literal> element is needed as this 
                   bean was installed with <literal>&lt;s:replaces&gt;</literal>,
                   so annotations are not read from the class definition.
                </para>
@@ -243,7 +240,7 @@ class BillingDatasource implements Datasource {
    <section>
       <title>The Princess Rescue Example</title>
       <para>
-         The princess rescue example is a sample web app that uses Seam Config. You can run it with the following command:
+         The princess rescue example is a sample web app that uses Seam Config. Run it with the following command:
       </para>
       <programlisting>mvn jetty:run</programlisting>
       <para>

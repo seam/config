@@ -16,7 +16,7 @@
    <description>Alternate metadata sources for defining and configuring beans</description>
 
    <properties>
-      <seam.version>3.0.0.CR8</seam.version>
+      <seam.version>3.0.0.CR9</seam.version>
    </properties>
    
    <prerequisites>
@@ -43,26 +43,6 @@
             <artifactId>seam-config-xml</artifactId>
             <version>${project.version}</version>
          </dependency>
-   
-         <!-- Override CDI/Weld version until tests are upgraded -->
-         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>1.0-SP3</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.weld</groupId>
-            <artifactId>weld-core</artifactId>
-            <version>1.1.0.Final</version>
-         </dependency>
-
-         <dependency>
-            <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se-core</artifactId>
-            <version>1.1.0.Final</version>
-         </dependency>
-
       </dependencies>
    </dependencyManagement>
    
