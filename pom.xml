@@ -19,10 +19,6 @@
       <seam.version>3.0.0.CR9</seam.version>
    </properties>
    
-   <prerequisites>
-      <maven>3.0</maven>
-   </prerequisites>
-
    <modules>
       <module>providers/xml</module>
    </modules>
