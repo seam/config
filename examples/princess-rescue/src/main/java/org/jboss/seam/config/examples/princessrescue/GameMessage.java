@@ -14,13 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.config.example.princessrescue;
+package org.jboss.seam.config.examples.princessrescue;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.io.Serializable;
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Room
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+@RequestScoped
+@Named
+public class GameMessage implements Serializable
 {
-   String value();
+
+   StringBuilder builder = new StringBuilder();
+
+   public void add(String message)
+   {
+      if (message != null)
+      {
+         builder.append(message);
+         builder.append('\n');
+      }
+   }
+
+   public String getMessage()
+   {
+      return builder.toString();
+   }
+
 }

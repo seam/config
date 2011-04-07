@@ -3,7 +3,7 @@
    <test name="princessrescue_ftest">
       <parameter name="example.context.path" value="/princessrescue" />
       <packages>
-         <package name="org.jboss.seam.config.example.princessrescue.ftest" />
+         <package name="org.jboss.seam.config.examples.princessrescue.ftest" />
       </packages>
    </test>
 </suite>

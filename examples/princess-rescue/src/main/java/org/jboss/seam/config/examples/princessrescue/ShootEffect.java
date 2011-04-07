@@ -14,32 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.config.example.princessrescue;
+package org.jboss.seam.config.examples.princessrescue;
 
-import java.io.Serializable;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
-
-@RequestScoped
-@Named
-public class GameMessage implements Serializable
+public enum ShootEffect
 {
-
-   StringBuilder builder = new StringBuilder();
-
-   public void add(String message)
-   {
-      if (message != null)
-      {
-         builder.append(message);
-         builder.append('\n');
-      }
-   }
-
-   public String getMessage()
-   {
-      return builder.toString();
-   }
-
+   NOTHING, KILL, ANNOY;
 }

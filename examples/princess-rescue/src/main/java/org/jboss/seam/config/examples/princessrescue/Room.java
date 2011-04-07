@@ -14,9 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.config.example.princessrescue;
+package org.jboss.seam.config.examples.princessrescue;
 
-public enum RoomType
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Room
 {
-   NORMAL, MONSTER, GAMEOVER;
+   String value();
 }

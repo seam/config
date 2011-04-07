@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.seam.config.example.princessrescue;
+package org.jboss.seam.config.examples.princessrescue;
 
 import java.io.Serializable;
 

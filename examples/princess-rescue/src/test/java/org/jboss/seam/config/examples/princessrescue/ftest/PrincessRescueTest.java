@@ -1,4 +1,4 @@
-package org.jboss.seam.config.example.princessrescue.ftest;
+package org.jboss.seam.config.examples.princessrescue.ftest;
 
 import static org.jboss.test.selenium.locator.LocatorFactory.id;
 import static org.testng.Assert.assertTrue;
