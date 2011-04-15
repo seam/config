@@ -72,9 +72,10 @@ public class ModelBuilder
       {
          throw new XmlConfigurationException("Wrong root element for XML config file, expected:<beans> found:" + root.getName(), root.getDocument(), root.getLineNo());
       }
-      if (!(ROOT_NAMESPACE.equals(root.getNamespaceUri()) || BEANS_ROOT_NAMESPACE.equals(root.getNamespaceUri())))
+      String namespaceUri = root.getNamespaceUri();
+      if (!(ROOT_NAMESPACE.equals(namespaceUri) || BEANS_ROOT_NAMESPACE.equals(namespaceUri) || namespaceUri == null || namespaceUri.isEmpty()))
       {
-         throw new XmlConfigurationException("Wrong root namespace for XML config file, expected:" + ROOT_NAMESPACE + " or " + BEANS_ROOT_NAMESPACE + " found:" + root.getNamespaceUri(), root.getDocument(), root.getLineNo());
+         throw new XmlConfigurationException("Wrong root namespace for XML config file, expected:" + ROOT_NAMESPACE + ", " + BEANS_ROOT_NAMESPACE + " or no namespace, found:" + namespaceUri, root.getDocument(), root.getLineNo());
       }
 
       resolvers.put(ROOT_NAMESPACE, new RootNamespaceElementResolver());
@@ -88,7 +89,7 @@ public class ModelBuilder
             if (node.getNamespaceUri() != null)
             {
                // ignore <alternatives> <interceptors> etc
-               if (node.getNamespaceUri().equals(BEANS_ROOT_NAMESPACE))
+               if (node.getNamespaceUri().equals(BEANS_ROOT_NAMESPACE) || node.getNamespaceUri().isEmpty())
                {
                   continue;
                }
