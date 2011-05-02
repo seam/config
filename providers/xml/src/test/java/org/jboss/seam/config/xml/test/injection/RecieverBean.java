@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.injection;
 
-public class RecieverBean
-{
-   public String value;
+public class RecieverBean {
+    public String value;
 }

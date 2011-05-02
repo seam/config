@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.examples.princessrescue;
 
-public enum RoomType
-{
-   NORMAL, MONSTER, GAMEOVER;
+public enum RoomType {
+    NORMAL, MONSTER, GAMEOVER;
 }

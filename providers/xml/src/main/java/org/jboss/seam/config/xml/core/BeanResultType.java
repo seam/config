@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.core;
 
-public enum BeanResultType
-{
-   ADD, REPLACES, MODIFIES;
+public enum BeanResultType {
+    ADD, REPLACES, MODIFIES;
 }

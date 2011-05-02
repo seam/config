@@ -24,9 +24,8 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = { ElementType.FIELD, ElementType.METHOD, ElementType.TYPE })
+@Target(value = {ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
 @Qualifier
-public @interface VirtualProducerQualifier
-{
+public @interface VirtualProducerQualifier {
 
 }

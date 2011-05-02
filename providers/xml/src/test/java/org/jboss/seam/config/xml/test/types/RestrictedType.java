@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.types;
 
-public class RestrictedType implements SomeInterface
-{
+public class RestrictedType implements SomeInterface {
 
 }

@@ -19,17 +19,15 @@ package org.jboss.seam.config.xml.bootstrap;
 /**
  * classes that implement this interface can be used to load other XML
  * documents, this is useful for testing
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public interface XmlDocumentProvider
-{
+public interface XmlDocumentProvider {
 
-   void open();
+    void open();
 
-   XmlDocument getNextDocument();
+    XmlDocument getNextDocument();
 
-   void close();
+    void close();
 
 }

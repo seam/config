@@ -18,12 +18,10 @@ package org.jboss.seam.config.xml.test.injection;
 
 import org.jboss.seam.config.xml.test.method.QualifiedType;
 
-public class QualifiedBean1 implements QualifiedType
-{
+public class QualifiedBean1 implements QualifiedType {
 
-   public int getBeanNumber()
-   {
-      return 1;
-   }
+    public int getBeanNumber() {
+        return 1;
+    }
 
 }

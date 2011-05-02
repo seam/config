@@ -19,16 +19,14 @@ package org.jboss.seam.config.xml.test.fieldset;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 
-public class ELValueProducer
-{
+public class ELValueProducer {
 
-   public static final String EL_VALUE_STRING = "EL Value String";
+    public static final String EL_VALUE_STRING = "EL Value String";
 
-   @Produces
-   @Named("elValue")
-   public String getElValue()
-   {
-      return EL_VALUE_STRING;
-   }
+    @Produces
+    @Named("elValue")
+    public String getElValue() {
+        return EL_VALUE_STRING;
+    }
 
 }

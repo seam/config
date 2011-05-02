@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.model;
 
-public enum ResultType
-{
-   BEAN, INTERCEPTOR_BINDING, STEREOTYPE, QUALIFIER, VIRTUAL_PRODUCER;
+public enum ResultType {
+    BEAN, INTERCEPTOR_BINDING, STEREOTYPE, QUALIFIER, VIRTUAL_PRODUCER;
 }

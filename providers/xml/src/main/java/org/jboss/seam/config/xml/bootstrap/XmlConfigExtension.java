@@ -53,204 +53,166 @@ import org.jboss.seam.config.xml.util.FileDataReader;
 import org.jboss.seam.solder.literal.DefaultLiteral;
 import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 
-public class XmlConfigExtension implements Extension
-{
+public class XmlConfigExtension implements Extension {
 
-   private AnnotationInstanceProvider annotationInstanceProvider = new AnnotationInstanceProvider();
+    private AnnotationInstanceProvider annotationInstanceProvider = new AnnotationInstanceProvider();
 
-   static final String PROVIDERS_FILE = "META-INF/services/" + XmlDocumentProvider.class.getName();
+    static final String PROVIDERS_FILE = "META-INF/services/" + XmlDocumentProvider.class.getName();
 
-   private List<XmlResult> results = new ArrayList<XmlResult>();
+    private List<XmlResult> results = new ArrayList<XmlResult>();
 
-   private Set<Class<?>> veto = new HashSet<Class<?>>();
+    private Set<Class<?>> veto = new HashSet<Class<?>>();
 
-   private int count = 0;
+    private int count = 0;
 
-   private static final Logger log = Logger.getLogger(XmlConfigExtension.class);
+    private static final Logger log = Logger.getLogger(XmlConfigExtension.class);
 
-   /**
-    * map of syntetic bean id to a list of field value objects
-    */
-   private Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
+    /**
+     * map of syntetic bean id to a list of field value objects
+     */
+    private Map<Integer, List<FieldValueObject>> fieldValues = new HashMap<Integer, List<FieldValueObject>>();
 
-   private List<Exception> errors = new ArrayList<Exception>();
+    private List<Exception> errors = new ArrayList<Exception>();
 
-   /**
-    * This is the entry point for the extension
-    */
-   public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager)
-   {
-      log.info("Seam Config XML provider starting...");
-      List<Class<? extends XmlDocumentProvider>> providers = getDocumentProviders();
-      for (Class<? extends XmlDocumentProvider> cl : providers)
-      {
-         try
-         {
-            XmlDocumentProvider provider = cl.newInstance();
-            provider.open();
-            XmlDocument d;
-            while ((d = provider.getNextDocument()) != null)
-            {
-               log.info("Reading XML file: " + d.getFileUrl());
-               ParserMain parser = new ParserMain();
-               ModelBuilder builder = new ModelBuilder(d.getFileUrl());
-               SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), errors);
-               results.add(builder.build(parentNode, beanManager));
+    /**
+     * This is the entry point for the extension
+     */
+    public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager beanManager) {
+        log.info("Seam Config XML provider starting...");
+        List<Class<? extends XmlDocumentProvider>> providers = getDocumentProviders();
+        for (Class<? extends XmlDocumentProvider> cl : providers) {
+            try {
+                XmlDocumentProvider provider = cl.newInstance();
+                provider.open();
+                XmlDocument d;
+                while ((d = provider.getNextDocument()) != null) {
+                    log.info("Reading XML file: " + d.getFileUrl());
+                    ParserMain parser = new ParserMain();
+                    ModelBuilder builder = new ModelBuilder(d.getFileUrl());
+                    SaxNode parentNode = parser.parse(d.getInputSource(), d.getFileUrl(), errors);
+                    results.add(builder.build(parentNode, beanManager));
+                }
+            } catch (Exception e) {
+                errors.add(e);
             }
-         }
-         catch (Exception e)
-         {
-            errors.add(e);
-         }
-      }
-      // we sort the results so the beans are always installed in the same order
-      Collections.sort(results);
-      // build the generic bean data
-      for (XmlResult r : results)
-      {
-         // add the qualifiers etc first
-         for (Class<? extends Annotation> b : r.getQualifiers())
-         {
-            log.info("Adding XML Defined Qualifier: " + b.getName());
-            event.addQualifier(b);
-         }
-         for (Class<? extends Annotation> b : r.getInterceptorBindings())
-         {
-            log.info("Adding XML Defined Interceptor Binding: " + b.getName());
-            event.addInterceptorBinding(b);
-         }
-         for (Entry<Class<? extends Annotation>, Annotation[]> b : r.getStereotypes().entrySet())
-         {
-            log.info("Adding XML Defined Stereotype: " + b.getKey().getName());
-            event.addStereotype(b.getKey(), b.getValue());
-         }
-      }
-
-      for (XmlResult r : results)
-      {
-         if (!r.getProblems().isEmpty())
-         {
-            for (String i : r.getProblems())
-            {
-               errors.add(new Exception(i));
+        }
+        // we sort the results so the beans are always installed in the same order
+        Collections.sort(results);
+        // build the generic bean data
+        for (XmlResult r : results) {
+            // add the qualifiers etc first
+            for (Class<? extends Annotation> b : r.getQualifiers()) {
+                log.info("Adding XML Defined Qualifier: " + b.getName());
+                event.addQualifier(b);
             }
-         }
-         for (BeanResult<?> b : r.getFlattenedBeans())
-         {
-            if (!b.getFieldValues().isEmpty())
-            {
-               int val = count++;
-               fieldValues.put(val, b.getFieldValues());
-               Map<String, Object> am = new HashMap<String, Object>();
-               am.put("value", val);
-               Annotation a = annotationInstanceProvider.get(XmlId.class, am);
-               b.addToClass(a);
+            for (Class<? extends Annotation> b : r.getInterceptorBindings()) {
+                log.info("Adding XML Defined Interceptor Binding: " + b.getName());
+                event.addInterceptorBinding(b);
             }
-         }
-
-         for (BeanResult<?> bb : r.getFlattenedBeans())
-         {
-            AnnotatedType<?> tp = bb.getAnnotatedType();
-            log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
-            ProcessAnnotatedType<?> pat = new ProcessAnnotatedTypeImpl((AnnotatedType) tp);
-            beanManager.fireEvent(pat, DefaultLiteral.INSTANCE);
-            event.addAnnotatedType(pat.getAnnotatedType());
-         }
-
-         veto.addAll(r.getVeto());
-
-      }
-   }
-
-   public <T> void processAnotated(@Observes ProcessAnnotatedType<T> event, BeanManager manager)
-   {
-      if (event.getAnnotatedType().isAnnotationPresent(XmlConfiguredBean.class))
-      {
-         return;
-      }
-      // veto implementation
-      if (veto.contains(event.getAnnotatedType().getJavaClass()))
-      {
-         log.info("Preventing installation of default bean: " + event.getAnnotatedType().getJavaClass().getName());
-         event.veto();
-         return;
-      }
-   }
-
-   public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager manager)
-   {
-
-      AnnotatedType<T> at = event.getAnnotatedType();
-      XmlId xid = at.getAnnotation(XmlId.class);
-      if (xid != null)
-      {
-         log.info("Wrapping InjectionTarget to set field values: " + event.getAnnotatedType().getJavaClass().getName());
-         List<FieldValueObject> fvs = fieldValues.get(xid.value());
-         event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs, manager));
-      }
-   }
-
-   public void processAfterBeanDeployment(@Observes AfterBeanDiscovery event)
-   {
-      for (Exception t : errors)
-      {
-         event.addDefinitionError(t);
-      }
-   }
-
-   public List<Class<? extends XmlDocumentProvider>> getDocumentProviders()
-   {
-      List<Class<? extends XmlDocumentProvider>> ret = new ArrayList<Class<? extends XmlDocumentProvider>>();
-      try
-      {
-         Enumeration<URL> urls = getClass().getClassLoader().getResources(PROVIDERS_FILE);
-         while (urls.hasMoreElements())
-         {
-
-            URL u = urls.nextElement();
-            String data = FileDataReader.readUrl(u);
-            String[] providers = data.split("\\s");
-            for (String provider : providers)
-            {
-               log.info("Loading XmlDocumentProvider: " + provider);
-               Class res = null;
-               try
-               {
-                  res = getClass().getClassLoader().loadClass(provider);
-               }
-               catch (ClassNotFoundException e)
-               {
-                  res = Thread.currentThread().getContextClassLoader().loadClass(provider);
-               }
-               if (res == null)
-               {
-                  throw new RuntimeException("Could not load XML configuration provider " + provider + " configured in file " + u.toString());
-               }
-               ret.add(res);
+            for (Entry<Class<? extends Annotation>, Annotation[]> b : r.getStereotypes().entrySet()) {
+                log.info("Adding XML Defined Stereotype: " + b.getKey().getName());
+                event.addStereotype(b.getKey(), b.getValue());
             }
-         }
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-      return ret;
-   }
+        }
 
-   public boolean isQualifierPresent(Annotated f, BeanManager beanManager)
-   {
-      for (Annotation a : f.getAnnotations())
-      {
-         if (a.annotationType().equals(Named.class))
-         {
-            continue;
-         }
-         if (beanManager.isQualifier(a.annotationType()))
-         {
-            return true;
-         }
-      }
-      return false;
-   }
+        for (XmlResult r : results) {
+            if (!r.getProblems().isEmpty()) {
+                for (String i : r.getProblems()) {
+                    errors.add(new Exception(i));
+                }
+            }
+            for (BeanResult<?> b : r.getFlattenedBeans()) {
+                if (!b.getFieldValues().isEmpty()) {
+                    int val = count++;
+                    fieldValues.put(val, b.getFieldValues());
+                    Map<String, Object> am = new HashMap<String, Object>();
+                    am.put("value", val);
+                    Annotation a = annotationInstanceProvider.get(XmlId.class, am);
+                    b.addToClass(a);
+                }
+            }
+
+            for (BeanResult<?> bb : r.getFlattenedBeans()) {
+                AnnotatedType<?> tp = bb.getAnnotatedType();
+                log.info("Adding XML Defined Bean: " + tp.getJavaClass().getName());
+                ProcessAnnotatedType<?> pat = new ProcessAnnotatedTypeImpl((AnnotatedType) tp);
+                beanManager.fireEvent(pat, DefaultLiteral.INSTANCE);
+                event.addAnnotatedType(pat.getAnnotatedType());
+            }
+
+            veto.addAll(r.getVeto());
+
+        }
+    }
+
+    public <T> void processAnotated(@Observes ProcessAnnotatedType<T> event, BeanManager manager) {
+        if (event.getAnnotatedType().isAnnotationPresent(XmlConfiguredBean.class)) {
+            return;
+        }
+        // veto implementation
+        if (veto.contains(event.getAnnotatedType().getJavaClass())) {
+            log.info("Preventing installation of default bean: " + event.getAnnotatedType().getJavaClass().getName());
+            event.veto();
+            return;
+        }
+    }
+
+    public <T> void processInjectionTarget(@Observes ProcessInjectionTarget<T> event, BeanManager manager) {
+
+        AnnotatedType<T> at = event.getAnnotatedType();
+        XmlId xid = at.getAnnotation(XmlId.class);
+        if (xid != null) {
+            log.info("Wrapping InjectionTarget to set field values: " + event.getAnnotatedType().getJavaClass().getName());
+            List<FieldValueObject> fvs = fieldValues.get(xid.value());
+            event.setInjectionTarget(new InjectionTargetWrapper<T>(event.getInjectionTarget(), fvs, manager));
+        }
+    }
+
+    public void processAfterBeanDeployment(@Observes AfterBeanDiscovery event) {
+        for (Exception t : errors) {
+            event.addDefinitionError(t);
+        }
+    }
+
+    public List<Class<? extends XmlDocumentProvider>> getDocumentProviders() {
+        List<Class<? extends XmlDocumentProvider>> ret = new ArrayList<Class<? extends XmlDocumentProvider>>();
+        try {
+            Enumeration<URL> urls = getClass().getClassLoader().getResources(PROVIDERS_FILE);
+            while (urls.hasMoreElements()) {
+
+                URL u = urls.nextElement();
+                String data = FileDataReader.readUrl(u);
+                String[] providers = data.split("\\s");
+                for (String provider : providers) {
+                    log.info("Loading XmlDocumentProvider: " + provider);
+                    Class res = null;
+                    try {
+                        res = getClass().getClassLoader().loadClass(provider);
+                    } catch (ClassNotFoundException e) {
+                        res = Thread.currentThread().getContextClassLoader().loadClass(provider);
+                    }
+                    if (res == null) {
+                        throw new RuntimeException("Could not load XML configuration provider " + provider + " configured in file " + u.toString());
+                    }
+                    ret.add(res);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ret;
+    }
+
+    public boolean isQualifierPresent(Annotated f, BeanManager beanManager) {
+        for (Annotation a : f.getAnnotations()) {
+            if (a.annotationType().equals(Named.class)) {
+                continue;
+            }
+            if (beanManager.isQualifier(a.annotationType())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

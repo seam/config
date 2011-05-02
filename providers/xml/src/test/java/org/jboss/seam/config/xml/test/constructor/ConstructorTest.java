@@ -21,19 +21,16 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class ConstructorTest extends AbstractXMLTest
-{
-   @Override
-   protected String getXmlFileName()
-   {
-      return "constructor-beans.xml";
-   }
+public class ConstructorTest extends AbstractXMLTest {
+    @Override
+    protected String getXmlFileName() {
+        return "constructor-beans.xml";
+    }
 
-   @Test
-   public void testBeanConstructorAnnotations()
-   {
-      ConstructedBean bean = getReference(ConstructedBean.class);
-      Assert.assertTrue(bean.getValue() == 10);
+    @Test
+    public void testBeanConstructorAnnotations() {
+        ConstructedBean bean = getReference(ConstructedBean.class);
+        Assert.assertTrue(bean.getValue() == 10);
 
-   }
+    }
 }

@@ -16,13 +16,11 @@
  */
 package org.jboss.seam.config.xml.test.method;
 
-public class Decorator1
-{
+public class Decorator1 {
 
-   DecoratedInterface decoratedObject;
+    DecoratedInterface decoratedObject;
 
-   public void a()
-   {
+    public void a() {
 
-   }
+    }
 }

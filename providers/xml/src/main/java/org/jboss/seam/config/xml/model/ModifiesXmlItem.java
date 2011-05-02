@@ -21,18 +21,15 @@ import java.util.Set;
 
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 
-public class ModifiesXmlItem extends AbstractXmlItem
-{
+public class ModifiesXmlItem extends AbstractXmlItem {
 
-   public ModifiesXmlItem(XmlItem parent, String document, int lineno)
-   {
-      super(XmlItemType.MODIFIES, parent, null, null, null, document, lineno);
+    public ModifiesXmlItem(XmlItem parent, String document, int lineno) {
+        super(XmlItemType.MODIFIES, parent, null, null, null, document, lineno);
 
-   }
+    }
 
-   public Set<TypeOccuranceInformation> getAllowedItem()
-   {
-      return Collections.emptySet();
-   }
+    public Set<TypeOccuranceInformation> getAllowedItem() {
+        return Collections.emptySet();
+    }
 
 }

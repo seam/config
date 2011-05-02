@@ -19,10 +19,8 @@ package org.jboss.seam.config.xml.parser.namespace;
 /**
  * Exception thrown when both a method and a field have the same name
  */
-public class InvalidElementException extends Exception
-{
-   public InvalidElementException(String message)
-   {
-      super(message);
-   }
+public class InvalidElementException extends Exception {
+    public InvalidElementException(String message) {
+        super(message);
+    }
 }

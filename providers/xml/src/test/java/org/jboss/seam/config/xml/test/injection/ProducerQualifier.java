@@ -26,8 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { TYPE, METHOD, PARAMETER, FIELD })
-public @interface ProducerQualifier
-{
+@Target({TYPE, METHOD, PARAMETER, FIELD})
+public @interface ProducerQualifier {
 
 }

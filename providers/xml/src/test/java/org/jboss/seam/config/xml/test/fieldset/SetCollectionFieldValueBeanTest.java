@@ -21,52 +21,41 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class SetCollectionFieldValueBeanTest extends AbstractXMLTest
-{
+public class SetCollectionFieldValueBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "colection-set-field-value-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "colection-set-field-value-beans.xml";
+    }
 
-   @Test
-   public void collectionSetFieldValue()
-   {
-      CollectionFieldValue x = getReference(CollectionFieldValue.class);
-      Assert.assertTrue(x.iset.size() == 2);
-      Assert.assertTrue(x.clist.size() == 2);
-      Assert.assertTrue(x.sset.size() == 2);
-      boolean first = true;
-      for (String i : x.sset)
-      {
-         if (first)
-         {
-            Assert.assertTrue(i.equals("1"));
-            first = false;
-         }
-         else
-         {
-            Assert.assertTrue(i.equals("2"));
-         }
+    @Test
+    public void collectionSetFieldValue() {
+        CollectionFieldValue x = getReference(CollectionFieldValue.class);
+        Assert.assertTrue(x.iset.size() == 2);
+        Assert.assertTrue(x.clist.size() == 2);
+        Assert.assertTrue(x.sset.size() == 2);
+        boolean first = true;
+        for (String i : x.sset) {
+            if (first) {
+                Assert.assertTrue(i.equals("1"));
+                first = false;
+            } else {
+                Assert.assertTrue(i.equals("2"));
+            }
 
-      }
-      first = true;
-      for (Integer i : x.iset)
-      {
-         if (first)
-         {
-            Assert.assertTrue(i.equals(new Integer(1)));
-            first = false;
-         }
-         else
-         {
-            Assert.assertTrue(i.equals(new Integer(2)));
-         }
+        }
+        first = true;
+        for (Integer i : x.iset) {
+            if (first) {
+                Assert.assertTrue(i.equals(new Integer(1)));
+                first = false;
+            } else {
+                Assert.assertTrue(i.equals(new Integer(2)));
+            }
 
-      }
-      Assert.assertTrue(x.clist.get(0) == Integer.class);
-      Assert.assertTrue(x.clist.get(1) == Long.class);
+        }
+        Assert.assertTrue(x.clist.get(0) == Integer.class);
+        Assert.assertTrue(x.clist.get(1) == Long.class);
 
-   }
+    }
 }

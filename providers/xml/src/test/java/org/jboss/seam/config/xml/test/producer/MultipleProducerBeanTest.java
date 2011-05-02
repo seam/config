@@ -21,30 +21,26 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class MultipleProducerBeanTest extends AbstractXMLTest
-{
+public class MultipleProducerBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "multiple-producers.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "multiple-producers.xml";
+    }
 
-   @Test
-   public void testProducerField()
-   {
+    @Test
+    public void testProducerField() {
 
-      Reciever s = getReference(Reciever.class);
-      Assert.assertTrue(s.val1 == 1);
-      Assert.assertTrue(s.val2 == 2);
-   }
+        Reciever s = getReference(Reciever.class);
+        Assert.assertTrue(s.val1 == 1);
+        Assert.assertTrue(s.val2 == 2);
+    }
 
-   @Test
-   public void testProducerMethod()
-   {
+    @Test
+    public void testProducerMethod() {
 
-      Reciever s = getReference(Reciever.class);
-      Assert.assertTrue(s.meth1 == 1);
-      Assert.assertTrue(s.meth2 == 2);
-   }
+        Reciever s = getReference(Reciever.class);
+        Assert.assertTrue(s.meth1 == 1);
+        Assert.assertTrue(s.meth2 == 2);
+    }
 }

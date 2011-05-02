@@ -22,10 +22,8 @@ import javax.enterprise.context.ApplicationScoped;
 
 @ExtendedQualifier1
 @ApplicationScoped
-public class ExtendedBean
-{
-   public List<String> getData()
-   {
-      return null;
-   }
+public class ExtendedBean {
+    public List<String> getData() {
+        return null;
+    }
 }

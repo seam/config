@@ -12,7 +12,7 @@
         <s:InterceptorBinding/>
     </test:Binding>
 
-   <test:InterceptorBean>
+    <test:InterceptorBean>
         <s:replaces/>
         <s:Interceptor/>
         <test:Binding/>

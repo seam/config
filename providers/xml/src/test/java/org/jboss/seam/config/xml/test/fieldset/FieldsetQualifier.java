@@ -28,9 +28,8 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { TYPE, METHOD, PARAMETER, FIELD })
+@Target({TYPE, METHOD, PARAMETER, FIELD})
 @Qualifier
-public @interface FieldsetQualifier
-{
+public @interface FieldsetQualifier {
 
 }

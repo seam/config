@@ -18,17 +18,15 @@ package org.jboss.seam.config.xml.bootstrap;
 
 import org.xml.sax.InputSource;
 
-public interface XmlDocument
-{
-   public InputSource getInputSource();
+public interface XmlDocument {
+    public InputSource getInputSource();
 
-   /**
-    * This serves two purposes, one it is used to display to the user the
-    * location of the file that contains an error, and the reversed file URL is
-    * also used to sort the bean results so the beans are always installed in
-    * the same order.
-    * 
-    */
-   public String getFileUrl();
+    /**
+     * This serves two purposes, one it is used to display to the user the
+     * location of the file that contains an error, and the reversed file URL is
+     * also used to sort the bean results so the beans are always installed in
+     * the same order.
+     */
+    public String getFileUrl();
 
 }

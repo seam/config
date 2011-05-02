@@ -28,42 +28,33 @@ import org.jboss.seam.solder.properties.Property;
 
 /**
  * class responsible for setting the value of array properties.
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public class ArrayFieldSet implements FieldValueObject
-{
-   final private Property<Object> field;
-   final private List<FieldValue> values;
-   final private Class<?> arrayType;
+public class ArrayFieldSet implements FieldValueObject {
+    final private Property<Object> field;
+    final private List<FieldValue> values;
+    final private Class<?> arrayType;
 
-   public ArrayFieldSet(Property<Object> field, List<ValueXmlItem> items)
-   {
-      this.field = field;
-      this.values = new ArrayList<FieldValue>();
-      arrayType = field.getJavaClass().getComponentType();
-      for (ValueXmlItem i : items)
-      {
-         values.add(i.getValue());
-      }
+    public ArrayFieldSet(Property<Object> field, List<ValueXmlItem> items) {
+        this.field = field;
+        this.values = new ArrayList<FieldValue>();
+        arrayType = field.getJavaClass().getComponentType();
+        for (ValueXmlItem i : items) {
+            values.add(i.getValue());
+        }
 
-   }
+    }
 
-   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
-   {
-      try
-      {
-         Object array = Array.newInstance(arrayType, values.size());
-         field.setValue(instance, array);
-         for (int i = 0; i < values.size(); ++i)
-         {
-            Array.set(array, i, values.get(i).value(arrayType, ctx, manager));
-         }
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-   }
+    public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager) {
+        try {
+            Object array = Array.newInstance(arrayType, values.size());
+            field.setValue(instance, array);
+            for (int i = 0; i < values.size(); ++i) {
+                Array.set(array, i, values.get(i).value(arrayType, ctx, manager));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

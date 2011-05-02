@@ -21,13 +21,10 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Annotation that allows tracing of annotated types through the startup process
- * 
- * 
+ *
  * @author stuart
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XmlId
-{
-   int value();
+public @interface XmlId {
+    int value();
 }

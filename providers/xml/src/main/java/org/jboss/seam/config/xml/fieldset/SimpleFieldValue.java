@@ -23,35 +23,28 @@ import org.jboss.seam.solder.properties.Property;
 
 /**
  * Field value object for a simple field
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class SimpleFieldValue implements FieldValueObject
-{
+public class SimpleFieldValue implements FieldValueObject {
 
-   private final Property<Object> field;
+    private final Property<Object> field;
 
-   private final FieldValue value;
+    private final FieldValue value;
 
-   private final Class<?> type;
+    private final Class<?> type;
 
-   public SimpleFieldValue(Class<?> javaObject, final Property<Object> f, FieldValue value, Class<?> type)
-   {
-      this.field = f;
-      this.value = value;
-      this.type = type == null ? field.getJavaClass() : type;
-   }
+    public SimpleFieldValue(Class<?> javaObject, final Property<Object> f, FieldValue value, Class<?> type) {
+        this.field = f;
+        this.value = value;
+        this.type = type == null ? field.getJavaClass() : type;
+    }
 
-   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
-   {
-      try
-      {
-         field.setValue(instance, value.value(type, ctx, manager));
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-   }
+    public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager) {
+        try {
+            field.setValue(instance, value.value(type, ctx, manager));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

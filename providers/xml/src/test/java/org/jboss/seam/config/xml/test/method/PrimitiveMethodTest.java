@@ -23,34 +23,32 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class PrimitiveMethodTest extends AbstractXMLTest
-{
+public class PrimitiveMethodTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "primitive-method-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "primitive-method-beans.xml";
+    }
 
-   @Test
-   public void methodTest()
-   {
-      int x = getReference(int.class, new Qual1Lit());
-      Assert.assertTrue(x == 1);
-      int[] y = getReference(int[].class, new Qual2Lit());
-      for (int i = 0; i < y.length; ++i)
-      {
-         Assert.assertTrue(y[i] == i + 2);
-      }
+    @Test
+    public void methodTest() {
+        int x = getReference(int.class, new Qual1Lit());
+        Assert.assertTrue(x == 1);
+        int[] y = getReference(int[].class, new Qual2Lit());
+        for (int i = 0; i < y.length; ++i) {
+            Assert.assertTrue(y[i] == i + 2);
+        }
 
-   }
+    }
 
-   class Qual1Lit extends AnnotationLiteral<Qualifier1>
-   {
-   };
+    class Qual1Lit extends AnnotationLiteral<Qualifier1> {
+    }
 
-   class Qual2Lit extends AnnotationLiteral<Qualifier2>
-   {
-   };
+    ;
+
+    class Qual2Lit extends AnnotationLiteral<Qualifier2> {
+    }
+
+    ;
 
 }

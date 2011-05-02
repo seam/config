@@ -22,26 +22,21 @@ import java.util.Set;
 
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 
-public class AnnotationXmlItem extends AbstractXmlItem
-{
-   private final HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
+public class AnnotationXmlItem extends AbstractXmlItem {
+    private final HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
-   public AnnotationXmlItem(XmlItem parent, Class<?> c, String innerText, Map<String, String> attributes, String document, int lineno)
-   {
-      super(XmlItemType.ANNOTATION, parent, c, innerText, attributes, document, lineno);
-      if (innerText != null)
-      {
-         if (!innerText.trim().equals(""))
-         {
-            this.attributes.put("value", innerText);
-         }
-      }
-      allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
-   }
+    public AnnotationXmlItem(XmlItem parent, Class<?> c, String innerText, Map<String, String> attributes, String document, int lineno) {
+        super(XmlItemType.ANNOTATION, parent, c, innerText, attributes, document, lineno);
+        if (innerText != null) {
+            if (!innerText.trim().equals("")) {
+                this.attributes.put("value", innerText);
+            }
+        }
+        allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
+    }
 
-   public Set<TypeOccuranceInformation> getAllowedItem()
-   {
-      return allowed;
-   }
+    public Set<TypeOccuranceInformation> getAllowedItem() {
+        return allowed;
+    }
 
 }

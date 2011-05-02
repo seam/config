@@ -16,8 +16,7 @@
  */
 package org.jboss.seam.config.xml.test.injection;
 
-public class ProducerBean
-{
-   public String value;
+public class ProducerBean {
+    public String value;
 
 }

@@ -27,49 +27,41 @@ import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.After;
 import org.junit.Before;
 
-public abstract class AbstractXMLTest
-{
-   protected BeanManager manager;
+public abstract class AbstractXMLTest {
+    protected BeanManager manager;
 
-   Weld weld;
+    Weld weld;
 
-   protected abstract String getXmlFileName();
+    protected abstract String getXmlFileName();
 
-   @Before
-   public void setup()
-   {
-      String fileName = getClass().getPackage().getName().replace('.', '/') + "/" + getXmlFileName();
-      SimpleXmlProvider.fileName = fileName;
-      weld = new Weld();
-      WeldContainer container = weld.initialize();
-      manager = container.getBeanManager();
-   }
+    @Before
+    public void setup() {
+        String fileName = getClass().getPackage().getName().replace('.', '/') + "/" + getXmlFileName();
+        SimpleXmlProvider.fileName = fileName;
+        weld = new Weld();
+        WeldContainer container = weld.initialize();
+        manager = container.getBeanManager();
+    }
 
-   @After
-   public void teardown()
-   {
-      weld.shutdown();
-   }
+    @After
+    public void teardown() {
+        weld.shutdown();
+    }
 
-   public <T> T getReference(Class<T> clazz, Annotation... bindings)
-   {
-      Set<Bean<?>> beans = manager.getBeans(clazz, bindings);
-      if (beans.isEmpty())
-      {
-         throw new RuntimeException("No bean found with class: " + clazz + " and bindings " + bindings.toString());
-      }
-      else if (beans.size() != 1)
-      {
-         StringBuilder bs = new StringBuilder("[");
-         for (Annotation a : bindings)
-         {
-            bs.append(a.toString() + ",");
-         }
-         bs.append("]");
-         throw new RuntimeException("More than one bean found with class: " + clazz + " and bindings " + bs);
-      }
-      Bean<?> bean = beans.iterator().next();
-      return (T) manager.getReference(bean, clazz, manager.createCreationalContext(bean));
-   }
+    public <T> T getReference(Class<T> clazz, Annotation... bindings) {
+        Set<Bean<?>> beans = manager.getBeans(clazz, bindings);
+        if (beans.isEmpty()) {
+            throw new RuntimeException("No bean found with class: " + clazz + " and bindings " + bindings.toString());
+        } else if (beans.size() != 1) {
+            StringBuilder bs = new StringBuilder("[");
+            for (Annotation a : bindings) {
+                bs.append(a.toString() + ",");
+            }
+            bs.append("]");
+            throw new RuntimeException("More than one bean found with class: " + clazz + " and bindings " + bs);
+        }
+        Bean<?> bean = beans.iterator().next();
+        return (T) manager.getReference(bean, clazz, manager.createCreationalContext(bean));
+    }
 
 }

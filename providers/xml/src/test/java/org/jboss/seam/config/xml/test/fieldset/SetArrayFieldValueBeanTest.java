@@ -21,29 +21,26 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class SetArrayFieldValueBeanTest extends AbstractXMLTest
-{
+public class SetArrayFieldValueBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "array-set-field-value-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "array-set-field-value-beans.xml";
+    }
 
-   @Test
-   public void arrayFieldSetterTest()
-   {
-      ArrayFieldValue x = getReference(ArrayFieldValue.class);
-      Assert.assertTrue(x.carray.length == 2);
-      Assert.assertTrue(x.iarray.length == 2);
-      Assert.assertTrue(x.sarray.length == 2);
-      Assert.assertTrue(x.sarray[0].equals("hello"));
-      Assert.assertTrue(x.sarray[1].equals("world"));
-      Assert.assertTrue(x.iarray[0] == 1);
-      Assert.assertTrue(x.iarray[1] == 2);
-      Assert.assertTrue(x.carray[0] == Integer.class);
-      Assert.assertTrue(x.carray[1] == Long.class);
+    @Test
+    public void arrayFieldSetterTest() {
+        ArrayFieldValue x = getReference(ArrayFieldValue.class);
+        Assert.assertTrue(x.carray.length == 2);
+        Assert.assertTrue(x.iarray.length == 2);
+        Assert.assertTrue(x.sarray.length == 2);
+        Assert.assertTrue(x.sarray[0].equals("hello"));
+        Assert.assertTrue(x.sarray[1].equals("world"));
+        Assert.assertTrue(x.iarray[0] == 1);
+        Assert.assertTrue(x.iarray[1] == 2);
+        Assert.assertTrue(x.carray[0] == Integer.class);
+        Assert.assertTrue(x.carray[1] == Long.class);
 
-   }
+    }
 
 }

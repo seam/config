@@ -23,35 +23,34 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 
-public interface XmlItem
-{
+public interface XmlItem {
 
-   public String getInnerText();
+    public String getInnerText();
 
-   public void addChild(XmlItem xmlItem);
+    public void addChild(XmlItem xmlItem);
 
-   public XmlItem getParent();
+    public XmlItem getParent();
 
-   public List<XmlItem> getChildren();
+    public List<XmlItem> getChildren();
 
-   public XmlItemType getType();
+    public XmlItemType getType();
 
-   public Class<?> getJavaClass();
+    public Class<?> getJavaClass();
 
-   /**
-    * attempts to resolve any information that is not available at parse time
-    * 
-    * @param childeren
-    * @return
-    */
-   public boolean resolveChildren(BeanManager manager);
+    /**
+     * attempts to resolve any information that is not available at parse time
+     *
+     * @param childeren
+     * @return
+     */
+    public boolean resolveChildren(BeanManager manager);
 
-   public Set<TypeOccuranceInformation> getAllowedItem();
+    public Set<TypeOccuranceInformation> getAllowedItem();
 
-   int getLineno();
+    int getLineno();
 
-   String getDocument();
+    String getDocument();
 
-   public <T> List<T> getChildrenOfType(Class<T> type);
+    public <T> List<T> getChildrenOfType(Class<T> type);
 
 }

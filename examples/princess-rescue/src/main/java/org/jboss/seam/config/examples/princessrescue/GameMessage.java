@@ -23,23 +23,19 @@ import javax.inject.Named;
 
 @RequestScoped
 @Named
-public class GameMessage implements Serializable
-{
+public class GameMessage implements Serializable {
 
-   StringBuilder builder = new StringBuilder();
+    StringBuilder builder = new StringBuilder();
 
-   public void add(String message)
-   {
-      if (message != null)
-      {
-         builder.append(message);
-         builder.append('\n');
-      }
-   }
+    public void add(String message) {
+        if (message != null) {
+            builder.append(message);
+            builder.append('\n');
+        }
+    }
 
-   public String getMessage()
-   {
-      return builder.toString();
-   }
+    public String getMessage() {
+        return builder.toString();
+    }
 
 }

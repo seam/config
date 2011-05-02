@@ -23,21 +23,17 @@ import org.jboss.seam.config.xml.util.XmlObjectConverter;
 
 /**
  * Represents a simple field value in an XML document
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class ConstantFieldValue implements FieldValue
-{
-   private final String stringValue;
+public class ConstantFieldValue implements FieldValue {
+    private final String stringValue;
 
-   public ConstantFieldValue(String stringValue)
-   {
-      this.stringValue = stringValue;
-   }
+    public ConstantFieldValue(String stringValue) {
+        this.stringValue = stringValue;
+    }
 
-   public Object value(Class<?> type, CreationalContext<?> cyx, BeanManager manager)
-   {
-      return XmlObjectConverter.convert(type, stringValue);
-   }
+    public Object value(Class<?> type, CreationalContext<?> cyx, BeanManager manager) {
+        return XmlObjectConverter.convert(type, stringValue);
+    }
 }

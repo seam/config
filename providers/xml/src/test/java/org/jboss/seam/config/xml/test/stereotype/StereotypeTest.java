@@ -26,21 +26,18 @@ import org.junit.Test;
  * this is the same as the interceptor test except the interceptor is applied
  * through a stereotype
  */
-public class StereotypeTest extends AbstractXMLTest
-{
+public class StereotypeTest extends AbstractXMLTest {
 
-   @Override
-   public String getXmlFileName()
-   {
-      return "stereotype-beans.xml";
-   }
+    @Override
+    public String getXmlFileName() {
+        return "stereotype-beans.xml";
+    }
 
-   @Test
-   public void testStereotypes()
-   {
+    @Test
+    public void testStereotypes() {
 
-      InterceptedBean x = getReference(InterceptedBean.class);
-      String res = x.method();
-      Assert.assertEquals("hello world",res);
-   }
+        InterceptedBean x = getReference(InterceptedBean.class);
+        String res = x.method();
+        Assert.assertEquals("hello world", res);
+    }
 }

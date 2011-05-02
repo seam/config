@@ -22,11 +22,9 @@ import javax.enterprise.inject.spi.BeanManager;
 /**
  * represents an initial field value. This may just be a wrapper around a
  * constant value, or it could be an inline bean declaration or EL expression
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public interface FieldValue
-{
-   public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager);
+public interface FieldValue {
+    public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager);
 }

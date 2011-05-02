@@ -23,22 +23,18 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class VirtualProducerFieldTest extends AbstractXMLTest
-{
+public class VirtualProducerFieldTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "virtualproducer.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "virtualproducer.xml";
+    }
 
-   @Test
-   public void testSimpleVirtualProducerField()
-   {
-      String value = getReference(String.class, new AnnotationLiteral<VirtualProducerQualifier>()
-      {
-      });
-      Assert.assertEquals("Hello World", value);
+    @Test
+    public void testSimpleVirtualProducerField() {
+        String value = getReference(String.class, new AnnotationLiteral<VirtualProducerQualifier>() {
+        });
+        Assert.assertEquals("Hello World", value);
 
-   }
+    }
 }

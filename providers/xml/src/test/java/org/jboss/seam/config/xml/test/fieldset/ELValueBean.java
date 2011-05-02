@@ -21,13 +21,11 @@ import java.util.Map;
 
 /**
  * Bean that test values set via el in arrays, lists and maps
- * 
+ *
  * @author stuart
- * 
  */
-public class ELValueBean
-{
-   public List<String> list;
-   public Map<String, String> map;
-   public String[] array;
+public class ELValueBean {
+    public List<String> list;
+    public Map<String, String> map;
+    public String[] array;
 }

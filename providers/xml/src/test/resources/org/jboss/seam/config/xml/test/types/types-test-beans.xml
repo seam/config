@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="urn:java:ee"
-          xmlns:test="urn:java:org.jboss.seam.config.xml.test.types">
-   
+       xmlns:test="urn:java:org.jboss.seam.config.xml.test.types">
+
 
     <test:TypeInjectedClass>
-       <replaces/>
-       <test:value>
-       	<Inject/>
-       	<Exact>org.jboss.seam.config.xml.test.types.AllowedType</Exact>
-       </test:value>
-       <test:create>
-       	 <Inject/>
-       	 <parameters>
-       	 	<test:SomeInterface>
-       	 		<Exact>org.jboss.seam.config.xml.test.types.RestrictedType</Exact>
-       	 	</test:SomeInterface>
-       	 </parameters>
-       </test:create>
+        <replaces/>
+        <test:value>
+            <Inject/>
+            <Exact>org.jboss.seam.config.xml.test.types.AllowedType</Exact>
+        </test:value>
+        <test:create>
+            <Inject/>
+            <parameters>
+                <test:SomeInterface>
+                    <Exact>org.jboss.seam.config.xml.test.types.RestrictedType</Exact>
+                </test:SomeInterface>
+            </parameters>
+        </test:create>
     </test:TypeInjectedClass>
-          
+
 </beans>

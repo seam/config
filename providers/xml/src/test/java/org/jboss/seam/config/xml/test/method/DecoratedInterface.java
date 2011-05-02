@@ -16,6 +16,5 @@
  */
 package org.jboss.seam.config.xml.test.method;
 
-public interface DecoratedInterface
-{
+public interface DecoratedInterface {
 }

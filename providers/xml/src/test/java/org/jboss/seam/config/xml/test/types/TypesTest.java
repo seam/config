@@ -24,21 +24,18 @@ import org.junit.Test;
 /**
  * tests that <types> restricts the allowed types of an injection point
  */
-public class TypesTest extends AbstractXMLTest
-{
+public class TypesTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "types-test-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "types-test-beans.xml";
+    }
 
-   @Test
-   public void testTypeRestriction()
-   {
-      TypeInjectedClass x = getReference(TypeInjectedClass.class);
-      Assert.assertTrue(x.value instanceof AllowedType);
-      Assert.assertTrue(x.createValue instanceof RestrictedType);
+    @Test
+    public void testTypeRestriction() {
+        TypeInjectedClass x = getReference(TypeInjectedClass.class);
+        Assert.assertTrue(x.value instanceof AllowedType);
+        Assert.assertTrue(x.createValue instanceof RestrictedType);
 
-   }
+    }
 }

@@ -16,12 +16,10 @@
  */
 package org.jboss.seam.config.xml.test.producer;
 
-public class Producer
-{
-   public int value;
-   
-   public int meth()
-   {
-      return value;
-   }
-}       
+public class Producer {
+    public int value;
+
+    public int meth() {
+        return value;
+    }
+}

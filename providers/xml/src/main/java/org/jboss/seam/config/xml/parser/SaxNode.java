@@ -23,84 +23,70 @@ import java.util.Map;
 
 /**
  * represents an XML element
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public class SaxNode
-{
+public class SaxNode {
 
-   public SaxNode(String name, String uri, Map<String, String> attributes, SaxNode parent, String document, int lineNo)
-   {
-      this.name = name;
-      this.namespaceUri = uri;
-      this.attributes = attributes;
-      this.parent = parent;
-      this.document = document;
-      this.lineNo = lineNo;
-   }
+    public SaxNode(String name, String uri, Map<String, String> attributes, SaxNode parent, String document, int lineNo) {
+        this.name = name;
+        this.namespaceUri = uri;
+        this.attributes = attributes;
+        this.parent = parent;
+        this.document = document;
+        this.lineNo = lineNo;
+    }
 
-   String innerText;
-   final String namespaceUri;
-   final String name;
-   final Map<String, String> attributes;
-   final String document;
-   final int lineNo;
-   List<SaxNode> children = new ArrayList<SaxNode>();
-   final SaxNode parent;
+    String innerText;
+    final String namespaceUri;
+    final String name;
+    final Map<String, String> attributes;
+    final String document;
+    final int lineNo;
+    List<SaxNode> children = new ArrayList<SaxNode>();
+    final SaxNode parent;
 
-   public String getInnerText()
-   {
-      if (innerText != null && innerText.length() == 0)
-      {
-         return null;
-      }
-      return innerText;
-   }
+    public String getInnerText() {
+        if (innerText != null && innerText.length() == 0) {
+            return null;
+        }
+        return innerText;
+    }
 
-   public void setInnerText(String innerText)
-   {
-      this.innerText = innerText.trim();
-   }
+    public void setInnerText(String innerText) {
+        this.innerText = innerText.trim();
+    }
 
-   public String getNamespaceUri()
-   {
-      return namespaceUri;
-   }
+    public String getNamespaceUri() {
+        return namespaceUri;
+    }
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public Map<String, String> getAttributes()
-   {
-      return attributes;
-   }
+    public Map<String, String> getAttributes() {
+        return attributes;
+    }
 
-   public String getDocument()
-   {
-      return document;
-   }
+    public String getDocument() {
+        return document;
+    }
 
-   public int getLineNo()
-   {
-      return lineNo;
-   }
+    public int getLineNo() {
+        return lineNo;
+    }
 
-   public void addChild(SaxNode node)
-   {
-      this.children.add(node);
-   }
+    public void addChild(SaxNode node) {
+        this.children.add(node);
+    }
 
-   public List<SaxNode> getChildren()
-   {
-      return Collections.unmodifiableList(children);
-   }
+    public List<SaxNode> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
 
-   public SaxNode getParent()
-   {
-      return parent;
-   }
+    public SaxNode getParent() {
+        return parent;
+    }
 
 }

@@ -23,7 +23,6 @@ import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
-public @interface ExtendedQualifier2
-{
+public @interface ExtendedQualifier2 {
 
 }

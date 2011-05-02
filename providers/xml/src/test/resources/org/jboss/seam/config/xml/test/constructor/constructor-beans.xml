@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="urn:java:ee"
-          xmlns:test="urn:java:org.jboss.seam.config.xml.test.constructor">
+       xmlns:test="urn:java:org.jboss.seam.config.xml.test.constructor">
 
-	<test:ValueProvider>
-		<test:value>
-			<Produces/>
-			<value>10</value>
-		</test:value>
-	</test:ValueProvider>
-   
-   	<test:ConstructedBean>
-   		<replaces/>
-   		<parameters><int/></parameters>
-   	</test:ConstructedBean>
-   
+    <test:ValueProvider>
+        <test:value>
+            <Produces/>
+            <value>10</value>
+        </test:value>
+    </test:ValueProvider>
+
+    <test:ConstructedBean>
+        <replaces/>
+        <parameters>
+            <int/>
+        </parameters>
+    </test:ConstructedBean>
+
 </beans>

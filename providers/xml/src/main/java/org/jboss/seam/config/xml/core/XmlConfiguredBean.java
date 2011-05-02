@@ -21,12 +21,10 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * marker for XML configured annotated types
- * 
+ *
  * @author stuart
- * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XmlConfiguredBean
-{
+public @interface XmlConfiguredBean {
 
 }

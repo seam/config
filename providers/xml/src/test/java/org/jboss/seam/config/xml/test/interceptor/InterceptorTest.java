@@ -21,22 +21,19 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class InterceptorTest extends AbstractXMLTest
-{
+public class InterceptorTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "interceptor-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "interceptor-beans.xml";
+    }
 
-   @Test()
-   public void testInterceptors()
-   {
+    @Test()
+    public void testInterceptors() {
 
-      InterceptedBean x = getReference(InterceptedBean.class);
-      String res = x.method();
-      Assert.assertEquals("hello world", res);
+        InterceptedBean x = getReference(InterceptedBean.class);
+        String res = x.method();
+        Assert.assertEquals("hello world", res);
 
-   }
+    }
 }

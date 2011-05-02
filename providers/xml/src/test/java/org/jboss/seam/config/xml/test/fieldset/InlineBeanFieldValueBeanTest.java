@@ -21,22 +21,19 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class InlineBeanFieldValueBeanTest extends AbstractXMLTest
-{
+public class InlineBeanFieldValueBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "inline-bean-field-value-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "inline-bean-field-value-beans.xml";
+    }
 
-   @Test
-   public void simpleInlineBeanTest()
-   {
-      Knight knight = getReference(Knight.class, org.jboss.weld.literal.DefaultLiteral.INSTANCE);
-      Assert.assertTrue(knight.getSword().getType().equals("sharp"));
-      Assert.assertTrue(knight.getHorse().getShoe() != null);
-      Assert.assertTrue(knight.getHorse().getName().equals("billy"));
-   }
+    @Test
+    public void simpleInlineBeanTest() {
+        Knight knight = getReference(Knight.class, org.jboss.weld.literal.DefaultLiteral.INSTANCE);
+        Assert.assertTrue(knight.getSword().getType().equals("sharp"));
+        Assert.assertTrue(knight.getHorse().getShoe() != null);
+        Assert.assertTrue(knight.getHorse().getName().equals("billy"));
+    }
 
 }

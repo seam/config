@@ -24,21 +24,18 @@ import org.jboss.seam.config.xml.bootstrap.XmlDocumentProvider;
 import org.jboss.seam.config.xml.bootstrap.XmlConfigExtension;
 import org.junit.Test;
 
-public class BootstrapTest extends AbstractXMLTest
-{
+public class BootstrapTest extends AbstractXMLTest {
 
-   @Test
-   public void testDocumentProviders()
-   {
-      XmlConfigExtension extension = getReference(XmlConfigExtension.class);
-      List<Class<? extends XmlDocumentProvider>> providers = extension.getDocumentProviders();
-      Assert.assertTrue(providers.size() == 2);
+    @Test
+    public void testDocumentProviders() {
+        XmlConfigExtension extension = getReference(XmlConfigExtension.class);
+        List<Class<? extends XmlDocumentProvider>> providers = extension.getDocumentProviders();
+        Assert.assertTrue(providers.size() == 2);
 
-   }
+    }
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return null;
-   }
+    @Override
+    protected String getXmlFileName() {
+        return null;
+    }
 }

@@ -16,8 +16,7 @@
  */
 package org.jboss.seam.config.xml.test.method;
 
-public interface QualifiedType
-{
-   public int getBeanNumber();
+public interface QualifiedType {
+    public int getBeanNumber();
 
 }

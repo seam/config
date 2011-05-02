@@ -23,26 +23,23 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class ELFieldValueBeanTest extends AbstractXMLTest
-{
+public class ELFieldValueBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "el-set-field-value-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "el-set-field-value-beans.xml";
+    }
 
-   @Test
-   public void mapSetFieldValue()
-   {
-      ELValueBean bean = getReference(ELValueBean.class);
-      Assert.assertTrue(bean.array.length == 1);
-      Assert.assertEquals(bean.array[0], ELValueProducer.EL_VALUE_STRING);
-      Assert.assertTrue(bean.list.size() == 1);
-      Assert.assertEquals(bean.list.get(0), ELValueProducer.EL_VALUE_STRING);
-      Assert.assertTrue(bean.map.size() == 1);
-      Entry<String, String> entry = bean.map.entrySet().iterator().next();
-      Assert.assertEquals(entry.getKey(), ELValueProducer.EL_VALUE_STRING);
-      Assert.assertEquals(entry.getValue(), ELValueProducer.EL_VALUE_STRING);
-   }
+    @Test
+    public void mapSetFieldValue() {
+        ELValueBean bean = getReference(ELValueBean.class);
+        Assert.assertTrue(bean.array.length == 1);
+        Assert.assertEquals(bean.array[0], ELValueProducer.EL_VALUE_STRING);
+        Assert.assertTrue(bean.list.size() == 1);
+        Assert.assertEquals(bean.list.get(0), ELValueProducer.EL_VALUE_STRING);
+        Assert.assertTrue(bean.map.size() == 1);
+        Entry<String, String> entry = bean.map.entrySet().iterator().next();
+        Assert.assertEquals(entry.getKey(), ELValueProducer.EL_VALUE_STRING);
+        Assert.assertEquals(entry.getValue(), ELValueProducer.EL_VALUE_STRING);
+    }
 }

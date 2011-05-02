@@ -19,25 +19,22 @@ package org.jboss.seam.config.xml.test.method;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class MethodTest extends AbstractXMLTest
-{
+public class MethodTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "method-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "method-beans.xml";
+    }
 
-   @Test
-   public void methodTest()
-   {
-      MethodTarget x = getReference(MethodTarget.class);
-      assert x != null;
-      assert x.value1 == 1;
-      assert x.value2 == 11;
-      assert x.value3 == 11;
-      assert x.longValue == 10;
+    @Test
+    public void methodTest() {
+        MethodTarget x = getReference(MethodTarget.class);
+        assert x != null;
+        assert x.value1 == 1;
+        assert x.value2 == 11;
+        assert x.value3 == 11;
+        assert x.longValue == 10;
 
-   }
+    }
 
 }

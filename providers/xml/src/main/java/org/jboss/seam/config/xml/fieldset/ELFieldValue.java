@@ -25,28 +25,23 @@ import org.jboss.seam.solder.literal.DefaultLiteral;
 
 /**
  * Field value impl for EL expressions
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class ELFieldValue implements FieldValue
-{
-   private final String expression;
-   private Expressions expressions;
+public class ELFieldValue implements FieldValue {
+    private final String expression;
+    private Expressions expressions;
 
-   public ELFieldValue(String expression)
-   {
-      this.expression = expression;
-   }
+    public ELFieldValue(String expression) {
+        this.expression = expression;
+    }
 
-   public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager)
-   {
-      if (expressions == null)
-      {
-         Bean<Expressions> expressionsBean = (Bean) manager.resolve(manager.getBeans(Expressions.class, DefaultLiteral.INSTANCE));
-         CreationalContext<Expressions> bc = manager.createCreationalContext(expressionsBean);
-         expressions = (Expressions) manager.getReference(expressionsBean, Expressions.class, bc);
-      }
-      return expressions.evaluateValueExpression(expression);
-   }
+    public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager) {
+        if (expressions == null) {
+            Bean<Expressions> expressionsBean = (Bean) manager.resolve(manager.getBeans(Expressions.class, DefaultLiteral.INSTANCE));
+            CreationalContext<Expressions> bc = manager.createCreationalContext(expressionsBean);
+            expressions = (Expressions) manager.getReference(expressionsBean, Expressions.class, bc);
+        }
+        return expressions.evaluateValueExpression(expression);
+    }
 }

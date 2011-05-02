@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.fieldset;
 
-public class HorseShoe
-{
+public class HorseShoe {
 
 }

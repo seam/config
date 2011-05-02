@@ -24,55 +24,43 @@ import javax.enterprise.inject.spi.BeanManager;
 
 import org.jboss.seam.config.xml.util.XmlConfigurationException;
 
-public class ArrayXmlItem extends ParameterXmlItem
-{
+public class ArrayXmlItem extends ParameterXmlItem {
 
-   Class<?> javaClass = null;
+    Class<?> javaClass = null;
 
-   int dimensions = 1;
+    int dimensions = 1;
 
-   public ArrayXmlItem(XmlItem parent, Map<String, String> attributes, String document, int lineno)
-   {
-      super(parent, null, document, lineno);
-      if (attributes.containsKey("dimensions"))
-      {
-         try
-         {
-            dimensions = Integer.parseInt(attributes.get("dimensions"));
-         }
-         catch (NumberFormatException e)
-         {
-            throw new XmlConfigurationException("dimensions attribute on <array> must be an integer", document, lineno);
-         }
-      }
-   }
+    public ArrayXmlItem(XmlItem parent, Map<String, String> attributes, String document, int lineno) {
+        super(parent, null, document, lineno);
+        if (attributes.containsKey("dimensions")) {
+            try {
+                dimensions = Integer.parseInt(attributes.get("dimensions"));
+            } catch (NumberFormatException e) {
+                throw new XmlConfigurationException("dimensions attribute on <array> must be an integer", document, lineno);
+            }
+        }
+    }
 
-   public boolean resolveChildren(BeanManager manager)
-   {
-      List<ClassXmlItem> classXmlItems = getChildrenOfType(ClassXmlItem.class);
-      if (classXmlItems.isEmpty())
-      {
-         throw new XmlConfigurationException("<array>  element must have a child specifying the array type", getDocument(), getLineno());
-      }
-      else if (classXmlItems.size() != 1)
-      {
-         throw new XmlConfigurationException("<array>  element must have a single child specifying the array type", getDocument(), getLineno());
-      }
-      int[] dims = new int[dimensions];
-      for (int i = 0; i < dimensions; ++i)
-      {
-         dims[i] = 0;
-      }
-      Class<?> l = classXmlItems.get(0).getJavaClass();
-      javaClass = Array.newInstance(l, dims).getClass();
+    public boolean resolveChildren(BeanManager manager) {
+        List<ClassXmlItem> classXmlItems = getChildrenOfType(ClassXmlItem.class);
+        if (classXmlItems.isEmpty()) {
+            throw new XmlConfigurationException("<array>  element must have a child specifying the array type", getDocument(), getLineno());
+        } else if (classXmlItems.size() != 1) {
+            throw new XmlConfigurationException("<array>  element must have a single child specifying the array type", getDocument(), getLineno());
+        }
+        int[] dims = new int[dimensions];
+        for (int i = 0; i < dimensions; ++i) {
+            dims[i] = 0;
+        }
+        Class<?> l = classXmlItems.get(0).getJavaClass();
+        javaClass = Array.newInstance(l, dims).getClass();
 
-      return true;
-   }
+        return true;
+    }
 
-   @Override
-   public Class<?> getJavaClass()
-   {
-      return javaClass;
-   }
+    @Override
+    public Class<?> getJavaClass() {
+        return javaClass;
+    }
 
 }

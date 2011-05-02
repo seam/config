@@ -24,99 +24,81 @@ import java.util.Map;
 
 import javax.enterprise.inject.spi.BeanManager;
 
-public abstract class AbstractXmlItem implements XmlItem
-{
-   protected final XmlItemType type;
-   protected final XmlItem parent;
-   protected final Class<?> javaClass;
+public abstract class AbstractXmlItem implements XmlItem {
+    protected final XmlItemType type;
+    protected final XmlItem parent;
+    protected final Class<?> javaClass;
 
-   protected final String innerText;
-   protected final Map<String, String> attributes;
+    protected final String innerText;
+    protected final Map<String, String> attributes;
 
-   protected final int lineno;
+    protected final int lineno;
 
-   protected final String document;
+    protected final String document;
 
-   public String getInnerText()
-   {
-      return innerText;
-   }
+    public String getInnerText() {
+        return innerText;
+    }
 
-   public AbstractXmlItem(XmlItemType type, XmlItem parent, Class<?> javaClass, String innerText, Map<String, String> attributes, String document, int lineno)
-   {
-      this.type = type;
-      this.parent = parent;
-      this.javaClass = javaClass;
-      this.innerText = innerText;
-      if (attributes == null)
-      {
-         this.attributes = new HashMap<String, String>();
-      }
-      else
-      {
-         this.attributes = new HashMap<String, String>(attributes);
-      }
-      this.lineno = lineno;
-      this.document = document;
-   }
+    public AbstractXmlItem(XmlItemType type, XmlItem parent, Class<?> javaClass, String innerText, Map<String, String> attributes, String document, int lineno) {
+        this.type = type;
+        this.parent = parent;
+        this.javaClass = javaClass;
+        this.innerText = innerText;
+        if (attributes == null) {
+            this.attributes = new HashMap<String, String>();
+        } else {
+            this.attributes = new HashMap<String, String>(attributes);
+        }
+        this.lineno = lineno;
+        this.document = document;
+    }
 
-   public int getLineno()
-   {
-      return lineno;
-   }
+    public int getLineno() {
+        return lineno;
+    }
 
-   public String getDocument()
-   {
-      return document;
-   }
+    public String getDocument() {
+        return document;
+    }
 
-   final List<XmlItem> children = new ArrayList<XmlItem>();
+    final List<XmlItem> children = new ArrayList<XmlItem>();
 
-   public void addChild(XmlItem xmlItem)
-   {
-      children.add(xmlItem);
-   }
+    public void addChild(XmlItem xmlItem) {
+        children.add(xmlItem);
+    }
 
-   public XmlItem getParent()
-   {
-      return parent;
-   }
+    public XmlItem getParent() {
+        return parent;
+    }
 
-   public List<XmlItem> getChildren()
-   {
-      return Collections.unmodifiableList(children);
-   }
+    public List<XmlItem> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
 
-   public XmlItemType getType()
-   {
-      return type;
-   }
+    public XmlItemType getType() {
+        return type;
+    }
 
-   public Class<?> getJavaClass()
-   {
-      return javaClass;
-   }
+    public Class<?> getJavaClass() {
+        return javaClass;
+    }
 
-   public boolean resolveChildren(BeanManager manager)
-   {
-      return true;
-   }
+    public boolean resolveChildren(BeanManager manager) {
+        return true;
+    }
 
-   public Map<String, String> getAttributes()
-   {
-      return attributes;
-   }
+    public Map<String, String> getAttributes() {
+        return attributes;
+    }
 
-   public <T> List<T> getChildrenOfType(Class<T> type)
-   {
-      List<T> ret = new ArrayList<T>();
-      for (XmlItem i : children)
-      {
-         if (type.isAssignableFrom(i.getClass()))
-         {
-            ret.add((T) i);
-         }
-      }
-      return ret;
-   }
+    public <T> List<T> getChildrenOfType(Class<T> type) {
+        List<T> ret = new ArrayList<T>();
+        for (XmlItem i : children) {
+            if (type.isAssignableFrom(i.getClass())) {
+                ret.add((T) i);
+            }
+        }
+        return ret;
+    }
 }

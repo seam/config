@@ -24,124 +24,103 @@ import java.util.Map;
 
 /**
  * Stores the result of parsing an XML document
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public class XmlResult implements Comparable<XmlResult>
-{
+public class XmlResult implements Comparable<XmlResult> {
 
-   private final Map<Class<? extends Annotation>, Annotation[]> stereotypes = new HashMap<Class<? extends Annotation>, Annotation[]>();
+    private final Map<Class<? extends Annotation>, Annotation[]> stereotypes = new HashMap<Class<? extends Annotation>, Annotation[]>();
 
-   private final List<Class<? extends Annotation>> qualifiers = new ArrayList<Class<? extends Annotation>>();
+    private final List<Class<? extends Annotation>> qualifiers = new ArrayList<Class<? extends Annotation>>();
 
-   private final List<Class<? extends Annotation>> interceptorBindings = new ArrayList<Class<? extends Annotation>>();
+    private final List<Class<? extends Annotation>> interceptorBindings = new ArrayList<Class<? extends Annotation>>();
 
-   private final List<Class<?>> veto = new ArrayList<Class<?>>();
+    private final List<Class<?>> veto = new ArrayList<Class<?>>();
 
-   private final List<String> problems = new ArrayList<String>();
+    private final List<String> problems = new ArrayList<String>();
 
-   private final List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
+    private final List<BeanResult<?>> beans = new ArrayList<BeanResult<?>>();
 
-   private final String sortKey;
+    private final String sortKey;
 
-   public XmlResult(String fileUrl)
-   {
-      StringBuilder keyBuilder = new StringBuilder(fileUrl.length());
-      for (int i = fileUrl.length() - 1; i >= 0; --i)
-      {
-         keyBuilder.append(fileUrl.charAt(i));
-      }
-      sortKey = keyBuilder.toString();
-   }
+    public XmlResult(String fileUrl) {
+        StringBuilder keyBuilder = new StringBuilder(fileUrl.length());
+        for (int i = fileUrl.length() - 1; i >= 0; --i) {
+            keyBuilder.append(fileUrl.charAt(i));
+        }
+        sortKey = keyBuilder.toString();
+    }
 
-   public void addStereotype(Class<? extends Annotation> an, Annotation[] values)
-   {
-      stereotypes.put(an, values);
-   }
+    public void addStereotype(Class<? extends Annotation> an, Annotation[] values) {
+        stereotypes.put(an, values);
+    }
 
-   public Map<Class<? extends Annotation>, Annotation[]> getStereotypes()
-   {
-      return stereotypes;
-   }
+    public Map<Class<? extends Annotation>, Annotation[]> getStereotypes() {
+        return stereotypes;
+    }
 
-   public void addQualifier(Class<? extends Annotation> qualifier)
-   {
-      qualifiers.add(qualifier);
-   }
+    public void addQualifier(Class<? extends Annotation> qualifier) {
+        qualifiers.add(qualifier);
+    }
 
-   public List<Class<? extends Annotation>> getQualifiers()
-   {
-      return qualifiers;
-   }
+    public List<Class<? extends Annotation>> getQualifiers() {
+        return qualifiers;
+    }
 
-   public void addInterceptorBinding(Class<? extends Annotation> binding)
-   {
-      interceptorBindings.add(binding);
-   }
+    public void addInterceptorBinding(Class<? extends Annotation> binding) {
+        interceptorBindings.add(binding);
+    }
 
-   public List<Class<? extends Annotation>> getInterceptorBindings()
-   {
-      return interceptorBindings;
-   }
+    public List<Class<? extends Annotation>> getInterceptorBindings() {
+        return interceptorBindings;
+    }
 
-   public void addBean(BeanResult<?> bean)
-   {
-      beans.add(bean);
-   }
+    public void addBean(BeanResult<?> bean) {
+        beans.add(bean);
+    }
 
-   public List<BeanResult<?>> getBeans()
-   {
-      return beans;
-   }
+    public List<BeanResult<?>> getBeans() {
+        return beans;
+    }
 
-   /**
-    * Gets all beans from the result, including inline beans
-    * 
-    * @return
-    */
-   public List<BeanResult<?>> getFlattenedBeans()
-   {
-      List<BeanResult<?>> results = new ArrayList<BeanResult<?>>();
-      for (BeanResult<?> a : beans)
-      {
-         getFlattenedBeans(a, results);
-      }
-      return results;
-   }
+    /**
+     * Gets all beans from the result, including inline beans
+     *
+     * @return
+     */
+    public List<BeanResult<?>> getFlattenedBeans() {
+        List<BeanResult<?>> results = new ArrayList<BeanResult<?>>();
+        for (BeanResult<?> a : beans) {
+            getFlattenedBeans(a, results);
+        }
+        return results;
+    }
 
-   private void getFlattenedBeans(BeanResult<?> r, List<BeanResult<?>> results)
-   {
-      results.add(r);
-      for (BeanResult<?> a : r.getInlineBeans())
-      {
-         getFlattenedBeans(a, results);
-      }
-   }
+    private void getFlattenedBeans(BeanResult<?> r, List<BeanResult<?>> results) {
+        results.add(r);
+        for (BeanResult<?> a : r.getInlineBeans()) {
+            getFlattenedBeans(a, results);
+        }
+    }
 
-   public List<String> getProblems()
-   {
-      return problems;
-   }
+    public List<String> getProblems() {
+        return problems;
+    }
 
-   public void addProblem(String p)
-   {
-      problems.add(p);
-   }
+    public void addProblem(String p) {
+        problems.add(p);
+    }
 
-   public void addVeto(Class<?> clazz)
-   {
-      veto.add(clazz);
-   }
+    public void addVeto(Class<?> clazz) {
+        veto.add(clazz);
+    }
 
-   public List<Class<?>> getVeto()
-   {
-      return veto;
-   }
+    public List<Class<?>> getVeto() {
+        return veto;
+    }
 
-   public int compareTo(XmlResult o)
-   {
-      return sortKey.compareTo(o.sortKey);
-   }
+    public int compareTo(XmlResult o) {
+        return sortKey.compareTo(o.sortKey);
+    }
 
 }

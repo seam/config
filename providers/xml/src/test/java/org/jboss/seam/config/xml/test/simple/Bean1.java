@@ -16,27 +16,23 @@
  */
 package org.jboss.seam.config.xml.test.simple;
 
-public class Bean1
-{
+public class Bean1 {
 
-   public int value = 0;
+    public int value = 0;
 
-   public void method1()
-   {
+    public void method1() {
 
-   }
+    }
 
-   public void method1(String param)
-   {
+    public void method1(String param) {
 
-   }
+    }
 
-   public String field1 = "aa";
+    public String field1 = "aa";
 
-   public Bean2 bean2;
+    public Bean2 bean2;
 
-   public void pcMethod()
-   {
-      value = 1;
-   }
+    public void pcMethod() {
+        value = 1;
+    }
 }

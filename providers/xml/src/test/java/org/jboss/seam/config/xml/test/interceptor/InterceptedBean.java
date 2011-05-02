@@ -17,12 +17,10 @@
 package org.jboss.seam.config.xml.test.interceptor;
 
 @Binding
-public class InterceptedBean
-{
+public class InterceptedBean {
 
-   public String method()
-   {
-      return "hello";
-   }
+    public String method() {
+        return "hello";
+    }
 
 }

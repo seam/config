@@ -30,12 +30,11 @@ import javax.inject.Qualifier;
 import org.jboss.seam.config.xml.test.method.QualifierEnum;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { TYPE, METHOD, PARAMETER, FIELD })
-public @interface OtherQualifier
-{
-   String value1();
+@Target({TYPE, METHOD, PARAMETER, FIELD})
+public @interface OtherQualifier {
+    String value1();
 
-   int value2();
+    int value2();
 
-   QualifierEnum value();
+    QualifierEnum value();
 }

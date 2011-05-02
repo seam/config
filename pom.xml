@@ -1,106 +1,107 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-   <parent>
-      <artifactId>seam-parent</artifactId>
-      <groupId>org.jboss.seam</groupId>
-      <version>9</version>
-   </parent>
+    <parent>
+        <artifactId>seam-parent</artifactId>
+        <groupId>org.jboss.seam</groupId>
+        <version>9</version>
+    </parent>
 
-   <groupId>org.jboss.seam.config</groupId>
-   <artifactId>seam-config-parent</artifactId>
-   <packaging>pom</packaging>
-   <version>3.0.1-SNAPSHOT</version>
-   <name>Seam Config Module</name>
-   <url>http://seamframework.org/Seam3/ConfigModule</url>
-   <description>Alternate metadata sources for defining and configuring beans</description>
+    <groupId>org.jboss.seam.config</groupId>
+    <artifactId>seam-config-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>3.0.1-SNAPSHOT</version>
+    <name>Seam Config Module</name>
+    <url>http://seamframework.org/Seam3/ConfigModule</url>
+    <description>Alternate metadata sources for defining and configuring beans</description>
 
-   <properties>
-      <seam.version>3.0.0.Final</seam.version>
-   </properties>
-   
-   <modules>
-      <module>providers/xml</module>
-   </modules>
+    <properties>
+        <seam.version>3.0.0.Final</seam.version>
+    </properties>
 
-   <dependencyManagement>
-      <dependencies>
-         <dependency>
-            <groupId>org.jboss.seam</groupId>
-            <artifactId>seam-bom</artifactId>
-            <version>${seam.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-         </dependency>
+    <modules>
+        <module>providers/xml</module>
+    </modules>
 
-         <!-- Override submodule versions from org.jboss.seam:seam -->
-         <dependency>
-            <groupId>org.jboss.seam.config</groupId>
-            <artifactId>seam-config-xml</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-      </dependencies>
-   </dependencyManagement>
-   
-   <profiles>
-      <profile>
-         <id>distribution</id>
-         <activation>
-            <property>
-               <name>release</name>
-            </property>
-         </activation>
-         <modules>
-            <module>dist</module>
-            <module>docs</module>
-            <module>examples/princess-rescue</module>
-         </modules>
-      </profile>
-      <profile>
-         <id>jboss-public-repository</id>
-         <activation>
-            <property>
-               <name>jboss-public-repository</name>
-               <value>!false</value>
-            </property>
-         </activation>
-         <repositories>
-            <repository>
-               <id>jboss-public-repository-group</id>
-               <name>JBoss Public Maven Repository Group</name>
-               <url>http://repository.jboss.org/nexus/content/groups/public</url>
-               <releases>
-                  <enabled>true</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </releases>
-               <snapshots>
-                  <enabled>true</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </snapshots>
-            </repository>
-         </repositories>
-         <pluginRepositories>
-            <pluginRepository>
-               <id>jboss-public-repository-group</id>
-               <name>JBoss Public Maven Repository Group</name>
-               <url>http://repository.jboss.org/nexus/content/groups/public</url>
-               <releases>
-                  <enabled>true</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </releases>
-               <snapshots>
-                  <enabled>false</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </snapshots>
-            </pluginRepository>
-         </pluginRepositories>
-      </profile>
-   </profiles>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.seam</groupId>
+                <artifactId>seam-bom</artifactId>
+                <version>${seam.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-   <scm>
-      <connection>scm:git:git://github.com/seam/config.git</connection>
-      <developerConnection>scm:git:git@github.com:seam/config.git</developerConnection>
-      <url>http://github.com/seam/config</url>
-   </scm>
+            <!-- Override submodule versions from org.jboss.seam:seam -->
+            <dependency>
+                <groupId>org.jboss.seam.config</groupId>
+                <artifactId>seam-config-xml</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>distribution</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+            <modules>
+                <module>dist</module>
+                <module>docs</module>
+                <module>examples/princess-rescue</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>jboss-public-repository</id>
+            <activation>
+                <property>
+                    <name>jboss-public-repository</name>
+                    <value>!false</value>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>jboss-public-repository-group</id>
+                    <name>JBoss Public Maven Repository Group</name>
+                    <url>http://repository.jboss.org/nexus/content/groups/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>jboss-public-repository-group</id>
+                    <name>JBoss Public Maven Repository Group</name>
+                    <url>http://repository.jboss.org/nexus/content/groups/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                        <updatePolicy>never</updatePolicy>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+    <scm>
+        <connection>scm:git:git://github.com/seam/config.git</connection>
+        <developerConnection>scm:git:git@github.com:seam/config.git</developerConnection>
+        <url>http://github.com/seam/config</url>
+    </scm>
 
 </project>

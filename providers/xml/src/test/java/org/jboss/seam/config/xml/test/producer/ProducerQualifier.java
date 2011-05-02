@@ -23,7 +23,6 @@ import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
-public @interface ProducerQualifier
-{
-   int value();
+public @interface ProducerQualifier {
+    int value();
 }

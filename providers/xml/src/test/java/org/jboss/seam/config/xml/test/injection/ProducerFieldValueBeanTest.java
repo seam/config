@@ -21,21 +21,18 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class ProducerFieldValueBeanTest extends AbstractXMLTest
-{
+public class ProducerFieldValueBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "producer-field-value-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "producer-field-value-beans.xml";
+    }
 
-   @Test
-   public void testProducerField()
-   {
+    @Test
+    public void testProducerField() {
 
-      RecieverBean s = getReference(RecieverBean.class);
-      Assert.assertTrue(s.value.equals("hello world"));
-   }
+        RecieverBean s = getReference(RecieverBean.class);
+        Assert.assertTrue(s.value.equals("hello world"));
+    }
 
 }

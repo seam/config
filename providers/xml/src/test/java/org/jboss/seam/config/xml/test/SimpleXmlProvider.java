@@ -20,29 +20,25 @@ import org.jboss.seam.config.xml.bootstrap.ResourceLoaderXmlDocumentProvider;
 import org.jboss.seam.config.xml.bootstrap.XmlDocument;
 import org.jboss.seam.config.xml.bootstrap.XmlDocumentProvider;
 
-public class SimpleXmlProvider implements XmlDocumentProvider
-{
+public class SimpleXmlProvider implements XmlDocumentProvider {
 
-   public static String fileName;
+    public static String fileName;
 
-   ResourceLoaderXmlDocumentProvider docProvider;
+    ResourceLoaderXmlDocumentProvider docProvider;
 
-   public void close()
-   {
-      docProvider.close();
-   }
+    public void close() {
+        docProvider.close();
+    }
 
-   public XmlDocument getNextDocument()
-   {
-      return docProvider.getNextDocument();
-   }
+    public XmlDocument getNextDocument() {
+        return docProvider.getNextDocument();
+    }
 
-   public void open()
-   {
-      String[] r = new String[1];
-      r[0] = fileName;
-      docProvider = new ResourceLoaderXmlDocumentProvider(r);
-      docProvider.open();
-   }
+    public void open() {
+        String[] r = new String[1];
+        r[0] = fileName;
+        docProvider = new ResourceLoaderXmlDocumentProvider(r);
+        docProvider.open();
+    }
 
 }

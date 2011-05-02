@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.fieldset;
 
-public class FieldValueProducer
-{
-   public String value;
+public class FieldValueProducer {
+    public String value;
 }

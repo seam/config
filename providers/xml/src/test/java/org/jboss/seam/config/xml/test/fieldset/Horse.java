@@ -16,28 +16,23 @@
  */
 package org.jboss.seam.config.xml.test.fieldset;
 
-public class Horse
-{
-   private HorseShoe shoe;
-   private String name;
+public class Horse {
+    private HorseShoe shoe;
+    private String name;
 
-   public String getName()
-   {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public void setName(String name)
-   {
-      this.name = name;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public HorseShoe getShoe()
-   {
-      return shoe;
-   }
+    public HorseShoe getShoe() {
+        return shoe;
+    }
 
-   public void setShoe(HorseShoe shoe)
-   {
-      this.shoe = shoe;
-   }
+    public void setShoe(HorseShoe shoe) {
+        this.shoe = shoe;
+    }
 }

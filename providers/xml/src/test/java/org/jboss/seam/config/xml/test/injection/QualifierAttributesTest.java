@@ -24,21 +24,18 @@ import org.junit.Test;
 /**
  * Test that XML configured Qualifiers work as expected
  */
-public class QualifierAttributesTest extends AbstractXMLTest
-{
+public class QualifierAttributesTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "qualifier-attributes-test-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "qualifier-attributes-test-beans.xml";
+    }
 
-   @Test()
-   public void tstQualifiersWithAttributes()
-   {
-      QualifierTestBean x = getReference(QualifierTestBean.class);
-      Assert.assertTrue(x.bean1.getBeanNumber() == 1);
-      Assert.assertTrue(x.bean2.getBeanNumber() == 2);
+    @Test()
+    public void tstQualifiersWithAttributes() {
+        QualifierTestBean x = getReference(QualifierTestBean.class);
+        Assert.assertTrue(x.bean1.getBeanNumber() == 1);
+        Assert.assertTrue(x.bean2.getBeanNumber() == 2);
 
-   }
+    }
 }

@@ -19,29 +19,24 @@ package org.jboss.seam.config.xml.test.fieldset;
 import org.jboss.seam.solder.core.Veto;
 
 @Veto
-public class Knight
-{
-   Sword sword;
+public class Knight {
+    Sword sword;
 
-   Horse horse;
+    Horse horse;
 
-   public Sword getSword()
-   {
-      return sword;
-   }
+    public Sword getSword() {
+        return sword;
+    }
 
-   public void setSword(Sword sword)
-   {
-      this.sword = sword;
-   }
+    public void setSword(Sword sword) {
+        this.sword = sword;
+    }
 
-   public Horse getHorse()
-   {
-      return horse;
-   }
+    public Horse getHorse() {
+        return horse;
+    }
 
-   public void setHorse(Horse horse)
-   {
-      this.horse = horse;
-   }
+    public void setHorse(Horse horse) {
+        this.horse = horse;
+    }
 }

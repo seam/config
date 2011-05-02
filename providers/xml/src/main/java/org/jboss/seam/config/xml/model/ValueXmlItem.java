@@ -22,12 +22,8 @@
 package org.jboss.seam.config.xml.model;
 
 
-
-
-public class ValueXmlItem extends AbstractValueXmlItem
-{
-   public ValueXmlItem(XmlItem parent, String innerText, String document, int lineno)
-   {
-      super(XmlItemType.VALUE, parent, null, innerText, null, document, lineno);
-   }
+public class ValueXmlItem extends AbstractValueXmlItem {
+    public ValueXmlItem(XmlItem parent, String innerText, String document, int lineno) {
+        super(XmlItemType.VALUE, parent, null, innerText, null, document, lineno);
+    }
 }

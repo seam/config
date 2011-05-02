@@ -22,32 +22,27 @@ import javax.enterprise.inject.spi.BeanManager;
 
 /**
  * Field value object for an inline bean definition
- * 
+ *
  * @author Stuart Douglas
- * 
  */
-public class InlineBeanFieldValue implements FieldValue
-{
+public class InlineBeanFieldValue implements FieldValue {
 
-   private final int beanId;
+    private final int beanId;
 
-   private final InlineBeanQualifier.InlineBeanQualifierLiteral literal;
+    private final InlineBeanQualifier.InlineBeanQualifierLiteral literal;
 
-   private Bean<?> bean;
+    private Bean<?> bean;
 
-   public InlineBeanFieldValue(int syntheticBeanQualifierNo)
-   {
-      this.beanId = syntheticBeanQualifierNo;
-      this.literal = new InlineBeanQualifier.InlineBeanQualifierLiteral(beanId);
-   }
+    public InlineBeanFieldValue(int syntheticBeanQualifierNo) {
+        this.beanId = syntheticBeanQualifierNo;
+        this.literal = new InlineBeanQualifier.InlineBeanQualifierLiteral(beanId);
+    }
 
-   public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager)
-   {
-      if (bean == null)
-      {
-         bean = manager.resolve(manager.getBeans(type, literal));
-      }
-      return manager.getReference(bean, type, ctx);
-   }
+    public Object value(Class<?> type, CreationalContext<?> ctx, BeanManager manager) {
+        if (bean == null) {
+            bean = manager.resolve(manager.getBeans(type, literal));
+        }
+        return manager.getReference(bean, type, ctx);
+    }
 
 }

@@ -19,9 +19,8 @@ package org.jboss.seam.config.xml.parser.namespace;
 import org.jboss.seam.config.xml.model.XmlItem;
 import org.jboss.seam.config.xml.parser.SaxNode;
 
-public interface NamespaceElementResolver
-{
+public interface NamespaceElementResolver {
 
-   XmlItem getItemForNamespace(SaxNode node, XmlItem parent);
+    XmlItem getItemForNamespace(SaxNode node, XmlItem parent);
 
 }

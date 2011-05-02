@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.method;
 
-public enum QualifierEnum
-{
-   A, B, C;
+public enum QualifierEnum {
+    A, B, C;
 }

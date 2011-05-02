@@ -17,15 +17,13 @@
 package org.jboss.seam.config.xml.test.types;
 
 
-public class TypeInjectedClass
-{
-   SomeInterface createValue;
+public class TypeInjectedClass {
+    SomeInterface createValue;
 
-   public void create(SomeInterface value)
-   {
-      this.createValue = value;
-   }
+    public void create(SomeInterface value) {
+        this.createValue = value;
+    }
 
-   public SomeInterface value;
+    public SomeInterface value;
 
 }

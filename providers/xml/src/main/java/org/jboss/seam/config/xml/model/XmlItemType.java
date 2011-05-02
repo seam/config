@@ -21,39 +21,33 @@
  */
 package org.jboss.seam.config.xml.model;
 
-public enum XmlItemType
-{
-   CLASS, METHOD, FIELD, ANNOTATION, VALUE("value", "v"), VALUES("values"), ENTRY("entry", "e"), KEY("key", "k"), DEPENDENCY, PARAMETERS("parameters"), PARAMETER, ARRAY("array"), REPLACE("replaces"), MODIFIES("modifies");
+public enum XmlItemType {
+    CLASS, METHOD, FIELD, ANNOTATION, VALUE("value", "v"), VALUES("values"), ENTRY("entry", "e"), KEY("key", "k"), DEPENDENCY, PARAMETERS("parameters"), PARAMETER, ARRAY("array"), REPLACE("replaces"), MODIFIES("modifies");
 
-   private final String elementName;
-   private final String alias;
+    private final String elementName;
+    private final String alias;
 
-   private XmlItemType(String elementName, String alias)
-   {
-      this.elementName = elementName;
-      this.alias = alias;
-   }
+    private XmlItemType(String elementName, String alias) {
+        this.elementName = elementName;
+        this.alias = alias;
+    }
 
-   private XmlItemType(String elementName)
-   {
-      this.elementName = elementName;
-      this.alias = null;
-   }
+    private XmlItemType(String elementName) {
+        this.elementName = elementName;
+        this.alias = null;
+    }
 
-   private XmlItemType()
-   {
-      this.elementName = "";
-      this.alias = "";
-   }
+    private XmlItemType() {
+        this.elementName = "";
+        this.alias = "";
+    }
 
-   public String getElementName()
-   {
-      return elementName;
-   }
+    public String getElementName() {
+        return elementName;
+    }
 
-   public String getAlias()
-   {
-      return alias;
-   }
+    public String getAlias() {
+        return alias;
+    }
 
 }

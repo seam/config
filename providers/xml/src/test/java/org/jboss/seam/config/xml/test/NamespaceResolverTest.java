@@ -32,45 +32,41 @@ import org.jboss.seam.config.xml.parser.namespace.PackageNamespaceElementResolve
 import org.jboss.seam.config.xml.test.simple.Bean1;
 import org.junit.Test;
 
-public class NamespaceResolverTest
-{
+public class NamespaceResolverTest {
 
-   @Test
-   public void testPackageResolver()
-   {
-      PackageNamespaceElementResolver resolver = new PackageNamespaceElementResolver("org.jboss.seam.config.xml.test.simple");
-      testResolver(resolver);
-   }
+    @Test
+    public void testPackageResolver() {
+        PackageNamespaceElementResolver resolver = new PackageNamespaceElementResolver("org.jboss.seam.config.xml.test.simple");
+        testResolver(resolver);
+    }
 
-   @Test
-   public void testCompositePackageResolver()
-   {
-      List<String> namespaces = new ArrayList<String>();
-      namespaces.add("java.lang");
-      namespaces.add("java.util");
-      namespaces.add("org.jboss.seam.config.xml.test.simple");
-      CompositeNamespaceElementResolver resolver = new CompositeNamespaceElementResolver(namespaces);
-      testResolver(resolver);
-   }
+    @Test
+    public void testCompositePackageResolver() {
+        List<String> namespaces = new ArrayList<String>();
+        namespaces.add("java.lang");
+        namespaces.add("java.util");
+        namespaces.add("org.jboss.seam.config.xml.test.simple");
+        CompositeNamespaceElementResolver resolver = new CompositeNamespaceElementResolver(namespaces);
+        testResolver(resolver);
+    }
 
-   public void testResolver(NamespaceElementResolver resolver)
-   {
+    public void testResolver(NamespaceElementResolver resolver) {
 
-      XmlItem item = resolver.getItemForNamespace(new SaxNode("Bean1", null, null, null, null, 0), null);
-      Assert.assertTrue("Namespace resolver returned wrong class type", item.getJavaClass() == Bean1.class);
-      Assert.assertTrue("Namespace resolver did not return class", item.getType() == XmlItemType.CLASS);
-      XmlItem method = resolver.getItemForNamespace(new SaxNode("method1", null, null, null, null, 0), item);
-      Assert.assertTrue("Item returned wrong type", method.getType() == XmlItemType.METHOD);
+        XmlItem item = resolver.getItemForNamespace(new SaxNode("Bean1", null, null, null, null, 0), null);
+        Assert.assertTrue("Namespace resolver returned wrong class type", item.getJavaClass() == Bean1.class);
+        Assert.assertTrue("Namespace resolver did not return class", item.getType() == XmlItemType.CLASS);
+        XmlItem method = resolver.getItemForNamespace(new SaxNode("method1", null, null, null, null, 0), item);
+        Assert.assertTrue("Item returned wrong type", method.getType() == XmlItemType.METHOD);
 
-      method.resolveChildren(null);
+        method.resolveChildren(null);
 
-      Assert.assertTrue("Could not resolve method", ((MethodXmlItem) method).getMethod() != null);
-      Assert.assertTrue("Wrong method was resolved", ((MethodXmlItem) method).getMethod().getParameterTypes().length == 0);
+        Assert.assertTrue("Could not resolve method", ((MethodXmlItem) method).getMethod() != null);
+        Assert.assertTrue("Wrong method was resolved", ((MethodXmlItem) method).getMethod().getParameterTypes().length == 0);
 
-      XmlItem field = resolver.getItemForNamespace(new SaxNode("field1", null, null, null, null, 0), item);
-      Assert.assertTrue("Element of wrong type returned", ((PropertyXmlItem) field).getType() == XmlItemType.FIELD);
-      Assert.assertTrue("field was not set", ((PropertyXmlItem) field).getField() != null);
+        XmlItem field = resolver.getItemForNamespace(new SaxNode("field1", null, null, null, null, 0), item);
+        Assert.assertTrue("Element of wrong type returned", ((PropertyXmlItem) field).getType() == XmlItemType.FIELD);
+        Assert.assertTrue("field was not set", ((PropertyXmlItem) field).getField() != null);
 
-   }
+    }
 
 }

@@ -33,143 +33,109 @@ import org.xml.sax.InputSource;
 
 /**
  * Document Provider that loads XML documents from the classpath
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider
-{
+public class ResourceLoaderXmlDocumentProvider implements XmlDocumentProvider {
 
-   private final ResourceLoaderManager manager = new ResourceLoaderManager();
+    private final ResourceLoaderManager manager = new ResourceLoaderManager();
 
-   static final String[] DEFAULT_RESOURCES = { "META-INF/seam-beans.xml", "META-INF/beans.xml", "WEB-INF/beans.xml", "WEB-INF/seam-beans.xml" };
+    static final String[] DEFAULT_RESOURCES = {"META-INF/seam-beans.xml", "META-INF/beans.xml", "WEB-INF/beans.xml", "WEB-INF/seam-beans.xml"};
 
-   final String[] resources;
+    final String[] resources;
 
-   InputStream stream;
+    InputStream stream;
 
-   public ResourceLoaderXmlDocumentProvider()
-   {
-      this(DEFAULT_RESOURCES);
-   }
+    public ResourceLoaderXmlDocumentProvider() {
+        this(DEFAULT_RESOURCES);
+    }
 
-   public ResourceLoaderXmlDocumentProvider(String[] resources)
-   {
-      this.resources = resources;
-   }
+    public ResourceLoaderXmlDocumentProvider(String[] resources) {
+        this.resources = resources;
+    }
 
-   List<URL> docs;
+    List<URL> docs;
 
-   ListIterator<URL> iterator;
+    ListIterator<URL> iterator;
 
-   DocumentBuilderFactory factory;
-   DocumentBuilder builder;
+    DocumentBuilderFactory factory;
+    DocumentBuilder builder;
 
-   public void open()
-   {
-      factory = DocumentBuilderFactory.newInstance();
-      factory.setNamespaceAware(true);
-      factory.setIgnoringComments(true);
-      factory.setIgnoringElementContentWhitespace(true);
-      try
-      {
-         builder = factory.newDocumentBuilder();
-      }
-      catch (ParserConfigurationException e1)
-      {
-         throw new RuntimeException(e1);
-      }
-      docs = new ArrayList<URL>();
+    public void open() {
+        factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setIgnoringComments(true);
+        factory.setIgnoringElementContentWhitespace(true);
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException e1) {
+            throw new RuntimeException(e1);
+        }
+        docs = new ArrayList<URL>();
 
-      for (String i : resources)
-      {
-         Collection<URL> e = manager.getResources(i);
-         docs.addAll(e);
-      }
-      iterator = docs.listIterator();
-   }
+        for (String i : resources) {
+            Collection<URL> e = manager.getResources(i);
+            docs.addAll(e);
+        }
+        iterator = docs.listIterator();
+    }
 
-   public void close()
-   {
-      if (stream != null)
-      {
-         try
-         {
-            stream.close();
-         }
-         catch (Exception e)
-         {
-            e.printStackTrace();
-         }
-      }
-   }
-
-   public XmlDocument getNextDocument()
-   {
-      if (stream != null)
-      {
-         try
-         {
-            stream.close();
-            stream = null;
-         }
-         catch (Exception e)
-         {
-            e.printStackTrace();
-         }
-      }
-
-      try
-      {
-         while (iterator.hasNext())
-         {
-            final URL url = iterator.next();
-            // ignore empty files
-            InputStream test = null;
-            try
-            {
-               test = url.openStream();
-               if (test.available() == 0)
-               {
-                  continue;
-               }
+    public void close() {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            finally
-            {
-               if (test != null)
-               {
-                  test.close();
-               }
+        }
+    }
+
+    public XmlDocument getNextDocument() {
+        if (stream != null) {
+            try {
+                stream.close();
+                stream = null;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }
 
-            return new XmlDocument()
-            {
+        try {
+            while (iterator.hasNext()) {
+                final URL url = iterator.next();
+                // ignore empty files
+                InputStream test = null;
+                try {
+                    test = url.openStream();
+                    if (test.available() == 0) {
+                        continue;
+                    }
+                } finally {
+                    if (test != null) {
+                        test.close();
+                    }
+                }
 
-               public InputSource getInputSource()
-               {
-                  try
-                  {
-                     stream = url.openStream();
-                     return new InputSource(stream);
-                  }
-                  catch (IOException e)
-                  {
-                     throw new RuntimeException(e);
-                  }
-               }
+                return new XmlDocument() {
 
-               public String getFileUrl()
-               {
-                  return url.toString();
-               }
-            };
-         }
-         return null;
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-   }
+                    public InputSource getInputSource() {
+                        try {
+                            stream = url.openStream();
+                            return new InputSource(stream);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    public String getFileUrl() {
+                        return url.toString();
+                    }
+                };
+            }
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

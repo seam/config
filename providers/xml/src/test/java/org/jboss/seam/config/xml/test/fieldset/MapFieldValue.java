@@ -18,9 +18,8 @@ package org.jboss.seam.config.xml.test.fieldset;
 
 import java.util.Map;
 
-public class MapFieldValue
-{
-   public Map<Integer, String> map1;
+public class MapFieldValue {
+    public Map<Integer, String> map1;
 
-   public Map<String, Class<?>> map2;
+    public Map<String, Class<?>> map2;
 }

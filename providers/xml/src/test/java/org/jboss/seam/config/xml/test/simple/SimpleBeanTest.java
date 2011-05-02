@@ -30,52 +30,45 @@ import org.junit.Test;
 /**
  * Unit test for simple App.
  */
-public class SimpleBeanTest extends AbstractXMLTest
-{
+public class SimpleBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "simple-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "simple-beans.xml";
+    }
 
-   @Test
-   public void simpleBeanTest()
-   {
-      Bean1 x = getReference(Bean1.class);
-      Assert.assertTrue(x != null);
-      Assert.assertTrue(x.bean2 != null);
+    @Test
+    public void simpleBeanTest() {
+        Bean1 x = getReference(Bean1.class);
+        Assert.assertTrue(x != null);
+        Assert.assertTrue(x.bean2 != null);
 
-      Bean2 bean2 = getReference(Bean2.class);
-      Assert.assertEquals("test value", bean2.produceBean3);
+        Bean2 bean2 = getReference(Bean2.class);
+        Assert.assertEquals("test value", bean2.produceBean3);
 
-      Bean3 y = getReference(Bean3.class);
-      Assert.assertTrue(y != null);
-      Assert.assertTrue("Post construct method not called", x.value == 1);
-   }
+        Bean3 y = getReference(Bean3.class);
+        Assert.assertTrue(y != null);
+        Assert.assertTrue("Post construct method not called", x.value == 1);
+    }
 
-   @Test
-   public void testOverride()
-   {
-      Set<Bean<?>> beans = manager.getBeans(OverriddenBean.class);
-      Assert.assertTrue(beans.size() == 1);
-      Assert.assertTrue(beans.iterator().next().getName().equals("someBean"));
+    @Test
+    public void testOverride() {
+        Set<Bean<?>> beans = manager.getBeans(OverriddenBean.class);
+        Assert.assertTrue(beans.size() == 1);
+        Assert.assertTrue(beans.iterator().next().getName().equals("someBean"));
 
-   }
+    }
 
-   @Test
-   public void testExtends() throws SecurityException, NoSuchMethodException
-   {
-      AnnotationLiteral<ExtendedQualifier1> e1 = new AnnotationLiteral<ExtendedQualifier1>()
-      {
-      };
-      AnnotationLiteral<ExtendedQualifier2> e2 = new AnnotationLiteral<ExtendedQualifier2>()
-      {
-      };
+    @Test
+    public void testExtends() throws SecurityException, NoSuchMethodException {
+        AnnotationLiteral<ExtendedQualifier1> e1 = new AnnotationLiteral<ExtendedQualifier1>() {
+        };
+        AnnotationLiteral<ExtendedQualifier2> e2 = new AnnotationLiteral<ExtendedQualifier2>() {
+        };
 
-      ExtendedBean ext = getReference(ExtendedBean.class, e1, e2);
-      Assert.assertTrue(ext != null);
-      Method method = ext.getClass().getDeclaredMethod("getData");
-      method.getGenericReturnType();
-   }
+        ExtendedBean ext = getReference(ExtendedBean.class, e1, e2);
+        Assert.assertTrue(ext != null);
+        Method method = ext.getClass().getDeclaredMethod("getData");
+        method.getGenericReturnType();
+    }
 }

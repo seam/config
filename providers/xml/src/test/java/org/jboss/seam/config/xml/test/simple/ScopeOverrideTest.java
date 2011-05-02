@@ -21,22 +21,19 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class ScopeOverrideTest extends AbstractXMLTest
-{
+public class ScopeOverrideTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "simple-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "simple-beans.xml";
+    }
 
-   @Test
-   public void scopeOverrideTest()
-   {
-      ScopeOverrideBean x = getReference(ScopeOverrideBean.class);
-      x.setValue(10);
-      x = getReference(ScopeOverrideBean.class);
-      Assert.assertEquals(10, x.getValue());
-   }
+    @Test
+    public void scopeOverrideTest() {
+        ScopeOverrideBean x = getReference(ScopeOverrideBean.class);
+        x.setValue(10);
+        x = getReference(ScopeOverrideBean.class);
+        Assert.assertEquals(10, x.getValue());
+    }
 
 }

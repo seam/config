@@ -17,7 +17,6 @@
 package org.jboss.seam.config.xml.test.constructor;
 
 
-public class ValueProvider
-{
-   public int value;
+public class ValueProvider {
+    public int value;
 }

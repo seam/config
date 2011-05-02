@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.simple;
 
-public class OverriddenBean
-{
+public class OverriddenBean {
 
 }

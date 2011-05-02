@@ -16,10 +16,9 @@
  */
 package org.jboss.seam.config.xml.test.method;
 
-public class PrimitiveValueProducer
-{
-   public int value = 0;
+public class PrimitiveValueProducer {
+    public int value = 0;
 
-   public int[] value2 = { 1, 2, 3 };
+    public int[] value2 = {1, 2, 3};
 
 }

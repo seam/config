@@ -23,25 +23,21 @@ import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 
 /**
  * represents a parameter of a constructor or method
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public class ParameterXmlItem extends AbstractXmlItem
-{
-   HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
+public class ParameterXmlItem extends AbstractXmlItem {
+    HashSet<TypeOccuranceInformation> allowed = new HashSet<TypeOccuranceInformation>();
 
-   public ParameterXmlItem(XmlItem parent, Class<?> c, String document, int lineno)
-   {
-      super(XmlItemType.PARAMETER, parent, c, null, null, document, lineno);
-      allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
-      allowed.add(TypeOccuranceInformation.of(XmlItemType.CLASS, null, 1));
-      allowed.add(TypeOccuranceInformation.of(XmlItemType.ARRAY, null, 1));
-   }
+    public ParameterXmlItem(XmlItem parent, Class<?> c, String document, int lineno) {
+        super(XmlItemType.PARAMETER, parent, c, null, null, document, lineno);
+        allowed.add(TypeOccuranceInformation.of(XmlItemType.ANNOTATION, null, null));
+        allowed.add(TypeOccuranceInformation.of(XmlItemType.CLASS, null, 1));
+        allowed.add(TypeOccuranceInformation.of(XmlItemType.ARRAY, null, 1));
+    }
 
-   public Set<TypeOccuranceInformation> getAllowedItem()
-   {
-      return allowed;
-   }
+    public Set<TypeOccuranceInformation> getAllowedItem() {
+        return allowed;
+    }
 
 }

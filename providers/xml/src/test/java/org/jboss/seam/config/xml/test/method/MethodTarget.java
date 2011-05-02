@@ -16,10 +16,9 @@
  */
 package org.jboss.seam.config.xml.test.method;
 
-public class MethodTarget
-{
+public class MethodTarget {
 
-   public int value1, value2,value3;
+    public int value1, value2, value3;
 
-   public long longValue;
+    public long longValue;
 }

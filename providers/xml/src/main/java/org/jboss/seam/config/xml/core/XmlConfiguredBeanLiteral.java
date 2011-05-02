@@ -18,9 +18,8 @@ package org.jboss.seam.config.xml.core;
 
 import javax.enterprise.util.AnnotationLiteral;
 
-public class XmlConfiguredBeanLiteral extends AnnotationLiteral<XmlConfiguredBean> implements XmlConfiguredBean
-{
-   private static final long serialVersionUID = 2812698113865428827L;
+public class XmlConfiguredBeanLiteral extends AnnotationLiteral<XmlConfiguredBean> implements XmlConfiguredBean {
+    private static final long serialVersionUID = 2812698113865428827L;
 
-   public static XmlConfiguredBeanLiteral INSTANCE = new XmlConfiguredBeanLiteral();
+    public static XmlConfiguredBeanLiteral INSTANCE = new XmlConfiguredBeanLiteral();
 }

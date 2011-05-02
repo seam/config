@@ -16,15 +16,14 @@
  */
 package org.jboss.seam.config.xml.test.method;
 
-public class MethodValueBean
-{
-   public int value = 10;
+public class MethodValueBean {
+    public int value = 10;
 
-public int getValue() {
-	return value;
-}
+    public int getValue() {
+        return value;
+    }
 
-public void setValue(int value) {
-	this.value = value;
-}
+    public void setValue(int value) {
+        this.value = value;
+    }
 }

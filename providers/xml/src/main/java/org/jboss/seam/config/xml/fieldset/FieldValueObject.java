@@ -21,12 +21,10 @@ import javax.enterprise.inject.spi.BeanManager;
 
 /**
  * FieldValueObjects set field values for a given instance
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public interface FieldValueObject
-{
-   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager);
+public interface FieldValueObject {
+    public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager);
 
 }

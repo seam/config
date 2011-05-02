@@ -19,23 +19,19 @@ package org.jboss.seam.config.xml.test.simple;
 import javax.enterprise.context.Dependent;
 
 @Dependent
-public class ScopeOverrideBean
-{
-   public ScopeOverrideBean()
-   {
-      value = 1;
-   }
+public class ScopeOverrideBean {
+    public ScopeOverrideBean() {
+        value = 1;
+    }
 
-   private int value;
+    private int value;
 
-   public int getValue()
-   {
-      return value;
-   }
+    public int getValue() {
+        return value;
+    }
 
-   public void setValue(int value)
-   {
-      this.value = value;
-   }
+    public void setValue(int value) {
+        this.value = value;
+    }
 
 }

@@ -16,23 +16,19 @@
  */
 package org.jboss.seam.config.xml.test.constructor;
 
-public class ConstructedBean
-{
-   public ConstructedBean(int val)
-   {
-      this.value = val;
-   }
+public class ConstructedBean {
+    public ConstructedBean(int val) {
+        this.value = val;
+    }
 
-   public ConstructedBean()
-   {
+    public ConstructedBean() {
 
-   }
+    }
 
-   int value;
+    int value;
 
-   public int getValue()
-   {
-      return value;
-   }
+    public int getValue() {
+        return value;
+    }
 
 }

@@ -21,16 +21,13 @@ import java.util.Set;
 
 import org.jboss.seam.config.xml.util.TypeOccuranceInformation;
 
-public class KeyXmlItem extends AbstractValueXmlItem
-{
+public class KeyXmlItem extends AbstractValueXmlItem {
 
-   public KeyXmlItem(XmlItem parent, String innerText, String document, int lineno)
-   {
-      super(XmlItemType.KEY, parent, null, innerText, null, document, lineno);
-   }
+    public KeyXmlItem(XmlItem parent, String innerText, String document, int lineno) {
+        super(XmlItemType.KEY, parent, null, innerText, null, document, lineno);
+    }
 
-   public Set<TypeOccuranceInformation> getAllowedItem()
-   {
-      return Collections.emptySet();
-   }
+    public Set<TypeOccuranceInformation> getAllowedItem() {
+        return Collections.emptySet();
+    }
 }

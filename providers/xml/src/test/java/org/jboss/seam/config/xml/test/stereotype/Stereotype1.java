@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Stereotype1
-{
+public @interface Stereotype1 {
 
 }

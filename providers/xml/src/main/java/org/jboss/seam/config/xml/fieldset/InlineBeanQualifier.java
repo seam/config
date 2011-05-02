@@ -26,31 +26,26 @@ import javax.inject.Qualifier;
 
 /**
  * Internal qualifier used for inline beans
- * 
+ *
  * @author Stuart Douglas
- * 
  */
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
-public @interface InlineBeanQualifier
-{
-   int value();
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
+public @interface InlineBeanQualifier {
+    int value();
 
-   static class InlineBeanQualifierLiteral extends AnnotationLiteral<InlineBeanQualifier> implements InlineBeanQualifier
-   {
-      private final int value;
+    static class InlineBeanQualifierLiteral extends AnnotationLiteral<InlineBeanQualifier> implements InlineBeanQualifier {
+        private final int value;
 
-      public InlineBeanQualifierLiteral(int value)
-      {
-         this.value = value;
-      }
+        public InlineBeanQualifierLiteral(int value) {
+            this.value = value;
+        }
 
-      public int value()
-      {
-         return value;
-      }
+        public int value() {
+            return value;
+        }
 
-   }
+    }
 
 }

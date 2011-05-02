@@ -18,11 +18,9 @@ package org.jboss.seam.config.xml.core;
 
 /**
  * The class used to register virtual producer fields
- * 
+ *
  * @author stuart
- * 
  */
-public class VirtualProducerField
-{
-   public Object field;
+public class VirtualProducerField {
+    public Object field;
 }

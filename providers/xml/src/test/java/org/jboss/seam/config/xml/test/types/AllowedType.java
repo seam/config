@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.types;
 
-public class AllowedType implements SomeInterface
-{
+public class AllowedType implements SomeInterface {
 
 }

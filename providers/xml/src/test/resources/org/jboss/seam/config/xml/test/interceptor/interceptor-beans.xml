@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="urn:java:ee"
-          xmlns:test="urn:java:org.jboss.seam.config.xml.test.interceptor">
+       xmlns:test="urn:java:org.jboss.seam.config.xml.test.interceptor">
 
     <test:InterceptedBean>
-    	<replaces/>
+        <replaces/>
         <test:method>
             <test:Binding/>
         </test:method>

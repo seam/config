@@ -16,28 +16,24 @@
  */
 package org.jboss.seam.config.xml.util;
 
-public class XmlConfigurationException extends RuntimeException
-{
-   int lineno;
-   String document;
+public class XmlConfigurationException extends RuntimeException {
+    int lineno;
+    String document;
 
-   public XmlConfigurationException(String message, String document, int lineno)
-   {
-      super(message);
-      this.document = document;
-      this.lineno = lineno;
-   }
+    public XmlConfigurationException(String message, String document, int lineno) {
+        super(message);
+        this.document = document;
+        this.lineno = lineno;
+    }
 
-   public XmlConfigurationException(String message, String document, int lineno, Throwable cause)
-   {
-      super(message, cause);
-      this.document = document;
-      this.lineno = lineno;
-   }
+    public XmlConfigurationException(String message, String document, int lineno, Throwable cause) {
+        super(message, cause);
+        this.document = document;
+        this.lineno = lineno;
+    }
 
-   @Override
-   public String getMessage()
-   {
-      return super.getMessage() + " at " + document + ":" + lineno;
-   }
+    @Override
+    public String getMessage() {
+        return super.getMessage() + " at " + document + ":" + lineno;
+    }
 }

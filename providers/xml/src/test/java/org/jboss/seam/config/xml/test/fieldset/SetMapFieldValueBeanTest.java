@@ -21,26 +21,23 @@ import junit.framework.Assert;
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
-public class SetMapFieldValueBeanTest extends AbstractXMLTest
-{
+public class SetMapFieldValueBeanTest extends AbstractXMLTest {
 
-   @Override
-   protected String getXmlFileName()
-   {
-      return "map-set-field-value-beans.xml";
-   }
+    @Override
+    protected String getXmlFileName() {
+        return "map-set-field-value-beans.xml";
+    }
 
-   @Test
-   public void mapSetFieldValue()
-   {
-      MapFieldValue x = getReference(MapFieldValue.class);
-      Assert.assertTrue(x.map1.size() == 2);
-      Assert.assertTrue(x.map2.size() == 2);
+    @Test
+    public void mapSetFieldValue() {
+        MapFieldValue x = getReference(MapFieldValue.class);
+        Assert.assertTrue(x.map1.size() == 2);
+        Assert.assertTrue(x.map2.size() == 2);
 
-      Assert.assertTrue(x.map1.get(1).equals("hello"));
-      Assert.assertTrue(x.map1.get(2).equals("world"));
-      Assert.assertTrue(x.map2.get("1") == Integer.class);
-      Assert.assertTrue(x.map2.get("2") == Long.class);
+        Assert.assertTrue(x.map1.get(1).equals("hello"));
+        Assert.assertTrue(x.map1.get(2).equals("world"));
+        Assert.assertTrue(x.map2.get("1") == Integer.class);
+        Assert.assertTrue(x.map2.get("2") == Long.class);
 
-   }
+    }
 }

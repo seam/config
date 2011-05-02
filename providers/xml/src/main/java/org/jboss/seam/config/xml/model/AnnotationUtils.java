@@ -27,35 +27,27 @@ import org.jboss.seam.config.xml.util.XmlObjectConverter;
 import org.jboss.seam.solder.reflection.AnnotationInstanceProvider;
 
 /**
- * 
  * @author Stuart Douglas
- * 
  */
-class AnnotationUtils
-{
-   final private static AnnotationInstanceProvider annotationInstanceProvider = new AnnotationInstanceProvider();
+class AnnotationUtils {
+    final private static AnnotationInstanceProvider annotationInstanceProvider = new AnnotationInstanceProvider();
 
-   @SuppressWarnings("unchecked")
-   static Annotation createAnnotation(AnnotationXmlItem item)
-   {
-      Map<String, Object> typedVars = new HashMap<String, Object>();
-      Class<?> anClass = item.getJavaClass();
-      for (Entry<String, String> e : item.getAttributes().entrySet())
-      {
-         String mname = e.getKey();
-         Method m;
-         try
-         {
-            m = anClass.getDeclaredMethod(mname);
-         }
-         catch (Exception e1)
-         {
-            throw new XmlConfigurationException("Annotation " + item.getJavaClass().getName() + " does not have a member named " + mname + " ,error in XML", item.getDocument(), item.getLineno());
-         }
-         Class<?> returnType = m.getReturnType();
-         typedVars.put(mname, XmlObjectConverter.convert(returnType, e.getValue()));
-      }
+    @SuppressWarnings("unchecked")
+    static Annotation createAnnotation(AnnotationXmlItem item) {
+        Map<String, Object> typedVars = new HashMap<String, Object>();
+        Class<?> anClass = item.getJavaClass();
+        for (Entry<String, String> e : item.getAttributes().entrySet()) {
+            String mname = e.getKey();
+            Method m;
+            try {
+                m = anClass.getDeclaredMethod(mname);
+            } catch (Exception e1) {
+                throw new XmlConfigurationException("Annotation " + item.getJavaClass().getName() + " does not have a member named " + mname + " ,error in XML", item.getDocument(), item.getLineno());
+            }
+            Class<?> returnType = m.getReturnType();
+            typedVars.put(mname, XmlObjectConverter.convert(returnType, e.getValue()));
+        }
 
-      return annotationInstanceProvider.get((Class) item.getJavaClass(), typedVars);
-   }
+        return annotationInstanceProvider.get((Class) item.getJavaClass(), typedVars);
+    }
 }

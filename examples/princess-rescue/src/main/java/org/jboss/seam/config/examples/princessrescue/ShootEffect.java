@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.examples.princessrescue;
 
-public enum ShootEffect
-{
-   NOTHING, KILL, ANNOY;
+public enum ShootEffect {
+    NOTHING, KILL, ANNOY;
 }

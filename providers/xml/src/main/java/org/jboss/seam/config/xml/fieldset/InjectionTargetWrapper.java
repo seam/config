@@ -24,51 +24,42 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
 
-public class InjectionTargetWrapper<T> implements InjectionTarget<T>
-{
-   private final InjectionTarget<T> target;
-   private final List<FieldValueObject> fieldValues;
-   private final BeanManager manager;
+public class InjectionTargetWrapper<T> implements InjectionTarget<T> {
+    private final InjectionTarget<T> target;
+    private final List<FieldValueObject> fieldValues;
+    private final BeanManager manager;
 
-   public InjectionTargetWrapper(InjectionTarget<T> target, List<FieldValueObject> fieldValues, BeanManager manager)
-   {
-      this.fieldValues = fieldValues;
-      this.target = target;
-      this.manager = manager;
-   }
+    public InjectionTargetWrapper(InjectionTarget<T> target, List<FieldValueObject> fieldValues, BeanManager manager) {
+        this.fieldValues = fieldValues;
+        this.target = target;
+        this.manager = manager;
+    }
 
-   public void inject(T instance, CreationalContext<T> ctx)
-   {
-      for (FieldValueObject f : fieldValues)
-      {
-         f.setValue(instance, ctx, manager);
-      }
-      target.inject(instance, ctx);
-   }
+    public void inject(T instance, CreationalContext<T> ctx) {
+        for (FieldValueObject f : fieldValues) {
+            f.setValue(instance, ctx, manager);
+        }
+        target.inject(instance, ctx);
+    }
 
-   public void postConstruct(T instance)
-   {
-      target.postConstruct(instance);
-   }
+    public void postConstruct(T instance) {
+        target.postConstruct(instance);
+    }
 
-   public void preDestroy(T instance)
-   {
-      target.preDestroy(instance);
-   }
+    public void preDestroy(T instance) {
+        target.preDestroy(instance);
+    }
 
-   public void dispose(T instance)
-   {
-      target.dispose(instance);
-   }
+    public void dispose(T instance) {
+        target.dispose(instance);
+    }
 
-   public Set<InjectionPoint> getInjectionPoints()
-   {
-      return target.getInjectionPoints();
-   }
+    public Set<InjectionPoint> getInjectionPoints() {
+        return target.getInjectionPoints();
+    }
 
-   public T produce(CreationalContext<T> ctx)
-   {
-      return target.produce(ctx);
-   }
+    public T produce(CreationalContext<T> ctx) {
+        return target.produce(ctx);
+    }
 
 }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="urn:java:ee"
-          xmlns:test="urn:java:org.jboss.seam.config.xml.test.injection">
-       
-      
+       xmlns:test="urn:java:org.jboss.seam.config.xml.test.injection">
+
+
     <test:ProducerQualifier>
-    	<Qualifier/>
+        <Qualifier/>
     </test:ProducerQualifier>
-    
+
     <test:ProducerBean>
-    	<replaces/>
+        <replaces/>
         <test:value>
             <Produces/>
             <test:ProducerQualifier/>
@@ -16,12 +16,12 @@
         </test:value>
     </test:ProducerBean>
 
-   <test:RecieverBean>
-   		<replaces/>
-   		<test:value>
-   			<test:ProducerQualifier/>
-   			<Inject/>
-   		</test:value>
-   </test:RecieverBean>
-   
+    <test:RecieverBean>
+        <replaces/>
+        <test:value>
+            <test:ProducerQualifier/>
+            <Inject/>
+        </test:value>
+    </test:RecieverBean>
+
 </beans>

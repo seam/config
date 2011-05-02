@@ -16,7 +16,6 @@
  */
 package org.jboss.seam.config.xml.test.types;
 
-public interface SomeInterface
-{
+public interface SomeInterface {
 
 }

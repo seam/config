@@ -18,26 +18,20 @@ package org.jboss.seam.config.xml.util;
 
 import java.lang.reflect.Field;
 
-public class Reflections
-{
-   /**
-    * returns the field or null if not found
-    */
-   public static Field getField(Class<?> c, String name)
-   {
-      Class<?> i = c;
-      while (i != Object.class && i != null)
-      {
-         try
-         {
-            return i.getDeclaredField(name);
-         }
-         catch (Exception e)
-         {
+public class Reflections {
+    /**
+     * returns the field or null if not found
+     */
+    public static Field getField(Class<?> c, String name) {
+        Class<?> i = c;
+        while (i != Object.class && i != null) {
+            try {
+                return i.getDeclaredField(name);
+            } catch (Exception e) {
 
-         }
-         i = i.getSuperclass();
-      }
-      return null;
-   }
+            }
+            i = i.getSuperclass();
+        }
+        return null;
+    }
 }

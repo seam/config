@@ -37,98 +37,67 @@ import org.jboss.seam.solder.properties.Property;
 
 /**
  * class responsible for setting the value of collection properties.
- * 
+ * <p/>
  * It can deal with the following collection types: -Set -List -Collection
  * -SortedSet -HashSet -ArrayList -TreeSet -LinkedList
- * 
+ *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
- * 
  */
-public class CollectionFieldSet implements FieldValueObject
-{
-   private final Property<Object> field;
-   private final List<FieldValue> values;
-   private final Class<?> elementType;
-   private final Class<? extends Collection> collectionType;
+public class CollectionFieldSet implements FieldValueObject {
+    private final Property<Object> field;
+    private final List<FieldValue> values;
+    private final Class<?> elementType;
+    private final Class<? extends Collection> collectionType;
 
-   public CollectionFieldSet(Property<Object> field, List<ValueXmlItem> items)
-   {
-      this.field = field;
-      this.values = new ArrayList<FieldValue>();
+    public CollectionFieldSet(Property<Object> field, List<ValueXmlItem> items) {
+        this.field = field;
+        this.values = new ArrayList<FieldValue>();
 
-      Type type = field.getBaseType();
-      if (type instanceof ParameterizedType)
-      {
-         ParameterizedType parameterizedType = (ParameterizedType) type;
+        Type type = field.getBaseType();
+        if (type instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) type;
 
-         if (parameterizedType.getRawType() == Collection.class)
-         {
-            collectionType = LinkedHashSet.class;
-         }
-         else if (parameterizedType.getRawType() == List.class)
-         {
-            collectionType = ArrayList.class;
-         }
-         else if (parameterizedType.getRawType() == Set.class)
-         {
-            collectionType = LinkedHashSet.class;
-         }
-         else if (parameterizedType.getRawType() == SortedSet.class)
-         {
-            collectionType = TreeSet.class;
-         }
-         else if (parameterizedType.getRawType() == HashSet.class)
-         {
-            collectionType = HashSet.class;
-         }
-         else if (parameterizedType.getRawType() == ArrayList.class)
-         {
-            collectionType = ArrayList.class;
-         }
-         else if (parameterizedType.getRawType() == LinkedList.class)
-         {
-            collectionType = LinkedList.class;
-         }
-         else if (parameterizedType.getRawType() == LinkedHashSet.class)
-         {
-            collectionType = LinkedHashSet.class;
-         }
-         else if (parameterizedType.getRawType() == TreeSet.class)
-         {
-            collectionType = TreeSet.class;
-         }
-         else
-         {
+            if (parameterizedType.getRawType() == Collection.class) {
+                collectionType = LinkedHashSet.class;
+            } else if (parameterizedType.getRawType() == List.class) {
+                collectionType = ArrayList.class;
+            } else if (parameterizedType.getRawType() == Set.class) {
+                collectionType = LinkedHashSet.class;
+            } else if (parameterizedType.getRawType() == SortedSet.class) {
+                collectionType = TreeSet.class;
+            } else if (parameterizedType.getRawType() == HashSet.class) {
+                collectionType = HashSet.class;
+            } else if (parameterizedType.getRawType() == ArrayList.class) {
+                collectionType = ArrayList.class;
+            } else if (parameterizedType.getRawType() == LinkedList.class) {
+                collectionType = LinkedList.class;
+            } else if (parameterizedType.getRawType() == LinkedHashSet.class) {
+                collectionType = LinkedHashSet.class;
+            } else if (parameterizedType.getRawType() == TreeSet.class) {
+                collectionType = TreeSet.class;
+            } else {
+                throw new RuntimeException("Could not determine element type for " + field.getDeclaringClass().getName() + "." + field.getName());
+            }
+            elementType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[0]);
+        } else {
             throw new RuntimeException("Could not determine element type for " + field.getDeclaringClass().getName() + "." + field.getName());
-         }
-         elementType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[0]);
-      }
-      else
-      {
-         throw new RuntimeException("Could not determine element type for " + field.getDeclaringClass().getName() + "." + field.getName());
-      }
+        }
 
-      for (ValueXmlItem i : items)
-      {
-         values.add(i.getValue());
-      }
-   }
+        for (ValueXmlItem i : items) {
+            values.add(i.getValue());
+        }
+    }
 
-   public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager)
-   {
-      try
-      {
-         Collection<Object> res = collectionType.newInstance();
-         field.setValue(instance, res);
-         for (int i = 0; i < values.size(); ++i)
-         {
-            res.add(values.get(i).value(elementType, ctx, manager));
-         }
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException(e);
-      }
-   }
+    public void setValue(Object instance, CreationalContext<?> ctx, BeanManager manager) {
+        try {
+            Collection<Object> res = collectionType.newInstance();
+            field.setValue(instance, res);
+            for (int i = 0; i < values.size(); ++i) {
+                res.add(values.get(i).value(elementType, ctx, manager));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
