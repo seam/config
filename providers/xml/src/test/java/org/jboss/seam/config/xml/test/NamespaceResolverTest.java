@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
-
 import org.jboss.seam.config.xml.model.MethodXmlItem;
 import org.jboss.seam.config.xml.model.PropertyXmlItem;
 import org.jboss.seam.config.xml.model.XmlItem;

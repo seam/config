@@ -19,7 +19,6 @@ package org.jboss.seam.config.xml.test.fieldset;
 import java.util.Map.Entry;
 
 import junit.framework.Assert;
-
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 

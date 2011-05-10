@@ -1,19 +1,17 @@
 package org.jboss.seam.config.examples.princessrescue.ftest;
 
-import static org.jboss.test.selenium.locator.LocatorFactory.id;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.assertFalse;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.jboss.test.selenium.AbstractTestCase;
 import org.jboss.test.selenium.locator.IdLocator;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import static org.jboss.test.selenium.guard.request.RequestTypeGuardFactory.*;
+import static org.jboss.test.selenium.locator.LocatorFactory.id;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Functional test for the PrincessRescue example

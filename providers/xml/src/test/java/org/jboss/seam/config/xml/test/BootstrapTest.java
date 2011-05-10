@@ -19,9 +19,8 @@ package org.jboss.seam.config.xml.test;
 import java.util.List;
 
 import junit.framework.Assert;
-
-import org.jboss.seam.config.xml.bootstrap.XmlDocumentProvider;
 import org.jboss.seam.config.xml.bootstrap.XmlConfigExtension;
+import org.jboss.seam.config.xml.bootstrap.XmlDocumentProvider;
 import org.junit.Test;
 
 public class BootstrapTest extends AbstractXMLTest {

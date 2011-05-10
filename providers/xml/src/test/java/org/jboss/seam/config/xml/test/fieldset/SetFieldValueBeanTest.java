@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import javax.enterprise.util.AnnotationLiteral;
 
 import junit.framework.Assert;
-
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.jboss.seam.config.xml.test.method.QualifierEnum;
 import org.junit.Test;

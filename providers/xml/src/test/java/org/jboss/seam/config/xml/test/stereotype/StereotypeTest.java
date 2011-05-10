@@ -17,7 +17,6 @@
 package org.jboss.seam.config.xml.test.stereotype;
 
 import junit.framework.Assert;
-
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.jboss.seam.config.xml.test.interceptor.InterceptedBean;
 import org.junit.Test;

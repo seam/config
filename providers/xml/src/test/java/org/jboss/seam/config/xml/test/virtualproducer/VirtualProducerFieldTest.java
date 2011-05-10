@@ -19,7 +19,6 @@ package org.jboss.seam.config.xml.test.virtualproducer;
 import javax.enterprise.util.AnnotationLiteral;
 
 import junit.framework.Assert;
-
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 

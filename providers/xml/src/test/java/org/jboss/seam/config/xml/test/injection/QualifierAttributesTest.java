@@ -17,7 +17,6 @@
 package org.jboss.seam.config.xml.test.injection;
 
 import junit.framework.Assert;
-
 import org.jboss.seam.config.xml.test.AbstractXMLTest;
 import org.junit.Test;
 
