@@ -22,8 +22,8 @@
 package org.jboss.seam.config.examples.princessrescue;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
@@ -91,8 +91,8 @@ public class GameManager implements Serializable {
 
     }
 
-    private Set<GameRoom> getAdjacentRooms() {
-        HashSet<GameRoom> ret = new HashSet<GameRoom>();
+    private Collection<GameRoom> getAdjacentRooms() {
+        Collection<GameRoom> ret = new LinkedList<GameRoom>();
         if (currentRoom.getNorth() != null) {
             ret.add(currentRoom.getNorth());
         }
