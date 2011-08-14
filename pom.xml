@@ -1,23 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <artifactId>seam-parent</artifactId>
         <groupId>org.jboss.seam</groupId>
-        <version>9</version>
+        <version>12</version>
     </parent>
 
     <groupId>org.jboss.seam.config</groupId>
     <artifactId>seam-config-parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
     <name>Seam Config Module</name>
     <url>http://seamframework.org/Seam3/ConfigModule</url>
     <description>Alternate metadata sources for defining and configuring beans</description>
 
     <properties>
-        <seam.version>3.0.0.Final</seam.version>
+        <seam.version>3.1.0.Beta1</seam.version>
     </properties>
 
     <modules>

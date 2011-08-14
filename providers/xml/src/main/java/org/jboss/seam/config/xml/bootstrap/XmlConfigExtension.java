@@ -39,7 +39,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionTarget;
 import javax.inject.Named;
 
-import org.jboss.logging.Logger;
+import org.jboss.seam.solder.logging.Logger;
 import org.jboss.seam.config.xml.core.BeanResult;
 import org.jboss.seam.config.xml.core.XmlConfiguredBean;
 import org.jboss.seam.config.xml.core.XmlId;

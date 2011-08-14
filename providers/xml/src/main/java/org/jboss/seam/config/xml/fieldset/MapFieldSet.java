@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -70,6 +71,10 @@ public class MapFieldSet implements FieldValueObject {
 
             keyType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[0]);
             valueType = TypeReader.readClassFromType(parameterizedType.getActualTypeArguments()[1]);
+        } else if (type == Properties.class) {
+            collectionType = Properties.class;
+            keyType = TypeReader.readClassFromType(String.class);
+            valueType = TypeReader.readClassFromType(String.class);
         } else {
             throw new RuntimeException("Could not determine element type for map " + field.getDeclaringClass().getName() + "." + field.getName());
         }

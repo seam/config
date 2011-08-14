@@ -17,6 +17,7 @@
 package org.jboss.seam.config.xml.test;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Set;
 
 import javax.enterprise.inject.spi.Bean;
@@ -51,7 +52,7 @@ public abstract class AbstractXMLTest {
     public <T> T getReference(Class<T> clazz, Annotation... bindings) {
         Set<Bean<?>> beans = manager.getBeans(clazz, bindings);
         if (beans.isEmpty()) {
-            throw new RuntimeException("No bean found with class: " + clazz + " and bindings " + bindings.toString());
+            throw new RuntimeException("No bean found with class: " + clazz + " and bindings " + Arrays.toString(bindings));
         } else if (beans.size() != 1) {
             StringBuilder bs = new StringBuilder("[");
             for (Annotation a : bindings) {
