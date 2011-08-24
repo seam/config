@@ -3,6 +3,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
 
+    <id>distribution</id>
+
     <formats>
         <format>zip</format>
     </formats>
@@ -32,8 +34,8 @@
                 <include>org.jboss.seam.config:seam-config-xml</include>
             </includes>
             <excludes>
-                <exclude>org.jboss.seam.config:*:*:*:javadoc</exclude>
-                <exclude>org.jboss.seam.config:*:*:*:sources</exclude>
+                <exclude>org.jboss.seam.config:*:jar:javadoc</exclude>
+                <exclude>org.jboss.seam.config:*:jar:sources</exclude>
             </excludes>
             <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}
             </outputFileNameMapping>

@@ -28,7 +28,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Qualifier;
 import javax.interceptor.InterceptorBinding;
 
-import org.jboss.seam.solder.logging.Logger;
+import org.jboss.seam.logging.Logger;
 import org.jboss.seam.config.xml.core.BeanResult;
 import org.jboss.seam.config.xml.core.BeanResultType;
 import org.jboss.seam.config.xml.core.XmlResult;
